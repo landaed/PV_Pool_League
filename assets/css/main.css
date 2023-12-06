@@ -59,6 +59,84 @@ footer, header, hgroup, menu, nav, section {
 	/** {
 	    outline: 1px solid red;
 	}*/
+  .horizontal_backing {
+      /* Rainbow gradient background */
+    /*  background: rgba(255, 255, 255, 0.1);*/
+
+      /* Other styling properties as needed */
+  }
+
+  .table-container {
+      display: flex; /* Use flexbox */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      /* Full height of the viewport */
+      width: 100vw; /* Full width of the viewport */
+  }
+  .configurable-table {
+      max-width: 70%; /* Adjust the width of the table */
+      border-collapse: collapse; /* Removes space between borders */
+      /* Add more styles for the table here */
+  }
+
+  .configurable-table td, .configurable-table th {
+      border: 1px solid #ddd; /* Border color and width */
+      padding: 8px; /* Cell padding */
+      /* Add more styles for table cells here */
+  }
+
+  .configurable-table tr:nth-child(even) {
+      background-color: rgba(255,255,255,0.3); /* Background color for even rows */
+  }
+
+  .configurable-table tr:hover {
+      background-color: rgba(255,255,255,0.6); /* Background color on hover */
+  }
+
+  .configurable-table th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #4CAF50; /* Header background color */
+      color: white; /* Header text color */
+  }
+
+
+  .division_btn {
+      display: inline-flex;
+      flex-direction: column; /* Stack items vertically */
+      align-items: center;
+      justify-content: center;
+      margin: 5px;
+      text-align: center;
+      max-width: 200px;
+      font-family: 'Dosis', sans-serif;
+      font-weight: bold;
+  }
+
+  .division_btn img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 5px; /* Space between image and text */
+  }
+
+  @media (max-width: 600px) {
+      #division_layout{
+          flex-direction: column;
+      }
+  }
+  @media (min-width: 601px) {
+    #division_layout{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 auto; /* Center the flex container */
+      max-width: 80%; /* Adjust this as necessary */
+    }
+
+  }
+
 
 #scrolling-header-logo {
 		position: fixed;
@@ -216,7 +294,7 @@ body {
 
 
 #poolLeagueSignupForm {
-    font-family: Arial, sans-serif;
+    font-family: 'Dosis', sans-serif;
     color: #333;
     margin: 0 auto; /* Centering the form */
     width: fit-content;
@@ -518,7 +596,7 @@ input, select, textarea {
 /* Type */
 
 	body, input, select, textarea {
-		color: rgba(255, 255, 255, 0.55);
+		color: rgba(255, 255, 255, 0.8);
 		font-family: 'Dosis', sans-serif;
 		font-size: 16.5pt;
 		font-weight: normal;
@@ -4980,6 +5058,7 @@ ul.blog > li:first-child {
         flex: 1; /* This ensures each section takes up equal width */
     }
 	.card {
-		min-height: 320px;
+		min-height: 420px;
+    min-width: 320px;
 	}
 }
