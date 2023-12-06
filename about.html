@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>PV Pool League - About</title>
+		<link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="./assets/css/main.css"/>
+		<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+		<script src="https://cdn.babylonjs.com/babylon.js"></script>
+		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+		<script src="assets\js\header_icon_move.js"></script>
+
+	</head>
+
+	<body>
+		<!--a href="index.html" id="scrolling-header-logo">
+				<img src="./assets/images/pool_logo.png" alt="PV Pool League Logo">
+		</a-->
+		<!-- Wrapper -->
+		<div class="outer-wrapper">
+
+			<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="inner about">
+
+					<div>
+						<h1 class="major">About Us</h1>
+						<p>
+							At PV Pool League, we're at the forefront of Pool. Owned by Landa Investments, we are the best pool league ever.
+						</p>
+						<h3>Landa Investments</h3>
+						<p>
+						Landa Investments is very wealthy and buys many things :).
+						</p>
+						<h3>Allan Landa</h3>
+						<p>
+						Allan is our glorious king. All hail Allan.
+						</p>
+					</div>
+
+					<div class="container">
+
+
+						<h1>History</h1>
+						<p>
+							This league was founded by some dudes, and then sold to other dudes.
+						</p>
+						<p>
+							Learn more about PV Pool League and connect with us through these social media links:
+						</p>
+						<div class="social-links">
+							<a href="" target="_blank">YouTube</a>
+							<a href="" target="_blank">Twitter</a>
+							<a href="" target="_blank">Facebook</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<p>&copy; A division of Landa Investments ltd.</p>
+				<p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
+			</div>
+		</footer>
+
+		<!-- Scripts -->
+		<script src="./assets/js/jquery.min.js"></script>
+		<script src="./assets/js/jquery.scrollex.min.js"></script>
+		<script src="./assets/js/jquery.scrolly.min.js"></script>
+		<script src="./assets/js/browser.min.js"></script>
+		<script src="./assets/js/breakpoints.min.js"></script>
+		<script src="./assets/js/util.js"></script>
+		<script src="./assets/js/main.js"></script>
+		<script src="./assets/js/hamburger.js"></script>
+		<script src="./assets/js/touch_screen_canvas.js"></script>
+		<div class="floating-menu-container">
+		<div class="floating-hamburger-menu">
+				<i class="fas fa-bars"></i>
+		</div>
+		<nav class="floating-menu-content">
+				<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="about.html">About</a></li>
+						<li><a href="http://www.pvpoolleagues.com/Locations.pdf">Locations</a></li>
+						<li><a href="divisions.html">Divisions</a></li>
+						<li><a href="register.html">Register</a></li>
+						<li><a href="stats.html">Stats</a></li>
+						<!-- Add more list items as needed -->
+				</ul>
+		</nav>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	var menuContainer = document.querySelector('.floating-menu-container');
+	var menuContent = document.querySelector('.floating-menu-content');
+	var menuButton = document.querySelector('.floating-hamburger-menu');
+	var menuItems = document.querySelectorAll('.floating-menu-content a'); // Get all menu item links
+
+	// Function to toggle the menu's visibility
+	function toggleMenu() {
+			if (menuContent.style.display === 'block') {
+					menuContent.style.display = 'none';
+			} else {
+					menuContent.style.display = 'block';
+			}
+	}
+
+	// Mouse events for desktop
+	menuContainer.addEventListener('mouseenter', function() {
+			menuContent.style.display = 'block';
+	});
+	menuContainer.addEventListener('mouseleave', function() {
+			menuContent.style.display = 'none';
+	});
+
+	// Touch event for the menu button
+	menuButton.addEventListener('touchstart', function(event) {
+			event.preventDefault(); // Prevent default touch action
+			toggleMenu();
+	}, false);
+
+	// Add touch event listeners to each menu item
+	menuItems.forEach(function(menuItem) {
+			menuItem.addEventListener('touchstart', function(event) {
+					event.stopPropagation(); // Prevent the event from bubbling up to the container
+			}, false);
+	});
+});
+
+
+</script>
+	</body>
+</html>

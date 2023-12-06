@@ -1,0 +1,19 @@
+{
+  "name": "unbounded-babylon-web",
+  "version": "1.0.0",
+  "description": "This is the website for Unbounded Research and Development Corp.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/landaed/unbounded-babylon-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/landaed/unbounded-babylon-web/issues"
+  },
+  "homepage": "https://github.com/landaed/unbounded-babylon-web#readme"
+}

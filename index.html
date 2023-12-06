@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>PV Pool League - Home</title>
+		<link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="./assets/css/main.css"/>
+		<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+		<script src="https://cdn.babylonjs.com/babylon.js"></script>
+		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+		<script>
+window.onscroll = function() {
+    var header = document.getElementById('header');
+    var scroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    // Calculate opacity
+    var opacity = Math.min(1, 1.-(scroll / 500));
+    header.style.opacity = opacity;
+};
+function scrollToAboutUs() {
+    // Find the element with the "about" ID
+    var aboutUsSection = document.getElementById("ourLeague");
+
+    // Scroll to the "about" element smoothly
+    aboutUsSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+
+</script>
+
+	</head>
+
+	<body>
+				<!-- Loading Screen Overlay -->
+		<div id="loadingScreen" style="position:fixed; top:0; left:0; width:100%; height:100%; background-color: black; z-index:1000; display: flex; justify-content: center; align-items: center;">
+		    <!-- Rotating Image -->
+		    <img id="loadingImage" src="./assets/images/pool_logo.png" alt="Loading..." style="width: 100px; height: 100px;"/> <!-- Adjust size as needed -->
+		</div>
+
+		<div id="mainContent" style="visibility: hidden;">
+        <!-- ... all your other body content ... -->
+
+
+
+		<!-- Wrapper -->
+		<div id="wrapper">
+
+			<!-- Intro -->
+			<section id="intro" class="wrapper style1 fullscreen">
+				<canvas id="renderCanvas"></canvas>
+				<button class="more" onclick="scrollToAboutUs()">more<i class="fas fa-caret-down"></i></button>
+
+
+				<div id="text-overlay">
+					<p id="info">Fall League starts in September</p>
+
+				</div>
+				<script src="./assets/js/scene.js"></script>
+			</section>
+
+			<section class="wrapper style2 spotlights">
+				<!-- Who We Are -->
+
+
+				<!-- Innovation Lab -->
+				<!-- <section class="wrapper fade-up">
+					<div class="inner leftMarginAlign">
+						<h2 id="innovation">Innovation Lab</h2>
+							<section>
+								<span class="icon solid major fa-graduation-cap"></span>
+								<h3>Mentorship Program</h3>
+								<p>Maximize your potential with our innovative mentorship program. Join our free trial program in computer graphics.</p>
+								<ul class="actions">
+									<li><a href="innovation.html" class="button">EXPLORE THE LAB</a></li>
+								</ul>
+							</section>
+						</div>
+				</section> -->
+
+				<!-- What We Do -->
+				<section class="wrapper">
+					<div class="inner leftMarginAlign">
+						<div class="center-container">
+						    <h2 id="ourLeague"></h2>
+						</div>
+						<section class="  spotlights">
+							<section class="">
+					<a  class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/about_us.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
+					<div class="content">
+							<h2 id="about">About Us</h2>
+							<p>We are a cool pool league.</p>
+							<ul class="actions">
+								<li><a href="about.html" class="button">Learn More</a></li>
+							</ul>
+					</div>
+				</section>
+				<section class="">
+					<a class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/divisions.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
+					<div class="content">
+
+							<h2 id="about">Divisions</h2>
+							<p>We have many divisions. You can see their latest updates here.</p>
+							<ul class="actions">
+								<li><a href="divisions.html" class="button">Learn More</a></li>
+							</ul>
+
+					</div>
+				</section>
+				<section class="">
+					<a  class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/locations.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
+					<div class="content">
+
+							<h2 id="about">Locations</h2>
+							<p>We are adding new locations all the time</p>
+							<ul class="actions">
+								<li><a href="http://www.pvpoolleagues.com/Locations.pdf" class="button">Learn More</a></li>
+							</ul>
+
+					</div>
+				</section>
+				<section class="">
+					<a  class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/register.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
+					<div class="content">
+
+							<h2 id="about">Register</h2>
+							<p>Join out league, its fun!</p>
+							<ul class="actions">
+								<li><a href="register.html" class="button">Learn More</a></li>
+							</ul>
+
+					</div>
+				</section>
+				<section class="">
+					<a class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/stats.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
+					<div class="content">
+
+							<h2 id="about">Stats</h2>
+							<p>See the scores!</p>
+							<ul class="actions">
+								<li><a href="stats.html" class="button">Learn More</a></li>
+							</ul>
+
+					</div>
+				</section>
+				<section class="">
+					<a class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/schedule_icon.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
+					<div class="content">
+
+							<h2 id="about">Schedule</h2>
+							<p>See the Schedule!</p>
+							<ul class="actions">
+								<li><a href="schedule.html" class="button">Learn More</a></li>
+							</ul>
+
+					</div>
+				</section>
+
+
+							<!--div id="ourLeague" class="button-container">
+
+
+
+									<button href="#" class="image-button">
+										<img src="./assets/images/divisions.png" alt="Register">
+											<p>Divisions<p/>
+									</button>
+
+							    <button href="#" class="image-button">
+							        <img src="./assets/images/register.png" alt="Register">
+											<p>Register<p/>
+							    </button>
+							    <button href="#" class="image-button">
+							        <img src="./assets/images/locations.png" alt="Locations">
+											<p>Locations<p/>
+							    </button>
+									<button href="#" class="image-button">
+							        <img src="./assets/images/about_us.png" alt="About">
+											<p>About<p/>
+							    </button>
+							</div-->
+
+						</section>
+
+
+							<!-- <section>
+								<span class="icon solid major fa-cube"></span>
+								<h3>Asset Pack Development</h3>
+								<p>Developing films and games is complex and time-intensive. Indie developers often lack the time or expertise to create custom shaders and graphics. That's where we step in. We make asset development effortless.</p>
+								<ul class="actions">
+									<li><a href="assets.html" class="button">DISCOVER OUR ASSETS</a></li>
+								</ul>
+							</section> -->
+							<!--section>
+								<span class="icon solid major fa-trophy"></span>
+								<h3>Divisions</h3>
+								<p>Maximize your potential with our innovative mentorship program. Join our free trial program in computer graphics.</p>
+								<ul class="actions">
+									<li><a href="innovation.html" class="button">Division List</a></li>
+								</ul>
+							</section>
+							<section>
+								<span class="icon solid major fa-address-card"></span>
+								<h3>Register</h3>
+								<p>We are GPU and graphics specialists, focused on GPU orchestration for HPC data centers. We are capable of working with teams of any size develop innovative solutions.</p>
+								<ul class="actions">
+									<li><a href="services.html" class="button">Register</a></li>
+								</ul>
+							</section>
+							<section>
+								<span class="icon solid major fa-map-pin"></span>
+								<h3>Locations</h3>
+								<p>Great News - Our Number of Locations to Choose From Are Increasing - Let's Keep the Ball Rolling</p>
+								<ul class="actions">
+									<li><a href="research.html" class="button">Locations</a></li>
+								</ul>
+							</section>
+						</div>
+				</section>
+
+				<!-- Get in touch -->
+
+
+</section>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<p>&copy; A division of Landa Investments ltd.</p>
+				<p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
+
+			</div>
+		</footer>
+		  </div>
+
+		<!-- Scripts -->
+		<script src="./assets/js/jquery.min.js"></script>
+		<script src="./assets/js/jquery.scrollex.min.js"></script>
+		<script src="./assets/js/jquery.scrolly.min.js"></script>
+		<script src="./assets/js/browser.min.js"></script>
+		<script src="./assets/js/breakpoints.min.js"></script>
+		<script src="./assets/js/util.js"></script>
+		<script src="./assets/js/main.js"></script>
+		<script src="./assets/js/hamburger.js"></script>
+		<script src="./assets/js/touch_screen_canvas.js"></script>
+		<div class="floating-menu-container">
+    <div class="floating-hamburger-menu">
+        <i class="fas fa-bars"></i>
+    </div>
+    <nav class="floating-menu-content">
+        <ul>
+						<li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="http://www.pvpoolleagues.com/Locations.pdf">Locations</a></li>
+            <li><a href="divisions.html">Divisions</a></li>
+            <li><a href="register.html">Register</a></li>
+						<li><a href="stats.html">Stats</a></li>
+            <!-- Add more list items as needed -->
+        </ul>
+    </nav>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	var menuContainer = document.querySelector('.floating-menu-container');
+	var menuContent = document.querySelector('.floating-menu-content');
+	var menuButton = document.querySelector('.floating-hamburger-menu');
+	var menuItems = document.querySelectorAll('.floating-menu-content a'); // Get all menu item links
+
+	// Function to toggle the menu's visibility
+	function toggleMenu() {
+			if (menuContent.style.display === 'block') {
+					menuContent.style.display = 'none';
+			} else {
+					menuContent.style.display = 'block';
+			}
+	}
+
+	// Mouse events for desktop
+	menuContainer.addEventListener('mouseenter', function() {
+			menuContent.style.display = 'block';
+	});
+	menuContainer.addEventListener('mouseleave', function() {
+			menuContent.style.display = 'none';
+	});
+
+	// Touch event for the menu button
+	menuButton.addEventListener('touchstart', function(event) {
+			event.preventDefault(); // Prevent default touch action
+			toggleMenu();
+	}, false);
+
+	// Add touch event listeners to each menu item
+	menuItems.forEach(function(menuItem) {
+			menuItem.addEventListener('touchstart', function(event) {
+					event.stopPropagation(); // Prevent the event from bubbling up to the container
+			}, false);
+	});
+});
+
+</script>
+
+	</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>PV Pool League - Register</title>
+		<link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="./assets/css/main.css"/>
+		<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+		<script src="https://cdn.babylonjs.com/babylon.js"></script>
+		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+		<script src="assets\js\header_icon_move.js"></script>
+	</head>
+
+	<body>
+
+		<!--a href="index.html" id="scrolling-header-logo">
+				<img src="./assets/images/pool_logo.png" alt="PV Pool League Logo">
+		</a-->
+		<!-- Wrapper -->
+		<div class="outer-wrapper">
+
+			<!-- Main -->
+			<section id="main" class="wrapper">
+
+					<div>
+						<h1 class="major1">Register</h1>
+						<form id="poolLeagueSignupForm">
+    <table class="formBlockSurveyTable">
+        <tbody>
+            <!-- Team Name -->
+            <tr>
+                <td class="question"><label for="teamName">Team Name&nbsp;<span class="required">*</span></label></td>
+                <td><input name="teamName" id="teamName" type="text" required></td>
+            </tr>
+            <!-- Day / Division -->
+            <tr>
+                <td class="question"><label for="dayDivision">DAY / DIVISION</label></td>
+                <td><input name="dayDivision" id="dayDivision" type="text"></td>
+            </tr>
+            <!-- Date -->
+            <tr>
+                <td class="question"><label for="date">Date</label></td>
+                <td><input name="date" id="date" type="text"></td>
+            </tr>
+            <!-- Home Bar 1st Pick -->
+            <tr>
+                <td class="question"><label for="homeBarFirst">Home Bar 1st Pick</label></td>
+                <td><input name="homeBarFirst" id="homeBarFirst" type="text"></td>
+            </tr>
+            <!-- Home Bar 2nd Pick -->
+            <tr>
+                <td class="question"><label for="homeBarSecond">Home Bar 2nd Pick</label></td>
+                <td><input name="homeBarSecond" id="homeBarSecond" type="text"></td>
+            </tr>
+            <!-- Captain's Name -->
+            <tr>
+                <td class="question"><label for="captainName">Captain's Name&nbsp;<span class="required">*</span></label></td>
+                <td><input name="captainName" id="captainName" type="text" required></td>
+            </tr>
+            <!-- Captain's Contact -->
+            <tr>
+                <td class="question"><label for="captainContact">Captain's Email or Phone #&nbsp;<span class="required">*</span></label></td>
+                <td><input name="captainContact" id="captainContact" type="text" required></td>
+            </tr>
+            <!-- Additional Players -->
+            <tr>
+                <td class="question"><label for="player2">Player 2 Name</label></td>
+                <td><input name="player2" id="player2" type="text"></td>
+            </tr>
+            <!-- More Players -->
+            <!-- Add similar rows for Player 3, 4, 5 as needed -->
+            <!-- Captcha -->
+            <tr>
+                <td colspan="2"><label for="captcha" class="control-label">Please type the letters and numbers shown in the image.</label></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="text" name="ccmCaptchaCode" class="ccm-input-captcha" required>
+                    <div><img src="/path_to_your_captcha" alt="Captcha Code" class="ccm-captcha-image"></div>
+                    <div>Click the image to see another captcha.</div>
+                </td>
+            </tr>
+            <!-- Submit Button -->
+            <tr>
+                <td>&nbsp;</td>
+                <td><input class="formBlockSubmitButton" name="Submit" type="submit" value="Submit"></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+				</div>
+			</section>
+
+
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<p>&copy; A division of Landa Investments ltd.</p>
+				<p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
+			</div>
+		</footer>
+
+		<!-- Scripts -->
+		<script src="./assets/js/jquery.min.js"></script>
+		<script src="./assets/js/jquery.scrollex.min.js"></script>
+		<script src="./assets/js/jquery.scrolly.min.js"></script>
+		<script src="./assets/js/browser.min.js"></script>
+		<script src="./assets/js/breakpoints.min.js"></script>
+		<script src="./assets/js/util.js"></script>
+		<script src="./assets/js/main.js"></script>
+		<script src="./assets/js/hamburger.js"></script>
+		<script src="./assets/js/touch_screen_canvas.js"></script>
+		<div class="floating-menu-container">
+		<div class="floating-hamburger-menu">
+				<i class="fas fa-bars"></i>
+		</div>
+		<nav class="floating-menu-content">
+				<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="about.html">About</a></li>
+						<li><a href="http://www.pvpoolleagues.com/Locations.pdf">Locations</a></li>
+						<li><a href="divisions.html">Divisions</a></li>
+						<li><a href="register.html">Register</a></li>
+						<li><a href="stats.html">Stats</a></li>
+						<!-- Add more list items as needed -->
+				</ul>
+		</nav>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	var menuContainer = document.querySelector('.floating-menu-container');
+	var menuContent = document.querySelector('.floating-menu-content');
+	var menuButton = document.querySelector('.floating-hamburger-menu');
+	var menuItems = document.querySelectorAll('.floating-menu-content a'); // Get all menu item links
+
+	// Function to toggle the menu's visibility
+	function toggleMenu() {
+			if (menuContent.style.display === 'block') {
+					menuContent.style.display = 'none';
+			} else {
+					menuContent.style.display = 'block';
+			}
+	}
+
+	// Mouse events for desktop
+	menuContainer.addEventListener('mouseenter', function() {
+			menuContent.style.display = 'block';
+	});
+	menuContainer.addEventListener('mouseleave', function() {
+			menuContent.style.display = 'none';
+	});
+
+	// Touch event for the menu button
+	menuButton.addEventListener('touchstart', function(event) {
+			event.preventDefault(); // Prevent default touch action
+			toggleMenu();
+	}, false);
+
+	// Add touch event listeners to each menu item
+	menuItems.forEach(function(menuItem) {
+			menuItem.addEventListener('touchstart', function(event) {
+					event.stopPropagation(); // Prevent the event from bubbling up to the container
+			}, false);
+	});
+});
+</script>
+	</body>
+</html>

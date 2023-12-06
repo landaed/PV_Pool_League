@@ -1,0 +1,243 @@
+html {
+  box-sizing: border-box;
+}
+
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* header {
+    display: flex; /* Turn on flexbox
+    justify-content: space-around; /* Distribute space evenly around items
+    align-items: center; /* Align items vertically in the center
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    background-color: #3b2e66;
+    z-index: 2;
+    transition: transform 0.1s;
+    padding: 1em 1em; /* Add some padding to top and bottom of the header
+    box-sizing: border-box;
+  }
+
+  header a {
+    text-decoration: none; /* Removes the underline
+    color: inherit; /* Ensures the links inherit the color from the parent elements
+    border: none;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    vertical-align: middle;
+    color: rgba(255, 255, 255, 0.55);
+    box-sizing: inherit;
+  }
+  
+header h1 {
+    transform: translateX(-8px), translateY(3em);
+    font-weight: bold;
+    line-height: 1.5;
+    margin: 0 0 0.5em 0;
+    font-size: 2.75em;
+}
+
+header h1 > img {
+    width: 10%;
+}
+
+header h3 {
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 0 0 0.5em 0;
+  font-size: 1.1em;
+} */
+
+body {
+  color: rgba(255, 255, 255, 0.55);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16.5pt;
+  font-weight: normal;
+  line-height: 1.75;
+}
+
+header, a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+a {
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* img {
+  width: 20px;
+  aspect-ratio: auto 20 / 30;
+  height: 30px;
+}
+
+img {
+  overflow-clip-margin: content-box;
+  overflow: clip;
+} */
+
+/* Header */
+
+#header {
+  display: -moz-flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  background-color: #493382;
+  cursor: default;
+  padding: 1em 2em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  justify-content: space-between;
+  align-items: center;
+}
+
+  #header > .title {
+    border: 0;
+    color: #ffffff;
+    display: block;
+    font-size: 1.25em;
+    font-weight: bold;
+  }
+
+  #header > nav {
+    -moz-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: right;
+  }
+
+    #header > nav > ul {
+      margin: 0;
+      padding: 0;
+    }
+
+      #header > nav > ul > li {
+        display: inline-block;
+        margin-left: 1.75em;
+        padding: 0;
+        vertical-align: middle;
+      }
+
+        #header > nav > ul > li:first-child {
+          margin-left: 0;
+        }
+
+        #header > nav > ul > li a {
+          border: 0;
+          color: rgba(255, 255, 255, 0.35);
+          display: inline-block;
+          font-size: 0.6em;
+          font-weight: bold;
+          letter-spacing: 0.25em;
+          text-transform: uppercase;
+        }
+
+          #header > nav > ul > li a:hover {
+            color: rgba(255, 255, 255, 0.55);
+          }
+
+          #header > nav > ul > li a.active {
+            color: #ffffff;
+          }
+
+/* Hamburger */
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  background-color: #5d40a5;
+}
+
+@media screen and (max-width: 880px) {
+  .menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 99999;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+      display: none;
+  background-color: #493382;
+  }
+
+#header > nav {
+  text-align: left;
+}
+
+#header > nav > ul > li a {
+  line-height: normal;
+}
+
+#header > nav > ul > li:first-child {
+  margin: 1em .5em;
+}
+
+#header > nav > ul > li {
+  margin: 1em .5em;
+}
+
+ul {
+  max-height: 500px;
+}
+
+  .hamburger {
+      display: block;
+  }
+}
+
+.menu.show {
+  max-height: 500px;
+  display: block;
+}
+
+#logo {
+	width: 200px; /* default size */
+	height: auto;
+  }
+  
+  @media only screen and (max-width: 1000px) {
+	#logo {
+	  width: 150px; /* smaller size for smaller screens */
+	}
+  }
+  
+  @media only screen and (max-width: 600px) {
+	#logo {
+	  width: 125px; /* even smaller size for mobile screens */
+	}
+  }

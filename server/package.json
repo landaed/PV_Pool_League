@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "@babylonjs/core": "^5.15.1",
+    "@babylonjs/havok": "^1.2.1",
+    "express": "^4.18.1",
+    "http-proxy-middleware": "^2.0.6",
+    "mime": "^3.0.0"
+  },
+  "name": "unbounded-babylon-web",
+  "description": "This is the website for Unbounded Research and Development Corp.",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/landaed/unbounded-babylon-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/landaed/unbounded-babylon-web/issues"
+  },
+  "homepage": "https://github.com/landaed/unbounded-babylon-web#readme"
+}
