@@ -30,7 +30,17 @@ const leftMargin = 4;
 var canvasWidth = engine.getRenderWidth();
 // Define a point at the left edge of the canvas in screen space
 var screenLeft = new BABYLON.Vector3(0, canvas.height / 2, 0);
+const predefinedColors = [
+    new BABYLON.Color3(0.004, 0.086, 0.153), // Red
+    new BABYLON.Color3(0.969, 0.0902, 0.208), // Green
+    new BABYLON.Color3(0.255, 0.918, 0.831), // Blue
 
+    new BABYLON.Color3(0.388, 0, 0.337), // purple
+    new BABYLON.Color3(1, 0.624, 0.11), // orange
+    new BABYLON.Color3(1, 1, 0.), // yellow
+    new BABYLON.Color3(0.388, 0, 0.086), // maroon
+    // Add more predefined colors as needed
+];
 // Convert the screen space coordinate to world space
 var worldLeft = BABYLON.Vector3.Unproject(
     screenLeft,
@@ -50,7 +60,7 @@ if(canvas.width>1390){
    offY = 6;
   offX*=15;
 }
-console.log(offX);
+//console.log(offX);
 
 // Create the Plane facing the camera
 var plane = BABYLON.MeshBuilder.CreatePlane("plane", {size: 15}, scene);
@@ -130,8 +140,16 @@ window.addEventListener("touchmove", function (evt) {
     mousePosition.y = 1.0 - normalizedY; // Flip Y axis for GL coordinates
     // Additional code to handle the touch as needed
 });
-
+// Function to get a random color from the predefined array
+var tempCol = predefinedColors;
+function getRandomPredefinedColor() {
+    const randomIndex = Math.floor(Math.random() * tempCol.length);
+    var col = tempCol[randomIndex];
+    tempCol.splice(randomIndex, 1);
+    return col;
+}
 var n = 3;
+
 Promise.all(
   Array.from({ length: n }, (_, x) => {
     return Promise.all(
@@ -185,7 +203,7 @@ Promise.all(
 
                         case "blue":
                             mesh.material = cueShader;
-                            cueShader.setColor3("uCol",new BABYLON.Color3(Math.random(),Math.random(),Math.random())); // Example: Set to a reddish color
+                            cueShader.setColor3("uCol", getRandomPredefinedColor()); // Example: Set to a reddish color
                           /*  newMaterial = new BABYLON.StandardMaterial("newMaterialBlue", scene);
                             newMaterial.emissiveColor = new BABYLON.Color3(Math.random(),Math.random(),Math.random());*/
                             break;
@@ -208,6 +226,7 @@ Promise.all(
                     }*/
                 }
                 });
+                tempCol = predefinedColors;
               resolve();
             });
           }else{
@@ -258,13 +277,13 @@ Promise.all(
                     switch (mesh.material.name) {
                         case "blue":
                             mesh.material = cueShader;
-                            cueShader.setColor3("uCol",new BABYLON.Color3(Math.random(),Math.random(),Math.random()));
+                            cueShader.setColor3("uCol", getRandomPredefinedColor());
                           //  newMaterial = new BABYLON.StandardMaterial("newMaterialBlue", scene);
                           //  newMaterial.emissiveColor = new BABYLON.Color3(Math.random(),Math.random(),Math.random());
                             break;
                         case "black":
                             mesh.material = cueShader;
-                            cueShader.setColor3("uCol",new BABYLON.Color3(Math.random(),Math.random(),Math.random()));
+                            cueShader.setColor3("uCol", getRandomPredefinedColor());
 
                           //  newMaterial = new BABYLON.StandardMaterial("newMaterialBlack", scene);
                           //  newMaterial.emissiveColor = new BABYLON.Color3(Math.random(),Math.random(),Math.random());
@@ -295,7 +314,7 @@ Promise.all(
   // Register collision events after all balls are loaded
   ballImpostors.forEach(function(impostor, index) {
     impostor.registerOnPhysicsCollide(ballImpostors, function(mainImpostor, collidedImpostor) {
-        console.log("Collision Detected:", mainImpostor.object.name, "collided with", collidedImpostor.object.name);
+        //console.log("Collision Detected:", mainImpostor.object.name, "collided with", collidedImpostor.object.name);
     });
       document.getElementById('loadingScreen').style.display = 'none';
        document.getElementById('mainContent').style.visibility = 'visible';
@@ -576,7 +595,7 @@ function updateSceneForCanvasSize() {
   else{
    formTriangle(ballImpostors, 2);
   }
-  console.log(offX);
+//  console.log(offX);
 
   // Create the Plane facing the camera
     myLogoMesh.position.x = offX;
@@ -586,7 +605,13 @@ function updateSceneForCanvasSize() {
 }
 
 // Resize the canvas when the window is resized
-window.addEventListener("resize", function () {
-    updateSceneForCanvasSize();
+function handleResize() {
     engine.resize();
-});
+    updateSceneForCanvasSize();
+}
+
+// Handle window resize
+window.addEventListener("resize", handleResize);
+
+// Handle fullscreen change
+document.addEventListener("fullscreenchange", handleResize);

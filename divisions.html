@@ -8,6 +8,28 @@
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Expires" content="0">
     <script src="assets\js\header_icon_move.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // ... existing code ...
+
+    // Function to handle division button click
+    function scrollToSection(event) {
+        event.preventDefault();
+        const targetId = event.currentTarget.getAttribute('data-target');
+        const targetSection = document.querySelector(targetId);
+
+        if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // Add click event listeners to division buttons
+    const divisionButtons = document.querySelectorAll('.division_btn');
+    divisionButtons.forEach(button => {
+        button.addEventListener('click', scrollToSection);
+    });
+});
+</script>
 
 	</head>
 
@@ -16,7 +38,18 @@
 		<!-- Wrapper -->
 		<div class="outer-wrapper">
       <!--a class="button" href="/assets/documents/Innovation Lab Graphics + AI Curriculum.pdf">Full Curriculum</a-->
-			<section id="main" class="wrapper">
+      <section id="division_layout" class="wrapper">
+				<h1 class="major1">Divisions</h1>
+					<div>
+
+						<a class="division_btn" data-target="#mondaySection"><img src="./assets/images/divisions_1.png">- Monday -</a>
+						<a class="division_btn" data-target="#tuesdaySection"><img src="./assets/images/divisions_2.png">- Tuesday -</a>
+						<a class="division_btn" data-target="#wednesdaySection"><img src="./assets/images/divisions_3.png">- Wednesday -</a>
+						<a class="division_btn" data-target="#thursdaySection"><img src="./assets/images/divisions_4.png">- Scotch Doubles -</a>
+						<a class="division_btn" data-target="#cochraneSection"><img src="./assets/images/divisions_5.png">- Cochrane -</a>
+				</div>
+			</section>
+      <section id="mondaySection" class="wrapper">
 				<div class="inner">
 						<h1 class="major">Monday</h1>
 
@@ -45,7 +78,7 @@
             </ul>
 					</div>
 				</div>
-        <section id="main" class="wrapper">
+        <section id="tuesdaySection" class="wrapper">
   				<div class="inner">
   						<h1 class="major">Tuesday</h1>
 
@@ -86,7 +119,7 @@
               </ul>
   					</div>
   				</div>
-          <section id="main" class="wrapper">
+          <section id="wednesdaySection" class="wrapper">
     				<div class="inner">
     						<h1 class="major">Wednesday</h1>
 
@@ -127,6 +160,47 @@
                 </ul>
     					</div>
     				</div>
+            <section id="thursdaySection" class="wrapper">
+      				<div class="inner">
+      						<h1 class="major">Scotch Doubles</h1>
+
+
+      				</div>
+      			</section>
+      				<div class="innovation">
+      					<div class="card">
+      						<h2>Upper A</h2>
+                  <ul>
+                    <li>$15/ player. $75/ team. (5 player Team)</li>
+                    <li>10 teams in division. $250 for 1st place in season standings.</li>
+                    <li>$$$ in playoffs</li>
+                  </ul>
+      					</div>
+                <div class="card">
+      						<h2>Lower A</h2>
+                  <ul>
+                    <li>$15/ player. $75/ team. (5 player Team)</li>
+                    <li>10 teams in division. $250 for 1st place in season standings.</li>
+                    <li>$$$ in playoffs</li>
+                  </ul>
+      					</div>
+                <div class="card">
+      						<h2>Upper B</h2>
+                  <ul>
+                    <li>$15/ player. $65/ team. (5 player Team)</li>
+                    <li>10 teams in division. $250 for 1st place in season standings.</li>
+                    <li>$$$ in playoffs</li>
+                  </ul>
+      					</div>
+                <div class="card">
+      						<h2>Lower B</h2>
+                  <ul>
+                    <li>$15/ player. $65/ team. (5 player Team)</li>
+                    <li>10 teams in division. $250 for 1st place in season standings.</li>
+                    <li>$$$ in playoffs</li>
+                  </ul>
+      					</div>
+      				</div>
 		</div>
 
 		<!-- Footer -->

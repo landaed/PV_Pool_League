@@ -102,40 +102,45 @@ footer, header, hgroup, menu, nav, section {
   }
 
 
-  .division_btn {
-      display: inline-flex;
-      flex-direction: column; /* Stack items vertically */
-      align-items: center;
-      justify-content: center;
-      margin: 5px;
-      text-align: center;
-      max-width: 200px;
-      font-family: 'Dosis', sans-serif;
-      font-weight: bold;
-  }
+  #division_layout > div {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically, if needed */
+    gap: 10px; /* Space between items */
+    margin: 0 auto; /* Center the div itself */
+}
 
-  .division_btn img {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 5px; /* Space between image and text */
-  }
+.division_btn {
+    display: inline-flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    text-align: center;
+    max-width: 200px;
+    font-family: 'Dosis', sans-serif;
+    font-weight: bold;
+}
 
-  @media (max-width: 600px) {
-      #division_layout{
-          flex-direction: column;
-      }
-  }
-  @media (min-width: 601px) {
-    #division_layout{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin: 0 auto; /* Center the flex container */
-      max-width: 80%; /* Adjust this as necessary */
+.division_btn img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 5px; /* Space between image and text */
+}
+
+@media (max-width: 600px) {
+    #division_layout > div {
+        flex-direction: column;
     }
+}
 
-  }
+@media (min-width: 601px) {
+    #division_layout > div {
+        /* Styles for larger screens, if different from the default */
+    }
+}
+
 
 
 #scrolling-header-logo {
@@ -785,7 +790,7 @@ input, select, textarea {
 			line-height: 1;
 			border-radius: 12px;
 			display: flex;
-			justify-content: center;
+			justify-content: left;
 			align-items: center;
 			height: 50px;
 			max-width: 95%; /* Prevents exceeding viewport width */
@@ -794,6 +799,11 @@ input, select, textarea {
 			font-weight: bold;
 			pointer-events: none;
 	}
+  #info {
+    transition: opacity 1s ease-in-out;
+    opacity: 1; /* Start with full opacity */
+}
+
 	button.more {
 	    background: none !important; /* Overrides other background rules */
 	    color: #ffffff !important; /* Overrides other color rules, set your desired color */
@@ -805,7 +815,7 @@ input, select, textarea {
 	    outline: none !important; /* Removes the focus outline */
 	    position: absolute;
 	    left: 50%;
-	    bottom: 100px;
+	    bottom: 140px;
 	    animation: pulsate 1s infinite;
 	    transition: none !important; /* If you don't want any transitions */
 	    border-radius: 0 !important; /* If you want to remove border-radius */

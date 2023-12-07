@@ -14,6 +14,28 @@
 		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
 		<script>
+			const texts = ["Where Everybody Is A Winner", "Fall League Starts In September", "More Text Here"];
+			let currentIndex = 1;
+
+			function fadeOutText() {
+				const infoElement = document.getElementById("info");
+				infoElement.style.opacity = 0; // fade out
+			}
+
+			function updateText() {
+				const infoElement = document.getElementById("info");
+				infoElement.textContent = texts[currentIndex];
+				currentIndex = (currentIndex + 1) % texts.length;
+				infoElement.style.opacity = 1; // fade in
+			}
+
+			setInterval(() => {
+				fadeOutText();
+				setTimeout(updateText, 1000); // wait for the fade out to complete
+			}, 3000);
+
+		</script>
+		<script>
 window.onscroll = function() {
     var header = document.getElementById('header');
     var scroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -57,7 +79,7 @@ function scrollToAboutUs() {
 
 
 				<div id="text-overlay">
-					<p id="info">Fall League starts in September</p>
+					<p id="info">Where Everybody Is A Winner</p>
 
 				</div>
 				<script src="./assets/js/scene.js"></script>
