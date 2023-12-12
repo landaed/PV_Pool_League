@@ -130,12 +130,24 @@ footer, header, hgroup, menu, nav, section {
 }
 
 @media (max-width: 600px) {
+  .floating-menu-container {
+      position: fixed;
+      bottom: 40px;
+      right: 20px;
+      z-index: 1001;
+  }
     #division_layout > div {
         flex-direction: column;
     }
 }
 
 @media (min-width: 601px) {
+  .floating-menu-container {
+      position: fixed;
+      bottom: 60px;
+      right: 20px;
+      z-index: 1001;
+  }
     #division_layout > div {
         /* Styles for larger screens, if different from the default */
     }
@@ -172,12 +184,7 @@ footer, header, hgroup, menu, nav, section {
     content: url('./assets/images/pool_logo.png'); /* Path to your home icon */
 }
 
-.floating-menu-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1001;
-}
+
 
 .floating-hamburger-menu {
     width: 50px;
@@ -505,6 +512,7 @@ blockquote, q {
 		content: '';
 		content: none;
 	}
+
 	#text-overlay {
     position: absolute;
     top: 35%; /* Position the top edge of the element at the center of the container */
@@ -778,6 +786,7 @@ input, select, textarea {
 			width: 100%;
 			height: 800px;
 	}
+
 	#info {
 
 			-webkit-background-clip: text;
@@ -815,7 +824,7 @@ input, select, textarea {
 	    outline: none !important; /* Removes the focus outline */
 	    position: absolute;
 	    left: 50%;
-	    bottom: 140px;
+	    bottom: 160px;
 	    animation: pulsate 1s infinite;
 	    transition: none !important; /* If you don't want any transitions */
 	    border-radius: 0 !important; /* If you want to remove border-radius */
@@ -834,7 +843,7 @@ input, select, textarea {
 		    outline: none !important; /* Removes the focus outline */
 		    position: absolute;
 		    left: 50%;
-		    bottom: 150px;
+		    bottom: 160px;
 		    animation: pulsate 1s infinite;
 		    transition: none !important; /* If you don't want any transitions */
 		    border-radius: 0 !important; /* If you want to remove border-radius */
@@ -860,6 +869,10 @@ input, select, textarea {
 		    font-family: 'Dosis', sans-serif;
 		    pointer-events: none;
 		}
+    #info {
+      transition: opacity 1s ease-in-out;
+      opacity: 1; /* Start with full opacity */
+  }
 		#renderCanvas {
 				top: 0;
 				left: 0;

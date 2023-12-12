@@ -80,6 +80,28 @@ bannerShader.alpha = 0.8; // Set the overall transparency of the material
 
 
 */
+var logoPlane = BABYLON.MeshBuilder.CreatePlane("logoPlane", {size: 8}, scene);
+logoPlane.scaling.y=.8;
+logoPlane.scaling.x=1.1;
+logoPlane.position = new BABYLON.Vector3(offX, offY-4, -18); // Adjust position so it's in front of the camera
+logoPlane.rotation = new BABYLON.Vector3(Math.PI, 0, Math.PI); // Rotate the plane to face the camera
+logoPlane.renderingGroupId = 0;
+// Create a standard material
+var logoMaterial = new BABYLON.StandardMaterial("logoMaterial", scene);
+
+// Load a texture for the material (as before)
+logoMaterial.diffuseTexture =  new BABYLON.Texture("assets/images/PV-Pool-League.png", scene);
+
+// Make the material emissive using the same texture
+logoMaterial.emissiveTexture = logoMaterial.diffuseTexture;
+logoMaterial.alpha=-3.;
+// Adjust the opacity if needed
+
+
+// Apply the material to the plane
+logoPlane.material = logoMaterial;
+
+
 var triangleShader = new BABYLON.ShaderMaterial("shader", scene, "./assets/shaders/triangle", {
   attributes: ["position", "normal", "uv"],
   uniforms:["world", "worldView", "worldViewProjection", "view", "projection", "resolution", "iTime", "isTap", "tapTime"],
@@ -192,6 +214,7 @@ Promise.all(
 
               newMeshes.forEach(function (mesh) {
                 if (mesh.material) {
+                  mesh.renderingGroupId = 1;
                     // Apply new materials based on the name
                     var newMaterial;
                     var cueShader = new BABYLON.ShaderMaterial("shader", scene, "./assets/shaders/cue_ball", {
@@ -203,6 +226,7 @@ Promise.all(
 
                         case "blue":
                             mesh.material = cueShader;
+
                             cueShader.setColor3("uCol", getRandomPredefinedColor()); // Example: Set to a reddish color
                           /*  newMaterial = new BABYLON.StandardMaterial("newMaterialBlue", scene);
                             newMaterial.emissiveColor = new BABYLON.Color3(Math.random(),Math.random(),Math.random());*/
@@ -226,6 +250,7 @@ Promise.all(
                     }*/
                 }
                 });
+
                 tempCol = predefinedColors;
               resolve();
             });
@@ -266,6 +291,7 @@ Promise.all(
 
               newMeshes.forEach(function (mesh) {
                 if (mesh.material) {
+                    mesh.renderingGroupId = 1;
 
                     // Apply new materials based on the name
                     var newMaterial;
@@ -365,6 +391,7 @@ BABYLON.SceneLoader.ImportMesh("", "./assets/models/", "title_text_1.glb", scene
             if (distance < 3) {ballMesh
                 if(firstTap < 0){
                   firstTap = totalTime / 1000.0;
+                   // Example: 0.5 for half transparency
                 }
                 triangleShader.setFloat("tapTime", firstTap);
               //  bannerShader.setFloat("tapTime", firstTap);
@@ -423,6 +450,10 @@ engine.runRenderLoop(function () {
     triangleShader.setFloat("iTime", totalTime / 1000.0); // Convert to seconds
   //  bannerShader.setFloat("iTime", totalTime / 1000.0);
     scene.render();
+    if(firstTap>=0){
+      myLogoMesh.alpha =scene.getEngine().getDeltaTime() / 1000.0;
+      logoMaterial.alpha += scene.getEngine().getDeltaTime() / 1000.0;
+    }
     triangleShader.setFloat("iTime", scene.getEngine().getDeltaTime() / 1000.0);
     ballImpostors.forEach(function (impostor) {
 
@@ -598,6 +629,7 @@ function updateSceneForCanvasSize() {
 //  console.log(offX);
 
   // Create the Plane facing the camera
+  logoPlane.position = new BABYLON.Vector3(offX, offY-4, -18);
     myLogoMesh.position.x = offX;
     myLogoMesh.position.y = offY -6.5;
   plane.position = new BABYLON.Vector3(offX, offY-2, -20); // Adjust position so it's in front of the camera
