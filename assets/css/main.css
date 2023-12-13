@@ -59,6 +59,24 @@ footer, header, hgroup, menu, nav, section {
 	/** {
 	    outline: 1px solid red;
 	}*/
+  .up-arrow {
+    position: relative;
+    width: 30px; /* Width of the arrow */
+    height: 30px; /* Height of the arrow */
+}
+
+.up-arrow::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    border-width: 0 15px 15px 15px; /* Adjust size of the arrow */
+    border-style: solid;
+    border-color: transparent transparent #fff transparent; /* Arrow color */
+    transform: translateX(-50%);
+}
+
+
   .horizontal_backing {
       /* Rainbow gradient background */
     /*  background: rgba(255, 255, 255, 0.1);*/
@@ -136,6 +154,12 @@ footer, header, hgroup, menu, nav, section {
       right: 20px;
       z-index: 1001;
   }
+  .back-to-top {
+      position: fixed;
+      bottom: 140px;
+      right: 20px;
+      z-index: 1001;
+  }
     #division_layout > div {
         flex-direction: column;
     }
@@ -145,6 +169,12 @@ footer, header, hgroup, menu, nav, section {
   .floating-menu-container {
       position: fixed;
       bottom: 60px;
+      right: 20px;
+      z-index: 1001;
+  }
+  .back-to-top{
+      position: fixed;
+      bottom: 140px;
       right: 20px;
       z-index: 1001;
   }
@@ -187,6 +217,19 @@ footer, header, hgroup, menu, nav, section {
 
 
 .floating-hamburger-menu {
+    width: 50px;
+    height: 50px;
+    background-color: #333; /* Customize the color as needed */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    margin-bottom: 0; /* Remove any margin that might create a gap */
+}
+.back-to-top-container {
     width: 50px;
     height: 50px;
     background-color: #333; /* Customize the color as needed */
