@@ -94,7 +94,7 @@ logoMaterial.diffuseTexture =  new BABYLON.Texture("assets/images/PV-Pool-League
 
 // Make the material emissive using the same texture
 logoMaterial.emissiveTexture = logoMaterial.diffuseTexture;
-logoMaterial.alpha=-3.;
+logoMaterial.alpha=-2.;
 // Adjust the opacity if needed
 
 
@@ -432,7 +432,7 @@ window.addEventListener("touchmove", function (evt) {
             //  bannerShader.setFloat("isTap", true);
               // Apply a force to the ball
               impostor.applyImpulse(
-                  forceDirection.scale(-1), // Adjust the force magnitude as needed
+                  forceDirection.scale(-3), // Adjust the force magnitude as needed
                   ballMesh.getAbsolutePosition()
               );
           }
