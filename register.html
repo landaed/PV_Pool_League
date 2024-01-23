@@ -27,7 +27,8 @@
 
 					<div>
 						<h1 class="major1">Register</h1>
-						<form id="poolLeagueSignupForm">
+						<form id="poolLeagueSignupForm" action="./php/submit_form.php" method="post">
+
     <table class="formBlockSurveyTable">
         <tbody>
             <!-- Team Name -->
@@ -39,11 +40,6 @@
             <tr>
                 <td class="question"><label for="dayDivision">DAY / DIVISION</label></td>
                 <td><input name="dayDivision" id="dayDivision" type="text"></td>
-            </tr>
-            <!-- Date -->
-            <tr>
-                <td class="question"><label for="date">Date</label></td>
-                <td><input name="date" id="date" type="text"></td>
             </tr>
             <!-- Home Bar 1st Pick -->
             <tr>
@@ -62,8 +58,12 @@
             </tr>
             <!-- Captain's Contact -->
             <tr>
-                <td class="question"><label for="captainContact">Captain's Email or Phone #&nbsp;<span class="required">*</span></label></td>
-                <td><input name="captainContact" id="captainContact" type="text" required></td>
+                <td class="question"><label for="captainEmail">Captain's Email<span class="required">*</span></label></td>
+                <td><input name="captainEmail" id="captainEmail" type="text" required></td>
+            </tr>
+						<tr>
+                <td class="question"><label for="captainPhone">Captain's Phone #&nbsp;<span class="required">*</span></label></td>
+                <td><input name="captainPhone" id="captainPhone" type="text" required></td>
             </tr>
             <!-- Additional Players -->
             <tr>
@@ -72,18 +72,7 @@
             </tr>
             <!-- More Players -->
             <!-- Add similar rows for Player 3, 4, 5 as needed -->
-            <!-- Captcha -->
-            <tr>
-                <td colspan="2"><label for="captcha" class="control-label">Please type the letters and numbers shown in the image.</label></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input type="text" name="ccmCaptchaCode" class="ccm-input-captcha" required>
-                    <div><img src="/path_to_your_captcha" alt="Captcha Code" class="ccm-captcha-image"></div>
-                    <div>Click the image to see another captcha.</div>
-                </td>
-            </tr>
+
             <!-- Submit Button -->
             <tr>
                 <td>&nbsp;</td>
