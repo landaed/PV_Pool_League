@@ -25,6 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Invalid email format";
         exit();
     }
+    $homeBarFirst = html_entity_decode(filter_var($_POST['homeBarFirst'], FILTER_SANITIZE_STRING));
+    $homeBarSecond = html_entity_decode(filter_var($_POST['homeBarSecond'], FILTER_SANITIZE_STRING));
+
     // Insert query
     $sql = "INSERT INTO SportsTeam (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, CaptainName, CaptainEmail, CaptainPhone, Player2Name, RegistrationDate) VALUES ('$teamName', '$dayDivision', '$homeBarFirst', '$homeBarSecond', '$captainName', '$captainEmail', '$captainPhone', '$player2', '$registrationDate')";
 
