@@ -38,13 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                $mail->SMTPAuth   = true;
                $mail->Username   = 'noreply@pvpoolleagues.com';
                $mail->Password   = 'coinop911!'; // Replace with the actual password
-               $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-               $mail->Port       = 587;
+               $mail->SMTPSecure = 'ssl';  // Enable SSL encryption
+               $mail->Port       = 465;  // SMTP SSL port
 
                // Recipients
                $mail->setFrom('noreply@pvpoolleagues.com', 'PV Pool Leagues');
                $mail->addAddress($captainEmail);     // Add a recipient for the captain
-               $mail->addAddress('pacvend@gmail.com'); // Add a recipient for the company
+               $mail->addAddress('eliplanda@gmail.com'); // Add a recipient for the company
 
                // Content
                $mail->isHTML(true);
