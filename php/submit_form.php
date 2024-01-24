@@ -5,9 +5,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 
-require 'vendor/Exception.php';
-require 'vendor/PHPMailer.php';
-require 'vendor/SMTP.php';
+require '../vendor/Exception.php';
+require '../vendor/PHPMailer.php';
+require '../vendor/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input
