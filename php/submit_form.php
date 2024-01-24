@@ -4,35 +4,31 @@ require_once 'db_connect.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-
 require '../vendor/Exception.php';
 require '../vendor/PHPMailer.php';
 require '../vendor/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize and validate input
-    $teamName = filter_var($_POST['teamName'], FILTER_SANITIZE_STRING);
-    $dayDivision = filter_var($_POST['dayDivision'], FILTER_SANITIZE_STRING);
+    // Assume validation is already done for these fields
+    $teamName = $_POST['teamName'];
+    $dayDivision = $_POST['dayDivision'];
+    $homeBarFirst = $_POST['homeBarFirst'];
+    $homeBarSecond = $_POST['homeBarSecond'];
+    $captainName = preg_replace("/[^a-zA-Z\s]/", "", $_POST['captainName']);
+    $captainEmail = $_POST['captainEmail'];
+    $captainPhone = $_POST['captainPhone'];
+    $player2 = $_POST['player2'];
+    $registrationDate = date('Y-m-d'); // Assuming you're using the current date
 
-    $captainName = preg_replace("/[^a-zA-Z\s]/", "", $_POST['captainName']); // Remove special characters and digits
-    $captainEmail = filter_var($_POST['captainEmail'], FILTER_SANITIZE_EMAIL);
-    $captainPhone = preg_replace("/[^0-9\-\(\) ]/", "", $_POST['captainPhone']); // Keep only numbers, dashes, parentheses, and spaces
-    $player2 = filter_var($_POST['player2'], FILTER_SANITIZE_STRING);
+    // Prepare an insert statement
+    $stmt = $db->prepare("INSERT INTO SportsTeam (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, CaptainName, CaptainEmail, CaptainPhone, Player2Name, RegistrationDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    // Validate email format
-    if (!filter_var($captainEmail, FILTER_VALIDATE_EMAIL)) {
-        echo "Invalid email format";
-        exit();
-    }
-    $homeBarFirst = html_entity_decode(filter_var($_POST['homeBarFirst'], FILTER_SANITIZE_STRING));
-    $homeBarSecond = html_entity_decode(filter_var($_POST['homeBarSecond'], FILTER_SANITIZE_STRING));
+    // Bind variables to the prepared statement as parameters
+    $stmt->bind_param("sssssssss", $teamName, $dayDivision, $homeBarFirst, $homeBarSecond, $captainName, $captainEmail, $captainPhone, $player2, $registrationDate);
 
-    // Insert query
-    $sql = "INSERT INTO SportsTeam (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, CaptainName, CaptainEmail, CaptainPhone, Player2Name, RegistrationDate) VALUES ('$teamName', '$dayDivision', '$homeBarFirst', '$homeBarSecond', '$captainName', '$captainEmail', '$captainPhone', '$player2', '$registrationDate')";
-
-    if (mysqli_query($db, $sql)) {
-           $mail = new PHPMailer(true);
-
+    // Attempt to execute the prepared statement
+    if ($stmt->execute()) {
+        $mail = new PHPMailer(true);
            try {
                // Server settings
                $mail->isSMTP();
@@ -75,7 +71,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
        }
 
-
-    mysqli_close($db);
+       // Close statement
+       $stmt->close();
+       mysqli_close($db);
 }
 ?>
