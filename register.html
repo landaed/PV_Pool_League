@@ -95,6 +95,40 @@
 		</footer>
 
 		<!-- Scripts -->
+		<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('poolLeagueSignupForm');
+    form.onsubmit = function(event) {
+        var isValid = true;
+
+        // Email validation
+        var email = document.getElementById('captainEmail');
+        if (!email.value.includes('@')) {
+            alert('Please enter a valid email address.');
+            isValid = false;
+        }
+
+        // Phone number validation
+        var phone = document.getElementById('captainPhone');
+        if (!/^\d+$/.test(phone.value)) {
+            alert('Phone number should contain only digits.');
+            isValid = false;
+        }
+
+        // Captain name validation
+        var name = document.getElementById('captainName');
+        if (/[^a-zA-Z\s]/.test(name.value)) {
+            alert('Captain name should contain only letters and spaces.');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission
+        }
+    };
+});
+</script>
+
 		<script src="./assets/js/jquery.min.js"></script>
 		<script src="./assets/js/jquery.scrollex.min.js"></script>
 		<script src="./assets/js/jquery.scrolly.min.js"></script>
