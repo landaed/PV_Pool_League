@@ -13,8 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input
     $teamName = filter_var($_POST['teamName'], FILTER_SANITIZE_STRING);
     $dayDivision = filter_var($_POST['dayDivision'], FILTER_SANITIZE_STRING);
-    $homeBarFirst = filter_var($_POST['homeBarFirst'], FILTER_SANITIZE_STRING);
-    $homeBarSecond = filter_var($_POST['homeBarSecond'], FILTER_SANITIZE_STRING);
+
     $captainName = preg_replace("/[^a-zA-Z\s]/", "", $_POST['captainName']); // Remove special characters and digits
     $captainEmail = filter_var($_POST['captainEmail'], FILTER_SANITIZE_EMAIL);
     $captainPhone = preg_replace("/[^0-9\-\(\) ]/", "", $_POST['captainPhone']); // Keep only numbers, dashes, parentheses, and spaces
