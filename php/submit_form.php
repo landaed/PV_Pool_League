@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                $mail->Host       = 'mail.pvpoolleagues.com';
                $mail->SMTPAuth   = true;
                $mail->Username   = 'noreply@pvpoolleagues.com';
-               $mail->Password   = 'your email password'; // Replace with the actual password
+               $mail->Password   = 'coinop911!'; // Replace with the actual password
                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                $mail->Port       = 587;
 
