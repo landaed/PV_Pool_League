@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $teamName .
                 ", in the PV Pool League." .
                 "<br><br>Friar - League Coordinator<br>friar@pvpoolleagues.com<br>" .
-                "<img src='https://i.imgur.com/Xw7k2Gp.png' alt='PV Pool Leagues Logo' style='width:200px;'/>";
+                "<img src='https://i.imgur.com/Xw7k2Gp.png' alt='PV Pool Leagues Logo' style='width:100px;'/>";
 
                $mail->AltBody = "Hello " . $captainName . ",\n\nThank you for registering your team, " . $teamName . ", in the PV Pool League.";
 
