@@ -342,8 +342,7 @@ Promise.all(
     impostor.registerOnPhysicsCollide(ballImpostors, function(mainImpostor, collidedImpostor) {
         //console.log("Collision Detected:", mainImpostor.object.name, "collided with", collidedImpostor.object.name);
     });
-      document.getElementById('loadingScreen').style.display = 'none';
-       document.getElementById('mainContent').style.visibility = 'visible';
+
 });
 var newMaterial;
 newMaterial = new BABYLON.StandardMaterial("textMat", scene);
