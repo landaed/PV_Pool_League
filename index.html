@@ -14,6 +14,28 @@
 		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
 		<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // ... existing code ...
+
+    // Function to handle division button click
+    function scrollToSection(event) {
+        event.preventDefault();
+        const targetId = event.currentTarget.getAttribute('data-target');
+        const targetSection = document.querySelector(targetId);
+
+        if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // Add click event listeners to division buttons
+    const divisionButtons = document.querySelectorAll('.loc_btn');
+    divisionButtons.forEach(button => {
+        button.addEventListener('click', scrollToSection);
+    });
+});
+</script>
+		<script>
 			const texts = ["Where Everybody Is A Winner", "Fall League Starts In September", "Register Today!"];
 			let currentIndex = 1;
 
@@ -70,7 +92,7 @@ function scrollToAboutUs() {
 
 
 		<!-- Wrapper -->
-		<div id="wrapper">
+		<div id="top" >
 
 			<!-- Intro -->
 			<section id="intro" class="wrapper style1 fullscreen">
@@ -260,6 +282,12 @@ function scrollToAboutUs() {
 
 		<!-- Scripts -->
 		<script src="./assets/js/jquery.min.js"></script>
+		<div class="back-to-top">
+      <div class="back-to-top-container">
+        <div class="up-arrow loc_btn" data-target="#top"></div>
+
+      </div>
+    </div>
 		<script src="./assets/js/jquery.scrollex.min.js"></script>
 		<script src="./assets/js/jquery.scrolly.min.js"></script>
 		<script src="./assets/js/browser.min.js"></script>
