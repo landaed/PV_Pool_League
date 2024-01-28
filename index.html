@@ -82,6 +82,10 @@ function scrollToAboutUs() {
 	<body>
 				<!-- Loading Screen Overlay -->
 
+		<div id="navBar" style="display: none; position: fixed; top: 0; width: 100%; background: #333; /* Your styling here */">
+    <!-- Your logo and navigation items -->
+    	<img src="assets\images\PV-Pool-League.png" alt="Logo" style="display: block; margin: auto; width: 10%;">
+		</div>
 
 		<div id="mainContent">
         <!-- ... all your other body content ... -->
@@ -285,6 +289,25 @@ function scrollToAboutUs() {
 
       </div>
     </div>
+		<script>
+		window.onscroll = function() {
+    var navBar = document.getElementById('navBar');
+    var scroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    // Show the navigation bar if scrolled more than 800px
+    if (scroll > 800) {
+        navBar.style.display = 'block';
+    } else {
+        navBar.style.display = 'none';
+    }
+
+    // Your existing opacity code
+    var header = document.getElementById('header');
+    var opacity = Math.min(1, 1 - (scroll / 500));
+    header.style.opacity = opacity;
+};
+
+		</script>
 		<script src="./assets/js/jquery.scrollex.min.js"></script>
 		<script src="./assets/js/jquery.scrolly.min.js"></script>
 		<script src="./assets/js/browser.min.js"></script>

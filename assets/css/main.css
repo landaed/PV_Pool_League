@@ -64,6 +64,11 @@ footer, header, hgroup, menu, nav, section {
     width: 30px; /* Width of the arrow */
     height: 30px; /* Height of the arrow */
 }
+#navBar {
+    z-index: 1000; /* Ensures the nav bar is above other content */
+    width: 10%;
+    /* Other styling as needed */
+}
 
 .up-arrow::before {
     content: "";
