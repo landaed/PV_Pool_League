@@ -211,7 +211,7 @@ Promise.all(
 
               // Position the ball
 
-
+              var col = getRandomPredefinedColor();
               newMeshes.forEach(function (mesh) {
                 if (mesh.material) {
                   mesh.renderingGroupId = 1;
@@ -222,36 +222,30 @@ Promise.all(
                       uniforms:["world", "worldView", "worldViewProjection", "view", "projection", "uCol"],
                     });
                     switch (mesh.material.name) {
-
-
-                        case "blue":
+                        case "Black":
                             mesh.material = cueShader;
 
-                            cueShader.setColor3("uCol", getRandomPredefinedColor()); // Example: Set to a reddish color
-                          /*  newMaterial = new BABYLON.StandardMaterial("newMaterialBlue", scene);
-                            newMaterial.emissiveColor = new BABYLON.Color3(Math.random(),Math.random(),Math.random());*/
+                            if(col){
+                              console.log(col);
+                            }
+                            else{
+                              tempCol = predefinedColors;
+                              col = new BABYLON.Color3(1,1,0);
+                              console.log("no colour found");
+                            }
+
+
+                            cueShader.setColor3("uCol",col);
                             break;
-                        case "black":
+                        case "White":
                             mesh.material = cueShader;
                             cueShader.setColor3("uCol",new BABYLON.Color3(1,1,1));
-                          /*  newMaterial = new BABYLON.StandardMaterial("newMaterialBlack", scene);
-                            newMaterial.emissiveColor = new BABYLON.Color3(1,1,1);*/
-                            break;
-                        case "white":
-                            mesh.material = cueShader;
-                            cueShader.setColor3("uCol",new BABYLON.Color3(1,1,1));
-                            //newMaterial = new BABYLON.StandardMaterial("newMaterialWhite", scene);
-                            //newMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
                             break;
                     }
-
-                  /*  if (newMaterial) {
-                        mesh.material = cueShader;
-                    }*/
                 }
                 });
 
-                tempCol = predefinedColors;
+
               resolve();
             });
           }else{
@@ -288,7 +282,7 @@ Promise.all(
 
               // Position the ball
 
-
+                var col = getRandomPredefinedColor();
               newMeshes.forEach(function (mesh) {
                 if (mesh.material) {
                     mesh.renderingGroupId = 1;
@@ -299,32 +293,28 @@ Promise.all(
                       attributes: ["position", "normal", "uv"],
                       uniforms:["world", "worldView", "worldViewProjection", "view", "projection", "uCol"],
                     });
-
                     switch (mesh.material.name) {
-                        case "blue":
+                        case "Black":
                             mesh.material = cueShader;
-                            cueShader.setColor3("uCol", getRandomPredefinedColor());
-                          //  newMaterial = new BABYLON.StandardMaterial("newMaterialBlue", scene);
-                          //  newMaterial.emissiveColor = new BABYLON.Color3(Math.random(),Math.random(),Math.random());
-                            break;
-                        case "black":
-                            mesh.material = cueShader;
-                            cueShader.setColor3("uCol", getRandomPredefinedColor());
 
-                          //  newMaterial = new BABYLON.StandardMaterial("newMaterialBlack", scene);
-                          //  newMaterial.emissiveColor = new BABYLON.Color3(Math.random(),Math.random(),Math.random());
+                            if(col){
+                              console.log(col);
+                            }
+                            else{
+                              tempCol = predefinedColors;
+                              col = new BABYLON.Color3(1,1,0);
+                              console.log("no colour found");
+                            }
+                            cueShader.setColor3("uCol", col);
                             break;
-                        case "white":
+                        case "White":
                             mesh.material = cueShader;
                             cueShader.setColor3("uCol",new BABYLON.Color3(1,1,1));
-
-                          //  newMaterial = new BABYLON.StandardMaterial("newMaterialWhite", scene);
-                          //  newMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
                             break;
                     }
 
                     if (newMaterial) {
-                      //  mesh.material = cueShader;
+                  //      mesh.material = cueShader;
                     }
                 }
                 });
@@ -441,6 +431,13 @@ window.addEventListener("touchmove", function (evt) {
 
 });
 
+ballImpostors.forEach(function (impostor) {
+
+    var sphere = impostor.object;
+
+    var ballMesh = sphere.getChildren()[0]; // Assuming each sphere has one child, the GLB mesh
+    ballMesh.rotation.x=3.14159;
+});
 engine.runRenderLoop(function () {
     let deltaTime = engine.getDeltaTime();
     totalTime += deltaTime;
@@ -457,7 +454,9 @@ engine.runRenderLoop(function () {
     ballImpostors.forEach(function (impostor) {
 
         var sphere = impostor.object;
+
         var ballMesh = sphere.getChildren()[0]; // Assuming each sphere has one child, the GLB mesh
+        ballMesh.rotation.x=3.14159;
 
         if(sphere.getChildren()[1]){
             ballMesh.addChild(sphere.getChildren()[1]);
@@ -478,6 +477,8 @@ engine.runRenderLoop(function () {
 
                     angularVelocity/=60;
                     angularVelocity/=10;
+                  //  ballMesh.rotation= sphere.rotation;
+                  //  ballMesh.rotation =
                     // Update rotation (this is a simplified example, you might need to adjust axes)
                     ballMesh.rotation = new BABYLON.Vector3(ballMesh.rotation.x+angularVelocity,ballMesh.rotation.y+ angularVelocity, 0);
 
@@ -540,61 +541,6 @@ function formTriangle(ballImpostors, spacing) {
   //  impostor.setAngularVelocity(new BABYLON.Vector3(0,0, 0));
 }
 
-/*
-// Example usage
-formTriangle(ballImpostors, 1.5, 0, 0);  // Adjust the spacing and offsets as needed
-
-
-function updateSceneForCanvasSize() {
-    var canvasWidth = engine.getRenderWidth();
-    var canvasHeight = engine.getRenderHeight();
-
-    // Convert the screen space coordinate to world space
-    var worldLeft = BABYLON.Vector3.Unproject(
-        new BABYLON.Vector3(0, canvasHeight / 2, 0),
-        canvasWidth,
-        canvasHeight,
-        BABYLON.Matrix.Identity(), // World matrix (identity if you're not using a specific world matrix)
-        camera.getViewMatrix(),
-        camera.getProjectionMatrix()
-    );
-
-    var worldRight = BABYLON.Vector3.Unproject(
-        new BABYLON.Vector3(canvasWidth, canvasHeight / 2, 0),
-        canvasWidth,
-        canvasHeight,
-        BABYLON.Matrix.Identity(), // World matrix (identity if you're not using a specific world matrix)
-        camera.getViewMatrix(),
-        camera.getProjectionMatrix()
-    );
-
-    // Calculate new boundaries
-    var wallXLeft = worldLeft.x * 15;
-    var wallXRight = worldRight.x * 15;
-    offX = worldLeft.x;
-    var ind=0;
-    if(plane.position.x < wallXLeft){
-        plane.position.x += 1;
-    }
-    else{
-      plane.position.x -= 1;
-    }
-    formTriangle(ballImpostors, 1.5);
-    ballImpostors.forEach(function(impostor) {
-        var ballMesh = impostor.object;
-
-        // Adjust the X position of each ball
-        if (ballMesh.position.x < wallXLeft) {
-            ballMesh.position.x += 1;
-        } else {
-            ballMesh.position.x -= 1;
-        }
-        impostor.setLinearVelocity(new BABYLON.Vector3(0,0, 0));
-        impostor.setAngularVelocity(new BABYLON.Vector3(0,0, 0));
-    });
-
-
-}*/
 
 function updateSceneForCanvasSize() {
   canvasWidth = engine.getRenderWidth();
