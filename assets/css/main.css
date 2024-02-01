@@ -64,11 +64,7 @@ footer, header, hgroup, menu, nav, section {
     width: 30px; /* Width of the arrow */
     height: 30px; /* Height of the arrow */
 }
-#navBar {
-    z-index: 1000; /* Ensures the nav bar is above other content */
-    width: 10%;
-    /* Other styling as needed */
-}
+
 
 .up-arrow::before {
     content: "";
@@ -151,8 +147,27 @@ footer, header, hgroup, menu, nav, section {
     height: auto;
     margin-bottom: 5px; /* Space between image and text */
 }
-
+#navBar {
+    z-index: 1000; /* Ensures the nav bar is above other content */
+}
+#navBar_img{
+  display: block;
+  margin: auto;
+  width: 12%;
+}
+@media (max-width: 1000px) {
+  #navBar_img{
+    display: block;
+    margin: auto;
+    width: 20%;
+  }
+}
 @media (max-width: 600px) {
+  #navBar_img{
+    display: block;
+    margin: auto;
+    width: 35%;
+  }
   .floating-menu-container {
       position: fixed;
       bottom: 40px;
