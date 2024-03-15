@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PV Pool League - Register</title>
+    <link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="./assets/css/main.css"/>
+    <style>
+        body {
+            color: white; /* Sets the default text color to white */
+        }
+        label, input, select, input[type="text"] {
+            color: white; /* Ensures that form elements have white text */
+            background-color: #333; /* Sets a darker background color for input fields */
+            border: 1px solid #444; /* Adds a subtle border to input fields */
+        }
+        /* Adjusts the placeholder color to be slightly lighter than the text color */
+        ::placeholder {
+            color: #ddd;
+        }
+        /* You may want to adjust the colors on focus as well */
+        input[type="text"]:focus {
+            border-color: #555;
+            outline: none;
+        }
+        /* Add additional styling rules as needed */
+    </style>
+    <noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+    <script src="assets/js/header_icon_move.js"></script>
+</head>
+<body>
+    <div id="navBar" style="position: fixed; top: 0; width: 100%; background: #333;">
+        <a href="index.html"><img src="assets/images/PV-Pool-League.png" alt="Logo" id="navBar_img"></a>
+    </div>
+    <div class="outer-wrapper">
+        <section id="main" class="wrapper">
+            <div>
+                <h1 class="major1">Register</h1>
+                <form id="poolLeagueSignupForm" action="./php/submit_form.php" method="post">
+                    <h2>Singles Entry Form</h2>
+                    <div>
+                        <label for="teamName">Team Name:</label>
+                        <input type="text" id="teamName" name="teamName" required><br><br>
+                    </div>
+                    <div id="playerFields"></div>
+                    <div>
+                        <label for="entryFeeTotal">Entry Fee Total:</label>
+                        <input type="text" id="entryFeeTotal" name="entryFeeTotal" readonly><br><br>
+                    </div>
+					<div>
+						<label for="captchaQuestion" id="captchaLabel"></label>
+						<input type="text" id="captchaAnswer" name="captchaAnswer" required>
+					</div>
+					
+                    <input class="formBlockSubmitButton" name="Submit" type="submit" value="Submit">
+                </form>
+            </div>
+        </section>
+    </div>
+    <footer id="footer">
+        <div class="inner">
+            <p>&copy; A division of Landa Investments ltd.</p>
+            <p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+    // Number of players to generate fields for
+    const playerCount = 8;
+    const playerFields = document.getElementById('playerFields');
+    
+    function createPlayerFields(num) {
+        for (let i = 1; i <= num; i++) {
+            const label = document.createElement('label');
+            label.textContent = `Player ${i}: `;
+            label.htmlFor = `player${i}`;
+
+            const input = document.createElement('input');
+            input.type = 'text';
+			input.placeholder = `Player ${i} Name`;
+            input.id = `player${i}`;
+            input.name = `player${i}`;
+
+            const select = document.createElement('select');
+            select.name = `division${i}`;
+            select.required = true;
+            select.onchange = updateEntryFeeTotal;
+            
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "Select Division";
+            defaultOption.selected = true;
+            select.appendChild(defaultOption);
+
+            const optionA = document.createElement('option');
+            optionA.value = 'A';
+            optionA.textContent = 'A';
+            select.appendChild(optionA);
+
+            const optionB = document.createElement('option');
+            optionB.value = 'B';
+            optionB.textContent = 'B';
+            select.appendChild(optionB);
+
+            playerFields.appendChild(label);
+            playerFields.appendChild(input);
+            playerFields.appendChild(select);
+            playerFields.appendChild(document.createElement('br'));
+        }
+    }
+    
+    function updateEntryFeeTotal() {
+        let total = 0;
+        for (let i = 1; i <= playerCount; i++) {
+            const selectedDivision = document.querySelector(`select[name="division${i}"]`).value;
+            total += selectedDivision === 'A' ? 20 : selectedDivision === 'B' ? 10 : 0;
+        }
+        document.getElementById('entryFeeTotal').value = `$${total}`;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        createPlayerFields(playerCount);
+		// Set up a simple CAPTCHA
+		var captchaQuestion = document.getElementById('captchaLabel');
+    var num1 = Math.floor(Math.random() * 10) + 1; // Generate a random number between 1 and 10
+    var num2 = Math.floor(Math.random() * 10) + 1; // Generate a second random number between 1 and 10
+    captchaQuestion.textContent = 'What is ' + num1 + ' + ' + num2 + '?'; // Display the question
+    var correctAnswer = num1 + num2; // Calculate the correct answer
+
+    // Form submission event
+    var form = document.getElementById('poolLeagueSignupForm');
+    form.onsubmit = function(event) {
+        // ... your existing validation code ...
+
+        // CAPTCHA validation
+        var captchaAnswer = document.getElementById('captchaAnswer').value;
+        if (parseInt(captchaAnswer, 10) !== correctAnswer) {
+            alert('Incorrect answer to the security question.');
+            event.preventDefault(); // Prevent form submission
+        }
+    };
+    });
+    </script>
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/jquery.scrollex.min.js"></script>
+    <script src="./assets/js/jquery.scrolly.min.js"></script>
+    <script src="./assets/js/browser.min.js"></script>
+    <script src="./assets/js/breakpoints.min.js"></script>
+    <script src="./assets/js/util.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/hamburger.js"></script>
+    <script src="./assets/js/touch_screen_canvas.js"></script>
+</body>
+</html>

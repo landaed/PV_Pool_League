@@ -36,7 +36,7 @@
 });
 </script>
 		<script>
-			const texts = ["Where Everybody Is A Winner", "Fall League Starts In September", "Register Today!"];
+			const texts = ["Where Everybody Is A Winner", "Its Playoff Season", "Register Today!"];
 			let currentIndex = 1;
 
 			function fadeOutText() {
@@ -86,7 +86,53 @@ function scrollToAboutUs() {
     <!-- Your logo and navigation items -->
     	<img src="assets\images\PV-Pool-League.png" alt="Logo" id="navBar_img">
 		</div>
-
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+			  <span class="close">&times;</span>
+			  <div class="modal-header">
+				<h2>March 12, 2024</h2>
+			  </div>
+			  <div class="modal-body">
+				<p>Hello Players!</p>
+				<p>The end of the season is near AND playoffs are fast approaching!!</p>
+				<p>Tentative schedules are as follows.</p>
+				<ul>
+				  <li>Monday and Tuesday nights will be playing the first weekend April 5th – 7th.</li>
+				  <li>Wednesday night will be playing April 11th - 14th.</li>
+				  <li>Singles will take place April 8th, 9th & 10th.</li>
+				  <li>A & B divisions (64 players in each division)</li>
+				  <li>Each division will be split into upper and lower brackets of 32</li>
+				  <li>Top 8 from each bracket will return to play Wednesday</li>
+				</ul>
+				<p>We reserve the right to place players!!</p>
+				<p><strong>REMINDER:</strong> Green fees are payable IMMEDIATELY!!! They are $20/player Includes ALL team and singles play!!</p>
+				<p>Forest Lawn Legion will be open for practice.<br>Thursday April 4th 7:00pm</p>
+			  </div>
+			  <div class="modal-footer">
+				<p>Have FUN Shooting Pool!!!<br>Friar, Donna & Warren</p>
+			  </div>
+			</div>
+		  </div>
+		  
+		  
+		  <script>
+		  document.addEventListener("DOMContentLoaded", function(){
+			var modal = document.getElementById("myModal");
+			var span = document.getElementsByClassName("close")[0];
+		
+			modal.style.display = "block";
+		
+			span.onclick = function() {
+				modal.style.display = "none";
+			}
+		
+			window.onclick = function(event) {
+				if (event.target == modal) {
+					modal.style.display = "none";
+				}
+			}
+		});
+		</script>
 		<div id="mainContent">
         <!-- ... all your other body content ... -->
 
@@ -99,34 +145,20 @@ function scrollToAboutUs() {
 			<section id="intro" class="wrapper style1 fullscreen">
 				<canvas id="renderCanvas"></canvas>
 				<button class="more" onclick="scrollToAboutUs()">more<i class="fas fa-caret-down"></i></button>
-
+				<a class="more" href="playoff_register.html" style="position: absolute; top: 60% !important; left: 50%; transform: translateX(-50%);">
+					<button>Playoffs Signup</button>
+				</a>
+				
 				<div id="text-overlay">
 					<p id="info">Where Everybody Is A Winner</p>
+					
 
 				</div>
 				<script src="./assets/js/scene.js"></script>
 			</section>
 
 			<section class="wrapper style2 spotlights">
-				<!-- Who We Are -->
 
-
-				<!-- Innovation Lab -->
-				<!-- <section class="wrapper fade-up">
-					<div class="inner leftMarginAlign">
-						<h2 id="innovation">Innovation Lab</h2>
-							<section>
-								<span class="icon solid major fa-graduation-cap"></span>
-								<h3>Mentorship Program</h3>
-								<p>Maximize your potential with our innovative mentorship program. Join our free trial program in computer graphics.</p>
-								<ul class="actions">
-									<li><a href="innovation.html" class="button">EXPLORE THE LAB</a></li>
-								</ul>
-							</section>
-						</div>
-				</section> -->
-
-				<!-- What We Do -->
 				<section class="wrapper">
 					<div class="inner leftMarginAlign">
 						<div class="center-container">
@@ -200,74 +232,8 @@ function scrollToAboutUs() {
 							<ul class="actions">
 								<li><a href="schedule.html" class="button">Learn More</a></li>
 							</ul>
-
 					</div>
 				</section>
-
-
-							<!--div id="ourLeague" class="button-container">
-
-
-
-									<button href="#" class="image-button">
-										<img src="./assets/images/divisions.png" alt="Register">
-											<p>Divisions<p/>
-									</button>
-
-							    <button href="#" class="image-button">
-							        <img src="./assets/images/register.png" alt="Register">
-											<p>Register<p/>
-							    </button>
-							    <button href="#" class="image-button">
-							        <img src="./assets/images/locations.png" alt="Locations">
-											<p>Locations<p/>
-							    </button>
-									<button href="#" class="image-button">
-							        <img src="./assets/images/about_us.png" alt="About">
-											<p>About<p/>
-							    </button>
-							</div-->
-
-						</section>
-
-
-							<!-- <section>
-								<span class="icon solid major fa-cube"></span>
-								<h3>Asset Pack Development</h3>
-								<p>Developing films and games is complex and time-intensive. Indie developers often lack the time or expertise to create custom shaders and graphics. That's where we step in. We make asset development effortless.</p>
-								<ul class="actions">
-									<li><a href="assets.html" class="button">DISCOVER OUR ASSETS</a></li>
-								</ul>
-							</section> -->
-							<!--section>
-								<span class="icon solid major fa-trophy"></span>
-								<h3>Divisions</h3>
-								<p>Maximize your potential with our innovative mentorship program. Join our free trial program in computer graphics.</p>
-								<ul class="actions">
-									<li><a href="innovation.html" class="button">Division List</a></li>
-								</ul>
-							</section>
-							<section>
-								<span class="icon solid major fa-address-card"></span>
-								<h3>Register</h3>
-								<p>We are GPU and graphics specialists, focused on GPU orchestration for HPC data centers. We are capable of working with teams of any size develop innovative solutions.</p>
-								<ul class="actions">
-									<li><a href="services.html" class="button">Register</a></li>
-								</ul>
-							</section>
-							<section>
-								<span class="icon solid major fa-map-pin"></span>
-								<h3>Locations</h3>
-								<p>Great News - Our Number of Locations to Choose From Are Increasing - Let's Keep the Ball Rolling</p>
-								<ul class="actions">
-									<li><a href="research.html" class="button">Locations</a></li>
-								</ul>
-							</section>
-						</div>
-				</section>
-
-				<!-- Get in touch -->
-
 
 </section>
 
