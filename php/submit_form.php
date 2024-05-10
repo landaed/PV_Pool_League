@@ -58,7 +58,7 @@ try {
                 if (!$stmt) {
                     throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
                 }
-                $stmt->bind_param("iss", $teamID, $data['name'], $data['email'], NULL);
+                $stmt->bind_param("iss", $teamID, $data['name'], $data['email']);
                 $stmt->execute();
             }
             else  if (!empty($data['name']) && !empty($data['phone'])) {
@@ -66,7 +66,7 @@ try {
                 if (!$stmt) {
                     throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
                 }
-                $stmt->bind_param("iss", $teamID, $data['name'], Null, $data['phone']);
+                $stmt->bind_param("iss", $teamID, $data['name'], $data['phone']);
                 $stmt->execute();
                 
             }
@@ -75,7 +75,7 @@ try {
                 if (!$stmt) {
                     throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
                 }
-                $stmt->bind_param("is", $teamID, $data['name'], NULL, NULL);
+                $stmt->bind_param("is", $teamID, $data['name']);
                 $stmt->execute();
             }
         }
