@@ -28,70 +28,51 @@
 			<!-- Main -->
 			<section id="main" class="wrapper">
 
-					<div>
-						<h1 class="major1">Register</h1>
-						<form id="poolLeagueSignupForm" action="./php/submit_form.php" method="post">
-
-    <table class="formBlockSurveyTable">
-        <tbody>
-            <!-- Team Name -->
-            <tr>
-                <td class="question"><label for="teamName">Team Name&nbsp;<span class="required">*</span></label></td>
-                <td><input name="teamName" id="teamName" type="text" required></td>
-            </tr>
-            <!-- Day / Division -->
-            <tr>
-                <td class="question"><label for="dayDivision">DAY / DIVISION</label></td>
-                <td><input name="dayDivision" id="dayDivision" type="text"></td>
-            </tr>
-            <!-- Home Bar 1st Pick -->
-            <tr>
-                <td class="question"><label for="homeBarFirst">Home Bar 1st Pick</label></td>
-                <td><input name="homeBarFirst" id="homeBarFirst" type="text"></td>
-            </tr>
-            <!-- Home Bar 2nd Pick -->
-            <tr>
-                <td class="question"><label for="homeBarSecond">Home Bar 2nd Pick</label></td>
-                <td><input name="homeBarSecond" id="homeBarSecond" type="text"></td>
-            </tr>
-            <!-- Captain's Name -->
-            <tr>
-                <td class="question"><label for="captainName">Captain's Name&nbsp;<span class="required">*</span></label></td>
-                <td><input name="captainName" id="captainName" type="text" required></td>
-            </tr>
-            <!-- Captain's Contact -->
-            <tr>
-                <td class="question"><label for="captainEmail">Captain's Email<span class="required">*</span></label></td>
-                <td><input name="captainEmail" id="captainEmail" type="text" required></td>
-            </tr>
-						<tr>
-                <td class="question"><label for="captainPhone">Captain's Phone #&nbsp;<span class="required">*</span></label></td>
-                <td><input name="captainPhone" id="captainPhone" type="text" required></td>
-            </tr>
-            <!-- Additional Players -->
-            <tr>
-                <td class="question"><label for="player2">Player 2 Name</label></td>
-                <td><input name="player2" id="player2" type="text"></td>
-            </tr>
-            <!-- More Players -->
-            <!-- Add similar rows for Player 3, 4, 5 as needed -->
-
-            <!-- Submit Button -->
-			<!-- CAPTCHA -->
-			<tr>
-				<td class="question"><label id="captchaQuestion">CAPTCHA Question</label></td>
-				<td><input name="captchaAnswer" id="captchaAnswer" type="text" required></td>
-			</tr>
-
-            <tr>
-                <td>&nbsp;</td>
-                <td><input class="formBlockSubmitButton" name="Submit" type="submit" value="Submit"></td>
-            </tr>
-        </tbody>
-    </table>
-</form>
-
+				<div>
+					<h1 class="major1">Register</h1>
+					<form id="poolLeagueSignupForm" action="./php/submit_form.php" method="post">
+						<table class="formBlockSurveyTable">
+							<tbody>
+								<tr>
+									<td class="question"><label for="teamName">Team Name<span class="required">*</span></label></td>
+									<td><input name="teamName" id="teamName" type="text" required></td>
+								</tr>
+								<tr>
+									<td class="question"><label for="dayDivision">DAY / DIVISION</label></td>
+									<td><input name="dayDivision" id="dayDivision" type="text"></td>
+								</tr>
+								<tr>
+									<td class="question"><label for="homeBarFirst">Home Bar 1st Pick</label></td>
+									<td><input name="homeBarFirst" id="homeBarFirst" type="text"></td>
+								</tr>
+								<tr>
+									<td class="question"><label for="homeBarSecond">Home Bar 2nd Pick</label></td>
+									<td><input name="homeBarSecond" id="homeBarSecond" type="text"></td>
+								</tr>
+							</tbody>
+							<tbody id="playerRows">
+								<tr>
+									<td class="question"><button type="button" onclick="addPlayer()">Add Player</button></td>
+									<td class="question"><button type="button" onclick="removePlayer()">Remove Player</button></td>
+								</tr>
+								<!-- Players will be dynamically inserted here -->
+							</tbody>
+							<tbody>
+								<tr>
+									<td class="question"><label id="captchaQuestion">CAPTCHA Question</label></td>
+									<td><input name="captchaAnswer" id="captchaAnswer" type="text" required></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><input class="formBlockSubmitButton" type="submit" value="Submit"></td>
+								</tr>
+							</tbody>
+						</table>
+						
+					</form>
 				</div>
+				
+				
 			</section>
 
 
@@ -105,58 +86,102 @@
 
 		<!-- Scripts -->
 		<script>
+			let playerCount = 0;
+		
+			function addPlayer() {
+				playerCount++;
+				const tbody = document.getElementById('playerRows');
+				if(playerCount>1){
+					//tbody.deleteRow(playerCount-1);
+				}
+				
+				const row = tbody.insertRow(-1); // Insert a new row at the end of the tbody
+				let cell1 = row.insertCell(0);
+				let cell2 = row.insertCell(1);
+				let cell3 = row.insertCell(2);
+				let is_captain = "(Captain)";
+				if(playerCount == 1){
+					cell1.innerHTML = `<label for="player${playerCount}_name">**${is_captain} ${playerCount} Name:</label><input type="text" name="player${playerCount}_name" required>`;
+					cell2.innerHTML = `<label for="player${playerCount}_email">**${is_captain} Player ${playerCount} Email:</label><input type="email" name="player${playerCount}_email required">`;
+					cell3.innerHTML = `<label for="player${playerCount}_phone">**${is_captain} Player ${playerCount} Phone:</label><input type="text" name="player${playerCount}_phone" required>`;
+				}
+				else{
+					cell1.innerHTML = `<label for="player${playerCount}_name">*Player ${playerCount} Name:</label><input type="text" name="player${playerCount}_name" required>`;
+					cell2.innerHTML = `<label for="player${playerCount}_email">Player ${playerCount} Email:</label><input type="email" name="player${playerCount}_email">`;
+					cell3.innerHTML = `<label for="player${playerCount}_phone">Player ${playerCount} Phone:</label><input type="text" name="player${playerCount}_phone">`;
+				}
+			}
+
+			function removePlayer() {
+				
+				const tbody = document.getElementById('playerRows');
+				if(playerCount>1){
+					tbody.deleteRow(playerCount);
+					playerCount--;
+				}
+				
+			}
+		
+		
+			document.addEventListener('DOMContentLoaded', function() {
+				addPlayer(); // Automatically add the first player (Captain) on load
+			});
+		</script>
+		
+		
+		<script>
 		document.addEventListener('DOMContentLoaded', function() {
-    var form = document.getElementById('poolLeagueSignupForm');
-    var captchaQuestion = document.getElementById('captchaQuestion');
-    var captchaAnswer = document.getElementById('captchaAnswer');
+			var form = document.getElementById('poolLeagueSignupForm');
+			var captchaQuestion = document.getElementById('captchaQuestion');
+			var captchaAnswer = document.getElementById('captchaAnswer');
 
-    function generateCaptcha() {
-        var num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
-        var num2 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
-        captchaQuestion.textContent = `What is ${num1} + ${num2}?`;
-        captchaAnswer.dataset.correctAnswer = num1 + num2;
-    }
+			function generateCaptcha() {
+				var num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+				var num2 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+				captchaQuestion.textContent = `What is ${num1} + ${num2}?`;
+				captchaAnswer.dataset.correctAnswer = num1 + num2;
+			}
 
-    // Run the CAPTCHA generator when the page loads
-    generateCaptcha();
+			// Run the CAPTCHA generator when the page loads
+			generateCaptcha();
 
-    form.onsubmit = function(event) {
-        var isValid = true;
+    		form.onsubmit = function(event) {
+				var isValid = true;
 
-        // Existing validation code here...
+				// Existing validation code here...
 
-        // Email validation
-        var email = document.getElementById('captainEmail');
-        if (!email.value.includes('@')) {
-            alert('Please enter a valid email address.');
-            isValid = false;
-        }
+				// Email validation
+				var email = document.getElementById('captainEmail');
+				if (!email.value.includes('@')) {
+					alert('Please enter a valid email address.');
+					isValid = false;
+				}
 
-        // Phone number validation
-        var phone = document.getElementById('captainPhone');
-        if (!/^\d+$/.test(phone.value)) {
-            alert('Phone number should contain only digits.');
-            isValid = false;
-        }
+				// Phone number validation
+				var phone = document.getElementById('captainPhone');
+				if (!/^\d+$/.test(phone.value)) {
+					alert('Phone number should contain only digits.');
+					isValid = false;
+				}
 
-        // Captain name validation
-        var name = document.getElementById('captainName');
-        if (/[^a-zA-Z\s]/.test(name.value)) {
-            alert('Captain name should contain only letters and spaces.');
-            isValid = false;
-        }
+				// Captain name validation
+				var name = document.getElementById('captainName');
+				if (/[^a-zA-Z\s]/.test(name.value)) {
+					alert('Captain name should contain only letters and spaces.');
+					isValid = false;
+				}
 
-        // CAPTCHA validation
-        if (parseInt(captchaAnswer.value) !== parseInt(captchaAnswer.dataset.correctAnswer)) {
-            alert('Incorrect CAPTCHA answer. Please try again.');
-            isValid = false;
-        }
+				// CAPTCHA validation
+				if (parseInt(captchaAnswer.value) !== parseInt(captchaAnswer.dataset.correctAnswer)) {
+					alert('Incorrect CAPTCHA answer. Please try again.');
+					isValid = false;
+				}
 
-        if (!isValid) {
-            event.preventDefault(); // Prevent form submission
-        }
-    };
-});
+				if (!isValid) {
+					event.preventDefault(); // Prevent form submission
+				}
+    		};
+		});
 	
 </script>
 

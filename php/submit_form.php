@@ -9,96 +9,59 @@ require '../vendor/PHPMailer.php';
 require '../vendor/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Assume validation is already done for these fields
     $teamName = $_POST['teamName'];
     $dayDivision = $_POST['dayDivision'];
     $homeBarFirst = $_POST['homeBarFirst'];
     $homeBarSecond = $_POST['homeBarSecond'];
-    $captainName = preg_replace("/[^a-zA-Z\s]/", "", $_POST['captainName']);
-    $captainEmail = $_POST['captainEmail'];
-    $captainPhone = $_POST['captainPhone'];
-    $player2 = $_POST['player2'];
-    $registrationDate = date('Y-m-d'); // Assuming you're using the current date
+    $registrationDate = date('Y-m-d'); // Current date
 
-    // Check if the team name or captain's email already exists in the database
-    $checkStmt = $db->prepare("SELECT * FROM SportsTeam WHERE TeamName = ? OR CaptainEmail = ?");
-    $checkStmt->bind_param("ss", $teamName, $captainEmail);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
+    // Insert Team information
+    $stmt = $db->prepare("INSERT INTO SportsTeam (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, RegistrationDate) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $teamName, $dayDivision, $homeBarFirst, $homeBarSecond, $registrationDate);
+    $stmt->execute();
+    $teamID = $db->insert_id;  // Get the auto-incremented Team ID
 
-    if ($result->num_rows > 0) {
-        // Duplicate found, handle the error
-        echo "A team with this name or captain's email already exists.";
-        $checkStmt->close();
+    // Handle multiple player registration
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'player') !== false && $value != '') {
+            $field = explode('_', $key);
+            $playerIndex = $field[1];
+            $playerData[$playerIndex][$field[2]] = $value;  // Organize player data by index and field
+        }
     }
-    else{
-      $checkStmt->close();
-      // Prepare an insert statement
-      $stmt = $db->prepare("INSERT INTO SportsTeam (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, CaptainName, CaptainEmail, CaptainPhone, Player2Name, RegistrationDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-      // Bind variables to the prepared statement as parameters
-      $stmt->bind_param("sssssssss", $teamName, $dayDivision, $homeBarFirst, $homeBarSecond, $captainName, $captainEmail, $captainPhone, $player2, $registrationDate);
-
-      // Attempt to execute the prepared statement
-      if ($stmt->execute()) {
-          $mail = new PHPMailer(true);
-             try {
-                 // Server settings
-                 $mail->isSMTP();
-                 $mail->Host       = 'mail.pvpoolleagues.com';
-                 $mail->SMTPAuth   = true;
-                 $mail->Username   = 'noreply@pvpoolleagues.com';
-                 $mail->Password   = 'coinop911!'; // Replace with the actual password
-                 $mail->SMTPSecure = 'ssl';  // Enable SSL encryption
-                 $mail->Port       = 465;  // SMTP SSL port
-
-                 // Recipients
-                 $mail->setFrom('noreply@pvpoolleagues.com', 'PV Pool Leagues');
-                 $mail->addAddress($captainEmail);     // Add a recipient for the captain
-
-                 // Content
-                 $mail->isHTML(true);
-                 $mail->Subject = 'Registration Confirmation - PV Pool League';
-                 $mail->Body = "Hello " .
-                  $captainName .
-                  ",<br><br>Thank you for registering your team, " .
-                  $teamName .
-                  ", in the PV Pool League." .
-                  "<br><br>Friar - League Coordinator<br>friar@pvpoolleagues.com<br><br>" .
-                  "<img src='https://i.imgur.com/Xw7k2Gp.png' alt='PV Pool Leagues Logo' style='width:100px;'/>";
-
-                 $mail->AltBody = "Hello " . $captainName . ",\n\nThank you for registering your team, " . $teamName . ", in the PV Pool League.";
-
-                 $mail->send();
-                 // Clear all recipients and attachments for next email
-                 $mail->clearAddresses();
-                 $mail->clearAttachments();
-
-                 // Recipient for the company
-                 $mail->addAddress('eliplanda@gmail.com');
-
-                 // Company's Email Content
-                 $mail->Subject = 'New Team Registration - PV Pool League';
-                 $mail->Body = "A new team has registered for the PV Pool League.<br><br><strong>Team Name:</strong> " . $teamName . "<br><strong>Division:</strong> " . $dayDivision . "<br><strong>Home Bar (First Pick):</strong> " . $homeBarFirst . "<br><strong>Home Bar (Second Pick):</strong> " . $homeBarSecond . "<br><strong>Captain Name:</strong> " . $captainName . "<br><strong>Captain Email:</strong> " . $captainEmail . "<br><strong>Captain Phone:</strong> " . $captainPhone . "<br><strong>Second Player:</strong> " . $player2 . "<br><strong>Registration Date:</strong> " . $registrationDate . "<br><br>Friar - League Coordinator";
-                 $mail->AltBody = "A new team has registered for the PV Pool League.\n\nTeam Name: " . $teamName . "\nDivision: " . $dayDivision . "\nHome Bar (First Pick): " . $homeBarFirst . "\nHome Bar (Second Pick): " . $homeBarSecond . "\nCaptain Name: " . $captainName . "\nCaptain Email: " . $captainEmail . "\nCaptain Phone: " . $captainPhone . "\nSecond Player: " . $player2 . "\nRegistration Date: " . $registrationDate;
-
-                 $mail->send();
-
-                 // Redirect to success page after sending the email
-                 header("Location: /registration_success.html");
-                 exit();
-             } catch (Exception $e) {
-                 echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                 // Consider logging the error and not just displaying it
-                 // Also consider what to do next if the email sending fails
-             }
-         } else {
-             echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
-         }
-            // Close statement
-            $stmt->close();
-
+    // Insert each player
+    foreach ($playerData as $data) {
+        $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
+        $stmt->execute();
     }
-       mysqli_close($db);
+
+    $stmt->close();
+    mysqli_close($db);
+
+    // Sending confirmation email to the captain (the first player)
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'mail.pvpoolleagues.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'noreply@pvpoolleagues.com';
+        $mail->Password   = 'coinop911!';
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port       = 465;
+
+        $mail->setFrom('noreply@pvpoolleagues.com', 'PV Pool Leagues');
+        $mail->addAddress($playerData[1]['email']);  // Assuming the first player is the captain
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Registration Confirmation - PV Pool League';
+        $mail->Body    = "Hello " . $playerData[1]['name'] . ",<br><br>Thank you for registering your team, " . $teamName . ", in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+
+        $mail->send();
+        echo "Registration successful and email sent.";
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
 }
 ?>
