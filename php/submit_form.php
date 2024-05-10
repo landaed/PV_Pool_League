@@ -26,10 +26,7 @@ try {
         $teamID = $db->insert_id;
 
         // Prepare statement for players
-        $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)");
-        if (!$stmt) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
-        }
+       
 
         // Initialize player data array
         $playerData = [];
@@ -48,20 +45,36 @@ try {
         // Insert each player
         foreach ($playerData as $index => $data) {
             if (!empty($data['name']) && !empty($data['email']) && !empty($data['phone'])) {
+                $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)");
+                if (!$stmt) {
+                    throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+                }
                 $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
                 $stmt->execute();
                 
             }
             else  if (!empty($data['name']) && !empty($data['email'])) {
+                $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email) VALUES (?, ?, ?)");
+                if (!$stmt) {
+                    throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+                }
                 $stmt->bind_param("iss", $teamID, $data['name'], $data['email'], NULL);
                 $stmt->execute();
             }
             else  if (!empty($data['name']) && !empty($data['phone'])) {
+                $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Phone) VALUES (?, ?, ?)");
+                if (!$stmt) {
+                    throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+                }
                 $stmt->bind_param("iss", $teamID, $data['name'], Null, $data['phone']);
                 $stmt->execute();
                 
             }
             else  if (!empty($data['name'])) {
+                $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName) VALUES (?, ?)");
+                if (!$stmt) {
+                    throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+                }
                 $stmt->bind_param("is", $teamID, $data['name'], NULL, NULL);
                 $stmt->execute();
             }
