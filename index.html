@@ -5,18 +5,27 @@
 		<link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="stylesheet" href="./assets/css/main.css"/>
+        <link rel="stylesheet" href="./assets/css/main_1.css"/>
 		<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
-
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
-		<script src="https://cdn.babylonjs.com/babylon.js"></script>
+	
+		<script src="https://cdn.jsdelivr.net/npm/babylonjs@6.46.0/babylon.min.js"></script>
 		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+
+
+
 		<script>
     document.addEventListener('DOMContentLoaded', function () {
-    // ... existing code ...
+ var canvas = document.getElementById('renderCanvas');
 
+    function disableScroll(event) {
+        event.preventDefault();
+    }
+
+    // Add event listeners to the canvas
+    canvas.addEventListener('touchstart', disableScroll, {passive: false});
+    canvas.addEventListener('touchmove', disableScroll, {passive: false});
+    canvas.addEventListener('touchend', disableScroll, {passive: false});
     // Function to handle division button click
     function scrollToSection(event) {
         event.preventDefault();
@@ -36,7 +45,7 @@
 });
 </script>
 		<script>
-			const texts = ["Where Everybody Is A Winner", "Its Playoff Season", "Register Today!"];
+			const texts = ["Where Everybody Is A Winner", "Join Summer Session", "Register Today!"];
 			let currentIndex = 1;
 
 			function fadeOutText() {
@@ -60,11 +69,14 @@
 		<script>
 window.onscroll = function() {
     var header = document.getElementById('header');
-    var scroll = window.pageYOffset || document.documentElement.scrollTop;
+	if(header){
+		var scroll = window.pageYOffset || document.documentElement.scrollTop;
 
-    // Calculate opacity
-    var opacity = Math.min(1, 1.-(scroll / 500));
-    header.style.opacity = opacity;
+		// Calculate opacity
+		var opacity = Math.min(1, 1.-(scroll / 500));
+		header.style.opacity = opacity;
+	}
+    
 };
 function scrollToAboutUs() {
     // Find the element with the "about" ID
@@ -78,35 +90,45 @@ function scrollToAboutUs() {
 </script>
 
 	</head>
-
-	<body>
+	
+<body>
 				<!-- Loading Screen Overlay -->
+<div id="navBar" style="display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; width: 100%; background: #333; padding: 10px 20px;">
+    <div style="display: flex; align-items: center; min-width: 250px;">
+        <div>
+            <h3>Contact</h3>
+            <p><b>Cell# 403-990-6328<br>Office 1-800-663-5953</b></p>
+        </div>
+    </div>
+    <!-- Centering the image in the available space -->
+    <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+        <img src="assets/images/PV-Pool-League.png" alt="Logo" id="navBar_img" style="max-height: 100px;"> <!-- Adjust max-height as needed -->
+    </div>
+    <!-- This empty div helps to keep the image centered -->
+    <div></div>
+</div>
 
-		<div id="navBar" style="display: none; position: fixed; top: 0; width: 100%; background: #333; /* Your styling here */">
-    <!-- Your logo and navigation items -->
-    	<img src="assets\images\PV-Pool-League.png" alt="Logo" id="navBar_img">
-		</div>
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 			  <span class="close">&times;</span>
 			  <div class="modal-header">
-				<h2>March 12, 2024</h2>
+				<h2>April 27, 2024</h2>
 			  </div>
 			  <div class="modal-body">
 				<p>Hello Players!</p>
-				<p>The end of the season is near AND playoffs are fast approaching!!</p>
-				<p>Tentative schedules are as follows.</p>
+				<p>The summer session is near!</p>
+				<p>Starting June 11th/12th </p>
+				<p><b>Deadline to enter is May 27th</b></p>
 				<ul>
-				  <li>Monday and Tuesday nights will be playing the first weekend April 5th – 7th.</li>
-				  <li>Wednesday night will be playing April 11th - 14th.</li>
-				  <li>Singles will take place April 8th, 9th & 10th.</li>
-				  <li>A & B divisions (64 players in each division)</li>
-				  <li>Each division will be split into upper and lower brackets of 32</li>
-				  <li>Top 8 from each bracket will return to play Wednesday</li>
+				  <li>B Division plays Tuesday</li>
+				  <li>A Division plays Wednesday</li>
 				</ul>
-				<p>We reserve the right to place players!!</p>
-				<p><strong>REMINDER:</strong> Green fees are payable IMMEDIATELY!!! They are $20/player Includes ALL team and singles play!!</p>
-				<p>Forest Lawn Legion will be open for practice.<br>Thursday April 4th 7:00pm</p>
+				<p>Season is 11 weeks – Ends Aug 20th/21st</p>
+				<p>4 player team (16 game format). </p>
+				<p>$15/player/night - $60/team/night</p>
+				<p>VNEA Rules</p>
+				<p>No Playoffs!!</p>
+				<p>Payouts based on season standings. </p>
 			  </div>
 			  <div class="modal-footer">
 				<p>Have FUN Shooting Pool!!!<br>Friar, Donna & Warren</p>
@@ -145,8 +167,8 @@ function scrollToAboutUs() {
 			<section id="intro" class="wrapper style1 fullscreen">
 				<canvas id="renderCanvas"></canvas>
 				<button class="more" onclick="scrollToAboutUs()">more<i class="fas fa-caret-down"></i></button>
-				<a class="more" href="playoff_register.html" style="position: absolute; top: 60% !important; left: 50%; transform: translateX(-50%);">
-					<button>Playoffs Signup</button>
+				<a class="more" href="./assets/images/Summer.pdf" style="position: absolute; top: 60% !important; left: 50%; transform: translateX(-50%);">
+					<button>Summer Session Info</button>
 				</a>
 				
 				<div id="text-overlay">
@@ -175,18 +197,7 @@ function scrollToAboutUs() {
 							</ul>
 					</div>
 				</section>
-				<section class="">
-					<a class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/divisions.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
-					<div class="content">
-
-							<h2 id="about">Divisions</h2>
-							<p>We have many divisions. You can see their latest updates here.</p>
-							<ul class="actions">
-								<li><a href="divisions.html" class="button">Learn More</a></li>
-							</ul>
-
-					</div>
-				</section>
+				
 				<section class="">
 					<a  class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/locations.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
 					<div class="content">
@@ -240,6 +251,11 @@ function scrollToAboutUs() {
 		<!-- Footer -->
 		<footer id="footer">
 			<div class="inner">
+			<h3>Contact</h3>
+			<p><b>Cell# 403-990-6328</p>
+			<p>Office 1-800-663-5953</p></b>
+			</div>
+			<div class="inner">
 				<p>&copy; A division of Landa Investments ltd.</p>
 				<p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
 
@@ -257,20 +273,22 @@ function scrollToAboutUs() {
     </div>
 		<script>
 		window.onscroll = function() {
-    var navBar = document.getElementById('navBar');
-    var scroll = window.pageYOffset || document.documentElement.scrollTop;
+		var navBar = document.getElementById('navBar');
+		var scroll = window.pageYOffset || document.documentElement.scrollTop;
 
-    // Show the navigation bar if scrolled more than 800px
-    if (scroll > 800) {
-        navBar.style.display = 'block';
-    } else {
-        navBar.style.display = 'none';
-    }
+		// Show the navigation bar if scrolled more than 800px
+		if (scroll > 800) {
+			navBar.style.display = 'flex';
+		} else {
+			navBar.style.display = 'none';
+		}
 
-    // Your existing opacity code
-    var header = document.getElementById('header');
-    var opacity = Math.min(1, 1 - (scroll / 500));
-    header.style.opacity = opacity;
+		// Your existing opacity code
+		var header = document.getElementById('header');
+		if(header){
+			var opacity = Math.min(1, 1 - (scroll / 500));
+			header.style.opacity = opacity;
+		}		
 };
 
 		</script>
@@ -280,7 +298,6 @@ function scrollToAboutUs() {
 		<script src="./assets/js/breakpoints.min.js"></script>
 		<script src="./assets/js/util.js"></script>
 		<script src="./assets/js/main.js"></script>
-		<script src="./assets/js/hamburger.js"></script>
 		<script src="./assets/js/touch_screen_canvas.js"></script>
 		<div class="floating-menu-container">
     <div class="floating-hamburger-menu">

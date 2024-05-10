@@ -77,6 +77,12 @@
             <!-- Add similar rows for Player 3, 4, 5 as needed -->
 
             <!-- Submit Button -->
+			<!-- CAPTCHA -->
+			<tr>
+				<td class="question"><label id="captchaQuestion">CAPTCHA Question</label></td>
+				<td><input name="captchaAnswer" id="captchaAnswer" type="text" required></td>
+			</tr>
+
             <tr>
                 <td>&nbsp;</td>
                 <td><input class="formBlockSubmitButton" name="Submit" type="submit" value="Submit"></td>
@@ -99,10 +105,25 @@
 
 		<!-- Scripts -->
 		<script>
-document.addEventListener('DOMContentLoaded', function() {
+		document.addEventListener('DOMContentLoaded', function() {
     var form = document.getElementById('poolLeagueSignupForm');
+    var captchaQuestion = document.getElementById('captchaQuestion');
+    var captchaAnswer = document.getElementById('captchaAnswer');
+
+    function generateCaptcha() {
+        var num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+        var num2 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+        captchaQuestion.textContent = `What is ${num1} + ${num2}?`;
+        captchaAnswer.dataset.correctAnswer = num1 + num2;
+    }
+
+    // Run the CAPTCHA generator when the page loads
+    generateCaptcha();
+
     form.onsubmit = function(event) {
         var isValid = true;
+
+        // Existing validation code here...
 
         // Email validation
         var email = document.getElementById('captainEmail');
@@ -125,11 +146,18 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
 
+        // CAPTCHA validation
+        if (parseInt(captchaAnswer.value) !== parseInt(captchaAnswer.dataset.correctAnswer)) {
+            alert('Incorrect CAPTCHA answer. Please try again.');
+            isValid = false;
+        }
+
         if (!isValid) {
             event.preventDefault(); // Prevent form submission
         }
     };
 });
+	
 </script>
 
 		<script src="./assets/js/jquery.min.js"></script>

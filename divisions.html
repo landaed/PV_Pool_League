@@ -7,29 +7,7 @@
 		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Expires" content="0">
-    <script src="assets\js\header_icon_move.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // ... existing code ...
 
-    // Function to handle division button click
-    function scrollToSection(event) {
-        event.preventDefault();
-        const targetId = event.currentTarget.getAttribute('data-target');
-        const targetSection = document.querySelector(targetId);
-
-        if (targetSection) {
-            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }
-
-    // Add click event listeners to division buttons
-    const divisionButtons = document.querySelectorAll('.division_btn');
-    divisionButtons.forEach(button => {
-        button.addEventListener('click', scrollToSection);
-    });
-});
-</script>
 
 	</head>
 
@@ -44,166 +22,17 @@
       <section id="division_layout" class="wrapper">
 				<h1 class="major1">Divisions</h1>
 					<div>
-
-						<a class="division_btn" data-target="#mondaySection"><img src="./assets/images/divisions_1.png">- Monday -</a>
-						<a class="division_btn" data-target="#tuesdaySection"><img src="./assets/images/divisions_2.png">- Tuesday -</a>
-						<a class="division_btn" data-target="#wednesdaySection"><img src="./assets/images/divisions_3.png">- Wednesday -</a>
-						<a class="division_btn" data-target="#thursdaySection"><img src="./assets/images/divisions_4.png">- Scotch Doubles -</a>
-						<a class="division_btn" data-target="#cochraneSection"><img src="./assets/images/divisions_5.png">- Cochrane -</a>
+						<a class="division_btn" href="playoff_monday.pdf"><img src="./assets/images/divisions_1.png">- Monday -</a>
+						<a class="division_btn" href="playoff_tuesday_b.pdf"><img src="./assets/images/divisions_2.png">- Tuesday B -</a>
+						<a class="division_btn" href="playoff_tuesday_a_lower.pdf"><img src="./assets/images/divisions_2.png">-Tuesday A Lower -</a>
+            <a class="division_btn" href="playoff_tuesday_a_upper.pdf"><img src="./assets/images/divisions_2.png">- Tuesday A Upper -</a>
+            <a class="division_btn" href="playoff_wednesday_a.pdf"><img src="./assets/images/divisions_4.png">- Wednesday A -</a>
+						<a class="division_btn" href="playoff_wednesday_b_lower.pdf"><img src="./assets/images/divisions_4.png">- Wednesday B Lower -</a>
+            <a class="division_btn" href="playoff_wednesday_b_upper.pdf"><img src="./assets/images/divisions_4.png">- Wednesday B Upper -</a>
+            
+						
 				</div>
 			</section>
-      <section id="mondaySection" class="wrapper">
-				<div class="inner">
-						<h1 class="major">Monday</h1>
-
-				</div>
-			</section>
-				<div class="innovation">
-					<div class="card">
-						<h2>Open A</h2>
-            <ul>
-              <li>$20/player. $100/team (5 player Team)</li>
-              <li>1 Vegas Intermediate ranked player/Roster</li>
-              <li>10 teams in division Minimum. $1000 For 1st place in season standings.</li>
-              <li>16 teams in division $1000 for 1st/ $500 for 2nd in season standings.</li>
-              <li>$$$ in playoffs</li>
-            </ul>
-					</div>
-
-          <div class="card">
-						<h2>Open B</h2>
-            <ul>
-              <li>$15/ player. $75/ team. (5 player Team)</li>
-              <li>10 teams in division. $250 for 1st place in season standings.</li>
-
-              <li>$$$ in playoffs</li>
-
-            </ul>
-					</div>
-				</div>
-        <section id="tuesdaySection" class="wrapper">
-  				<div class="inner">
-  						<h1 class="major">Tuesday</h1>
-
-
-  				</div>
-  			</section>
-  				<div class="innovation">
-  					<div class="card">
-  						<h2>Upper A</h2>
-              <ul>
-                <li>$15/ player. $75/ team. (5 player Team)</li>
-                <li>10 teams in division. $250 for 1st place in season standings.</li>
-                <li>$$$ in playoffs</li>
-              </ul>
-  					</div>
-            <div class="card">
-  						<h2>Lower A</h2>
-              <ul>
-                <li>$15/ player. $75/ team. (5 player Team)</li>
-                <li>10 teams in division. $250 for 1st place in season standings.</li>
-                <li>$$$ in playoffs</li>
-              </ul>
-  					</div>
-            <div class="card">
-  						<h2>Upper B</h2>
-              <ul>
-                <li>$13/ player. $65/ team. (5 player Team)</li>
-                <li>10 teams in division. $250 for 1st place in season standings.</li>
-                <li>$$$ in playoffs</li>
-              </ul>
-  					</div>
-            <div class="card">
-  						<h2>Lower B</h2>
-              <ul>
-                <li>$13/ player. $65/ team. (5 player Team)</li>
-                <li>10 teams in division. $250 for 1st place in season standings.</li>
-                <li>$$$ in playoffs</li>
-              </ul>
-  					</div>
-  				</div>
-          <section id="wednesdaySection" class="wrapper">
-    				<div class="inner">
-    						<h1 class="major">Wednesday</h1>
-
-
-    				</div>
-    			</section>
-    				<div class="innovation">
-    					<div class="card">
-    						<h2>Upper A</h2>
-                <ul>
-                  <li>$15/ player. $75/ team. (5 player Team)</li>
-                  <li>10 teams in division. $250 for 1st place in season standings.</li>
-                  <li>$$$ in playoffs</li>
-                </ul>
-    					</div>
-              <div class="card">
-    						<h2>Lower A</h2>
-                <ul>
-                  <li>$15/ player. $75/ team. (5 player Team)</li>
-                  <li>10 teams in division. $250 for 1st place in season standings.</li>
-                  <li>$$$ in playoffs</li>
-                </ul>
-    					</div>
-              <div class="card">
-    						<h2>Upper B</h2>
-                <ul>
-                  <li>$15/ player. $65/ team. (5 player Team)</li>
-                  <li>10 teams in division. $250 for 1st place in season standings.</li>
-                  <li>$$$ in playoffs</li>
-                </ul>
-    					</div>
-              <div class="card">
-    						<h2>Lower B</h2>
-                <ul>
-                  <li>$15/ player. $65/ team. (5 player Team)</li>
-                  <li>10 teams in division. $250 for 1st place in season standings.</li>
-                  <li>$$$ in playoffs</li>
-                </ul>
-    					</div>
-    				</div>
-            <section id="thursdaySection" class="wrapper">
-      				<div class="inner">
-      						<h1 class="major">Scotch Doubles</h1>
-
-
-      				</div>
-      			</section>
-      				<div class="innovation">
-      					<div class="card">
-      						<h2>Upper A</h2>
-                  <ul>
-                    <li>$15/ player. $75/ team. (5 player Team)</li>
-                    <li>10 teams in division. $250 for 1st place in season standings.</li>
-                    <li>$$$ in playoffs</li>
-                  </ul>
-      					</div>
-                <div class="card">
-      						<h2>Lower A</h2>
-                  <ul>
-                    <li>$15/ player. $75/ team. (5 player Team)</li>
-                    <li>10 teams in division. $250 for 1st place in season standings.</li>
-                    <li>$$$ in playoffs</li>
-                  </ul>
-      					</div>
-                <div class="card">
-      						<h2>Upper B</h2>
-                  <ul>
-                    <li>$15/ player. $65/ team. (5 player Team)</li>
-                    <li>10 teams in division. $250 for 1st place in season standings.</li>
-                    <li>$$$ in playoffs</li>
-                  </ul>
-      					</div>
-                <div class="card">
-      						<h2>Lower B</h2>
-                  <ul>
-                    <li>$15/ player. $65/ team. (5 player Team)</li>
-                    <li>10 teams in division. $250 for 1st place in season standings.</li>
-                    <li>$$$ in playoffs</li>
-                  </ul>
-      					</div>
-      				</div>
 		</div>
 
 		<!-- Footer -->
