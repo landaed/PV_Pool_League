@@ -98,7 +98,8 @@ try {
         }
 
         
-        
+        header("Location: /registration_success.html");
+        exit();
     }
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -106,5 +107,4 @@ try {
 
 
 mysqli_close($db);
-header("Location: ./registration_success.html");
 ?>
