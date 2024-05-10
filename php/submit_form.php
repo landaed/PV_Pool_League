@@ -8,6 +8,7 @@ require '../vendor/Exception.php';
 require '../vendor/PHPMailer.php';
 require '../vendor/SMTP.php';
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $teamName = $_POST['teamName'];
     $dayDivision = $_POST['dayDivision'];
@@ -21,6 +22,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $teamID = $db->insert_id;
 
+    // Prepare statement for players
+    $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)");
+    if (!$stmt) {
+        echo "Prepare failed: (" . $db->errno . ") " . $db->error;
+    }
+
     // Initialize player data array
     $playerData = [];
 
@@ -32,18 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Debug output
-    echo "<pre>Player Data: " . print_r($playerData, true) . "</pre>";
-
-    // Prepare statement for players
-    $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)");
-    if (!$stmt) {
-        echo "Prepare failed: (" . $db->errno . ") " . $db->error;
-    }
-
     // Insert each player
     foreach ($playerData as $index => $data) {
-        if (!empty($data['name'])) {
+        if (!empty($data['name']) && !empty($data['email']) && !empty($data['phone'])) {
             $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
             $stmt->execute();
             echo "<p>Inserted: " . $data['name'] . "</p>";
@@ -64,23 +62,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail->isHTML(true);
     $mail->Subject = 'Registration Confirmation - PV Pool League';
 
-    // Attempt to send email to each player
+    // Send email to each player
     foreach ($playerData as $data) {
         if (!empty($data['email'])) {
             $mail->addAddress($data['email']);
+            $mail->Body    = "Hello " . $data['name'] . ",<br><br>Thank you for joining the team '" . $teamName . "' in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+            $mail->AltBody = "Hello " . $data['name'] . ",\n\nThank you for joining the team '" . $teamName . "' in the PV Pool League.";
+            $mail->send();  // Send the email
+            $mail->clearAddresses();  // Clear addresses for the next loop iteration
         }
     }
 
     $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
-    $mail->Body    = "Hello, <br><br>Thank you for registering your team, '" . $teamName . "', in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
-    $mail->AltBody = "Hello, \n\nThank you for registering your team, '" . $teamName . "', in the PV Pool League.";
+    $mail->send();
 
-    if (!$mail->send()) {
-        echo "Mailer Error: " . $mail->ErrorInfo;
-    } else {
-        echo "Registration successful and email sent.";
-    }
-
+    echo "Registration successful and email sent.";
     mysqli_close($db);
 }
 ?>
+
