@@ -39,6 +39,7 @@ try {
             if (strpos($key, 'player') === 0 && $value) {
                 list($prefix, $index, $field) = explode('_', $key);
                 $playerData[$index][$field] = $value;
+                echo "value added to player data: " . $value . "\n";
             }
         }
 
@@ -68,7 +69,7 @@ try {
 
         // Send email to each player
         foreach ($playerData as $data) {
-            echo "name" . $data['name'];
+            echo "name" . $data['name'] . "\n";
             echo "email" . $data['email'] . "\n";
             
             $mail->Body = $defaultBody;
