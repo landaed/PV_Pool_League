@@ -64,9 +64,11 @@ try {
         $mail->setFrom('noreply@pvpoolleagues.com', 'PV Pool Leagues');
         $mail->isHTML(true);
         $mail->Subject = 'Registration Confirmation - PV Pool League';
+        $defaultBody = "Hello, <br><br>Thank you for your participation in the league.<br><br>Friar - League Coordinator";
 
         // Send email to each player
         foreach ($playerData as $data) {
+            $mail->Body = $defaultBody;
             if (!empty($data['email'])) {
                 $mail->addAddress($data['email']);
                 $mail->Body    = "Hello " . $data['name'] . ",<br><br>Thank you for joining the team '" . $teamName . "' in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
