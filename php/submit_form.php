@@ -82,6 +82,7 @@ try {
                 }
                 $mail->clearAddresses();  // Clear addresses for the next loop iteration
                 $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
+                $mail->addAddress('friar@pvpoolleagues.com');  // Additional recipient for testing
             }
         } 
         if (!$mail->send()) {
