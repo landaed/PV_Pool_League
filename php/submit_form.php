@@ -1,5 +1,6 @@
 <?php
 require_once 'db_connect.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -58,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($data['email'])) {
                 $mail->addAddress($data['email']);
             }
-            $mail->addAddress("eliplanda@gmail.com");
+            $mail->addAddress('eliplanda@gmail.com');
         }
     }
 
