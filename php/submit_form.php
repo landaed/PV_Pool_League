@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 
     // Set email body and send
-    $mail->Body    = $foundPlayer . " Hello, <br><br>Thank you for registering your team, '" . $teamName . "', in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+    $mail->Body    = " Hello, <br><br>Thank you for registering your team, '" . $teamName . "', in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
     $mail->AltBody = "Hello, \n\nThank you for registering your team, '" . $teamName . "', in the PV Pool League.";
     if (!$mail->send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;
