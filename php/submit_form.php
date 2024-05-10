@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $homeBarFirst = $_POST['homeBarFirst'];
     $homeBarSecond = $_POST['homeBarSecond'];
     $registrationDate = date('Y-m-d');
-    $foundPlayer = "no players found...";
 
     // Insert Team information
     $stmt = $db->prepare("INSERT INTO SportsTeam (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, RegistrationDate) VALUES (?, ?, ?, ?, ?)");
@@ -22,13 +21,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $teamID = $db->insert_id;
 
+    // Initialize player data array
+    $playerData = [];
+
+    // Parse player data from POST
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'player') === 0 && $value) {
+            list($prefix, $index, $field) = explode('_', $key);
+            $playerData[$index][$field] = $value;
+        }
+    }
+
+    // Debug output
+    echo "<pre>Player Data: " . print_r($playerData, true) . "</pre>";
+
     // Prepare statement for players
     $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)");
     if (!$stmt) {
         echo "Prepare failed: (" . $db->errno . ") " . $db->error;
     }
 
-    // Handle multiple player registration and emails
+    // Insert each player
+    foreach ($playerData as $index => $data) {
+        if (!empty($data['name'])) {
+            $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
+            $stmt->execute();
+            echo "<p>Inserted: " . $data['name'] . "</p>";
+        }
+    }
+
+    $stmt->close();
+
     $mail = new PHPMailer(true);
     $mail->isSMTP();
     $mail->Host = 'mail.pvpoolleagues.com';
@@ -41,33 +64,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail->isHTML(true);
     $mail->Subject = 'Registration Confirmation - PV Pool League';
 
-    foreach ($_POST as $key => $value) {
-        if (strpos($key, 'player') === 0) {
-            $parts = explode('_', $key);
-            $index = $parts[1];
-            $field = $parts[2];
-            $playerData[$index][$field] = $value;
+    // Attempt to send email to each player
+    foreach ($playerData as $data) {
+        if (!empty($data['email'])) {
+            $mail->addAddress($data['email']);
         }
     }
 
-    foreach ($playerData as $index => $data) {
-        // Only insert if the name is provided
-        if (!empty($data['name'])) {
-            $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
-            $stmt->execute();
-            $foundPlayer = "We found a player";
-            if (!empty($data['email'])) {
-                $mail->addAddress($data['email']);
-            }
-        }
-    }
-    $mail->addAddress('eliplanda@gmail.com');
-
-    $stmt->close();
-
-    // Set email body and send
-    $mail->Body    = $foundPlayer . " Hello, <br><br>Thank you for registering your team, '" . $teamName . "', in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+    $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
+    $mail->Body    = "Hello, <br><br>Thank you for registering your team, '" . $teamName . "', in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
     $mail->AltBody = "Hello, \n\nThank you for registering your team, '" . $teamName . "', in the PV Pool League.";
+
     if (!$mail->send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;
     } else {
