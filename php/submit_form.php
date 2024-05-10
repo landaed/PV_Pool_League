@@ -1,9 +1,11 @@
 <?php
 require_once 'db_connect.php';
-require '../vendor/autoload.php';  // Ensure PHPMailer is correctly included using Composer's autoload
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+require '../vendor/Exception.php';
+require '../vendor/PHPMailer.php';
+require '../vendor/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $teamName = $_POST['teamName'];
