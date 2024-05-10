@@ -82,13 +82,14 @@ try {
             $mail->Body = $defaultBody;
             if (!empty($data['email'])) {
                 $mail->addAddress($data['email']);
-                $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
+                
                 $mail->Body    = "Hello " . $data['name'] . ",<br><br>Thank you for joining the team '" . $teamName . "' in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
                 $mail->AltBody = "Hello " . $data['name'] . ",\n\nThank you for joining the team '" . $teamName . "' in the PV Pool League.";
                 if (!$mail->send()) {
                     throw new Exception("Mailer Error: " . $mail->ErrorInfo);
                 }
                 $mail->clearAddresses();  // Clear addresses for the next loop iteration
+                $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
             }
         }
 
