@@ -53,18 +53,17 @@ try {
                 
             }
             else  if (!empty($data['name']) && !empty($data['email'])) {
-                $stmt->bind_param("iss", $teamID, $data['name'], $data['email']);
+                $stmt->bind_param("iss", $teamID, $data['name'], $data['email'], NULL);
                 $stmt->execute();
             }
             else  if (!empty($data['name']) && !empty($data['phone'])) {
-                $stmt->bind_param("iss", $teamID, $data['name'], $data['phone']);
+                $stmt->bind_param("iss", $teamID, $data['name'], Null, $data['phone']);
                 $stmt->execute();
                 
             }
             else  if (!empty($data['name'])) {
-                $stmt->bind_param("is", $teamID, $data['name']);
+                $stmt->bind_param("is", $teamID, $data['name'], NULL, NULL);
                 $stmt->execute();
-                
             }
         }
 
