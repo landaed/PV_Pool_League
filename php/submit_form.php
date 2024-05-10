@@ -82,6 +82,7 @@ try {
             $mail->Body = $defaultBody;
             if (!empty($data['email'])) {
                 $mail->addAddress($data['email']);
+                $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
                 $mail->Body    = "Hello " . $data['name'] . ",<br><br>Thank you for joining the team '" . $teamName . "' in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
                 $mail->AltBody = "Hello " . $data['name'] . ",\n\nThank you for joining the team '" . $teamName . "' in the PV Pool League.";
                 if (!$mail->send()) {
@@ -91,13 +92,13 @@ try {
             }
         }
 
-        $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
+        
         if (!$mail->send()) {
             throw new Exception("Mailer Error: " . $mail->ErrorInfo);
         }
 
         echo "Registration successful and email sent.";
-        header("Location: /registration_success.html");
+        header("Location: ./registration_success.html");
     }
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
