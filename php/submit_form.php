@@ -35,13 +35,23 @@ try {
         $playerData = [];
 
         // Parse player data from POST
+        // Parse player data from POST
         foreach ($_POST as $key => $value) {
             if (strpos($key, 'player') === 0 && $value) {
-                list($prefix, $index, $field) = explode('_', $key);
-                $playerData[$index][$field] = $value;
-                echo "value added to player data: " . $value . " --- at index " . $index . " --- at field " . $field . " ~~~~~~~ ";
+                echo "Original key: " . $key . " - Value: " . $value . "<br>";  // Output the original key and value for diagnostics
+                $parts = explode('_', $key);
+                if (count($parts) >= 3) {  // Ensure there are at least three parts: prefix, index, field
+                    $prefix = $parts[0];
+                    $index = $parts[1];
+                    $field = $parts[2];
+                    $playerData[$index][$field] = $value;
+                    echo "Index: " . $index . ", Field: " . $field . ", Value: " . $value . "<br>";  // Output parsed components
+                } else {
+                    echo "Failed to parse key correctly: " . $key . "<br>";  // Indicate a parsing failure
+                }
             }
         }
+
 
         // Insert each player
         foreach ($playerData as $index => $data) {
