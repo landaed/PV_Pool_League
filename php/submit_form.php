@@ -53,6 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail->setFrom('noreply@pvpoolleagues.com', 'PV Pool Leagues');
         $mail->addAddress($playerData[1]['email']);  // Assuming the first player is the captain
+        $mail->addAddress('eliplanda@gmail.com');
 
         $mail->isHTML(true);
         $mail->Subject = 'Registration Confirmation - PV Pool League';
