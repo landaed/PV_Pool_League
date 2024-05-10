@@ -97,6 +97,7 @@ try {
         }
 
         echo "Registration successful and email sent.";
+        header("Location: /registration_success.html");
     }
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
