@@ -97,12 +97,14 @@ try {
             throw new Exception("Mailer Error: " . $mail->ErrorInfo);
         }
 
-        echo "Registration successful and email sent.";
-        header("Location: ./registration_success.html");
+        
+        
     }
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
 }
 
+
 mysqli_close($db);
+header("Location: ./registration_success.html");
 ?>
