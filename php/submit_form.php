@@ -41,21 +41,16 @@ try {
                 $index = $matches[1];
                 $field = $matches[2];
                 $playerData[$index][$field] = $value;
-                echo "<p>Index: $index, Field: $field, Value: $value</p>";
+                
             }
         }
-        
-        // Debug print all player data to verify
-        echo "<pre>Full Player Data: " . print_r($playerData, true) . "</pre>";
-        
-
 
         // Insert each player
         foreach ($playerData as $index => $data) {
             if (!empty($data['name']) && !empty($data['email']) && !empty($data['phone'])) {
                 $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
                 $stmt->execute();
-                echo "<p>Inserted: " . $data['name'] . "</p>";
+                
             }
         }
 
@@ -76,9 +71,6 @@ try {
 
         // Send email to each player
         foreach ($playerData as $data) {
-            echo "name" . $data['name'] . "\n";
-            echo "email" . $data['email'] . "\n";
-            
             $mail->Body = $defaultBody;
             if (!empty($data['email'])) {
                 $mail->addAddress($data['email']);
@@ -91,14 +83,10 @@ try {
                 $mail->clearAddresses();  // Clear addresses for the next loop iteration
                 $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
             }
-        }
-
-        
+        } 
         if (!$mail->send()) {
             throw new Exception("Mailer Error: " . $mail->ErrorInfo);
         }
-
-        
         header("Location: /registration_success.html");
         exit();
     }
