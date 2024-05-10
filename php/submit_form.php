@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($data['name'])) {
             $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
             $stmt->execute();
-            
+            $foundPlayer = "We found a player";
             if (!empty($data['email'])) {
                 $mail->addAddress($data['email']);
             }
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 
     // Set email body and send
-    $mail->Body    = " Hello, <br><br>Thank you for registering your team, '" . $teamName . "', in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+    $mail->Body    = $foundPlayer . " Hello, <br><br>Thank you for registering your team, '" . $teamName . "', in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
     $mail->AltBody = "Hello, \n\nThank you for registering your team, '" . $teamName . "', in the PV Pool League.";
     if (!$mail->send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;
