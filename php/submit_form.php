@@ -39,8 +39,7 @@ try {
             if (strpos($key, 'player') === 0 && $value) {
                 list($prefix, $index, $field) = explode('_', $key);
                 $playerData[$index][$field] = $value;
-                echo "value added to player data: " . $value . " --- at index " . $index . " --- at field " . $field . "
-                ";
+                echo "value added to player data: " . $value . " --- at index " . $index . " --- at field " . $field . " ~~~~~~~ ";
             }
         }
 
