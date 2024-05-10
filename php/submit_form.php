@@ -68,6 +68,7 @@ try {
 
         // Send email to each player
         foreach ($playerData as $data) {
+            echo $data;
             $mail->Body = $defaultBody;
             if (!empty($data['email'])) {
                 $mail->addAddress($data['email']);
