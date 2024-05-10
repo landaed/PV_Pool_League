@@ -6,8 +6,6 @@ use PHPMailer\PHPMailer\Exception;
 require '../vendor/Exception.php';
 require '../vendor/PHPMailer.php';
 require '../vendor/SMTP.php';
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $teamName = $_POST['teamName'];
