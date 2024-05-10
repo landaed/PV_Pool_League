@@ -1,12 +1,9 @@
 <?php
 require_once 'db_connect.php';
+require '../vendor/autoload.php';  // Ensure PHPMailer is correctly included using Composer's autoload
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-require '../vendor/Exception.php';
-require '../vendor/PHPMailer.php';
-require '../vendor/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $teamName = $_POST['teamName'];
@@ -22,19 +19,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $teamID = $db->insert_id;  // Get the auto-incremented Team ID
 
     // Handle multiple player registration
+    $playerData = [];
     foreach ($_POST as $key => $value) {
-        if (strpos($key, 'player') !== false && $value != '') {
-            $field = explode('_', $key);
-            $playerIndex = $field[1];
-            $playerData[$playerIndex][$field[2]] = $value;  // Organize player data by index and field
+        if (strpos($key, 'player') === 0) {
+            $parts = explode('_', $key);
+            $index = $parts[1]; // Get the player index number
+            $field = $parts[2]; // Get the field type (name, email, phone)
+            $playerData[$index][$field] = $value;
         }
     }
 
     // Insert each player
-    foreach ($playerData as $data) {
-        $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
-        $stmt->execute();
+    foreach ($playerData as $index => $data) {
+        if (!empty($data['name']) && !empty($data['email']) && !empty($data['phone'])) {
+            $stmt = $db->prepare("INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
+            $stmt->execute();
+        }
     }
 
     $stmt->close();
@@ -44,20 +45,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host       = 'mail.pvpoolleagues.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'noreply@pvpoolleagues.com';
-        $mail->Password   = 'coinop911!';
+        $mail->Host = 'mail.pvpoolleagues.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'noreply@pvpoolleagues.com';
+        $mail->Password = 'coinop911!';
         $mail->SMTPSecure = 'ssl';
-        $mail->Port       = 465;
+        $mail->Port = 465;
 
         $mail->setFrom('noreply@pvpoolleagues.com', 'PV Pool Leagues');
-        $mail->addAddress($playerData[1]['email']);  // Assuming the first player is the captain
+        if (!empty($playerData[1]['email'])) {
+            $mail->addAddress($playerData[1]['email']);  // Send to the first player's email
+        }
         $mail->addAddress('eliplanda@gmail.com');
-
         $mail->isHTML(true);
         $mail->Subject = 'Registration Confirmation - PV Pool League';
-        $mail->Body    = "Hello " . $playerData[1]['name'] . ",<br><br>Thank you for registering your team, " . $teamName . ", in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+        $mail->Body    = "Hello " . $playerData[1]['name'] . ",<br><br>Thank you for registering your team, '" . $teamName . "', in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+        $mail->AltBody = "Hello " . $playerData[1]['name'] . ",\n\nThank you for registering your team, '" . $teamName . "', in the PV Pool League.";
 
         $mail->send();
         echo "Registration successful and email sent.";
@@ -66,4 +69,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
