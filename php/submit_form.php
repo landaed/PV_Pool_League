@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($data['name'])) {
             $stmt->bind_param("isss", $teamID, $data['name'], $data['email'], $data['phone']);
             $stmt->execute();
-            $foundPlayer = "found a player!";
+            
             if (!empty($data['email'])) {
                 $mail->addAddress($data['email']);
             }
