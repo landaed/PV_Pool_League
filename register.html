@@ -131,14 +131,7 @@
 		<script>
 		document.addEventListener('DOMContentLoaded', function() {
 
-			document.getElementById('poolLeagueSignupForm').onsubmit = function(event) {
-				var response = grecaptcha.getResponse();
-				if(response.length == 0) { 
-					alert("Please complete the CAPTCHA!");
-					event.preventDefault(); //prevent form submit
-				}
-			};
-
+		
 			var form = document.getElementById('poolLeagueSignupForm');
 			/*var captchaQuestion = document.getElementById('captchaQuestion');
 			var captchaAnswer = document.getElementById('captchaAnswer');
@@ -157,7 +150,12 @@
 				var isValid = true;
 
 				// Existing validation code here...
-
+				var response = grecaptcha.getResponse();
+				if(response.length == 0) { 
+					alert("Please complete the CAPTCHA!");
+					event.preventDefault(); //prevent form submit
+					isValid = false;
+				}
 				// Email validation
 				var email = document.getElementById('captainEmail');
 				if (!email.value.includes('@')) {
