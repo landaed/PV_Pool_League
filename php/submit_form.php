@@ -10,6 +10,15 @@ require '../vendor/SMTP.php';
 
 try {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+         // reCAPTCHA validation
+        $captcha = $_POST['g-recaptcha-response'];
+        $secretKey = "6LcdPNopAAAAAOGzGfP0cIF4BpCDe8pwkfNbNAi3"; // Replace with your secret key
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . urlencode($secretKey) . "&response=" . urlencode($captcha));
+        $responseKeys = json_decode($response, true);
+
+        if(intval($responseKeys["success"]) !== 1) {
+            die('Captcha verification failed.');
+        }
         $teamName = $_POST['teamName'];
         $dayDivision = $_POST['dayDivision'];
         $homeBarFirst = $_POST['homeBarFirst'];
