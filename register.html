@@ -11,7 +11,8 @@
 		<script src="https://cdn.babylonjs.com/babylon.js"></script>
 		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-		<script src="assets\js\header_icon_move.js"></script>
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 	</head>
 
 	<body>
@@ -58,16 +59,14 @@
 								<!-- Players will be dynamically inserted here -->
 							</tbody>
 							<tbody>
+								
 								<tr>
-									<td class="question"><label id="captchaQuestion">CAPTCHA Question</label></td>
-									<td><input name="captchaAnswer" id="captchaAnswer" type="text" required></td>
-								</tr>
-								<tr>
-									<td></td>
+									<td><div class="g-recaptcha" data-sitekey="6LcdPNopAAAAAAhoGsDZKuli7C3v_hnFcIp8IFpt"></div></td>
 									<td><input class="formBlockSubmitButton" type="submit" value="Submit"></td>
 								</tr>
 							</tbody>
 						</table>
+						
 						
 					</form>
 				</div>
@@ -131,8 +130,17 @@
 		
 		<script>
 		document.addEventListener('DOMContentLoaded', function() {
+
+			document.getElementById('poolLeagueSignupForm').onsubmit = function(event) {
+				var response = grecaptcha.getResponse();
+				if(response.length == 0) { 
+					alert("Please complete the CAPTCHA!");
+					event.preventDefault(); //prevent form submit
+				}
+			};
+
 			var form = document.getElementById('poolLeagueSignupForm');
-			var captchaQuestion = document.getElementById('captchaQuestion');
+			/*var captchaQuestion = document.getElementById('captchaQuestion');
 			var captchaAnswer = document.getElementById('captchaAnswer');
 
 			function generateCaptcha() {
@@ -144,7 +152,7 @@
 
 			// Run the CAPTCHA generator when the page loads
 			generateCaptcha();
-
+			*/
     		form.onsubmit = function(event) {
 				var isValid = true;
 
@@ -186,12 +194,9 @@
 </script>
 
 		<script src="./assets/js/jquery.min.js"></script>
-		<script src="./assets/js/jquery.scrollex.min.js"></script>
-		<script src="./assets/js/jquery.scrolly.min.js"></script>
 		<script src="./assets/js/browser.min.js"></script>
 		<script src="./assets/js/breakpoints.min.js"></script>
 		<script src="./assets/js/util.js"></script>
-		<script src="./assets/js/main.js"></script>
 		<script src="./assets/js/hamburger.js"></script>
 		<script src="./assets/js/touch_screen_canvas.js"></script>
 		<div class="floating-menu-container">
