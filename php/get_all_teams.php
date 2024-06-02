@@ -9,7 +9,7 @@ header('Content-Type: application/json');
 
 try {
     $query = "
-        SELECT t.TeamID, t.TeamName, t.RegistrationDate, t.HomeBarFirstPick, t.HomeBarSecondPick, p.PlayerID, p.PlayerName, p.Email, p.Phone
+        SELECT t.TeamID, t.TeamName, t.RegistrationDate, t.HomeBarFirstPick, t.HomeBarSecondPick, t.DayDivision, p.PlayerID, p.PlayerName, p.Email, p.Phone
         FROM SportsTeam t
         LEFT JOIN Player p ON t.TeamID = p.TeamID
         ORDER BY t.RegistrationDate DESC, t.TeamID, p.PlayerID
@@ -32,6 +32,7 @@ try {
                 'RegistrationDate' => $row['RegistrationDate'],
                 'HomeBarFirstPick' => $row['HomeBarFirstPick'],
                 'HomeBarSecondPick' => $row['HomeBarSecondPick'],
+                'DayDivision' => $row['DayDivision'],
                 'Players' => []
             ];
         }

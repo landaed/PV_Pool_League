@@ -37,7 +37,7 @@ li:last-child {
     font-size: 2em;
 }
 
-.registration-date, .bar-picks {
+.registration-date, .bar-picks, .day-division {
     text-align: center;
     margin: 10px 0;
 }

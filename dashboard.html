@@ -38,6 +38,10 @@
                     barPicks.className = 'bar-picks';
                     barPicks.textContent = `Bar Picks: ${team.HomeBarFirstPick}, ${team.HomeBarSecondPick}`;
 
+                    const dayDivision = document.createElement('p');
+                    dayDivision.className = 'day-division';
+                    dayDivision.textContent = `Day Division: ${team.DayDivision}`;
+
                     const playersHeader = document.createElement('h2');
                     playersHeader.textContent = 'Players';
 
@@ -56,6 +60,7 @@
                     teamCard.appendChild(teamName);
                     teamCard.appendChild(registrationDate);
                     teamCard.appendChild(barPicks);
+                    teamCard.appendChild(dayDivision);
                     teamCard.appendChild(playersHeader);
                     teamCard.appendChild(playersList);
 
@@ -64,6 +69,7 @@
             })
             .catch(error => console.error('Error fetching team info:', error));
     });
+
 
     </script>
 </body>
