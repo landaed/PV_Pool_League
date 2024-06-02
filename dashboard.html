@@ -11,7 +11,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        fetch(`get_all_teams.php`)
+        fetch(`./php/get_all_teams.php`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
