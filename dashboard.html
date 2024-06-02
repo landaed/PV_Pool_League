@@ -4,55 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pool League Dashboard</title>
-    <link rel="stylesheet" href="dashboard_styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="team-info">
-        <h1 id="team-name"></h1>
-        <p id="registration-date"></p>
-        <p id="bar-picks"></p>
-        <h2>Players</h2>
-        <ul id="players-list"></ul>
-    </div>
+    <div id="teams-container"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const teamId = urlParams.get('team_id');
-    
-        if (!teamId) {
-            alert('Team ID is required in the query string');
-            return;
-        }
-    
-        fetch(`./php/get_team_info.php?team_id=${teamId}`)
+        fetch(`get_all_teams.php`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
                     alert(data.error);
                     return;
                 }
-    
-                document.getElementById('team-name').textContent = data.TeamName;
-                document.getElementById('registration-date').textContent = `Registered on: ${data.RegistrationDate}`;
-                document.getElementById('bar-picks').textContent = `Bar Picks: ${data.HomeBarFirstPick}, ${data.HomeBarSecondPick}`;
-    
-                const playersList = document.getElementById('players-list');
-                playersList.innerHTML = '';
-                data.Players.forEach((player, index) => {
-                    const li = document.createElement('li');
-                    li.textContent = `${player.PlayerName} - ${player.Email || 'No Email'} - ${player.Phone || 'No Phone'}`;
-                    if (index === 0) {
-                        li.classList.add('captain');
-                        li.textContent += ' (Captain)';
-                    }
-                    playersList.appendChild(li);
+
+                const teamsContainer = document.getElementById('teams-container');
+                teamsContainer.innerHTML = '';
+
+                data.forEach(team => {
+                    const teamCard = document.createElement('div');
+                    teamCard.className = 'team-card';
+
+                    const teamName = document.createElement('h1');
+                    teamName.className = 'team-name';
+                    teamName.textContent = team.TeamName;
+
+                    const registrationDate = document.createElement('p');
+                    registrationDate.className = 'registration-date';
+                    registrationDate.textContent = `Registered on: ${team.RegistrationDate}`;
+
+                    const barPicks = document.createElement('p');
+                    barPicks.className = 'bar-picks';
+                    barPicks.textContent = `Bar Picks: ${team.HomeBarFirstPick}, ${team.HomeBarSecondPick}`;
+
+                    const playersHeader = document.createElement('h2');
+                    playersHeader.textContent = 'Players';
+
+                    const playersList = document.createElement('ul');
+
+                    team.Players.forEach((player, index) => {
+                        const li = document.createElement('li');
+                        li.textContent = `${player.PlayerName} - ${player.Email || 'No Email'} - ${player.Phone || 'No Phone'}`;
+                        if (index === 0) {
+                            li.classList.add('captain');
+                            li.textContent += ' (Captain)';
+                        }
+                        playersList.appendChild(li);
+                    });
+
+                    teamCard.appendChild(teamName);
+                    teamCard.appendChild(registrationDate);
+                    teamCard.appendChild(barPicks);
+                    teamCard.appendChild(playersHeader);
+                    teamCard.appendChild(playersList);
+
+                    teamsContainer.appendChild(teamCard);
                 });
             })
             .catch(error => console.error('Error fetching team info:', error));
     });
-    
+
     </script>
 </body>
-
 </html>

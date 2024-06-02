@@ -3,9 +3,9 @@ body {
     margin: 20px;
 }
 
-#team-info {
+.team-card {
     max-width: 600px;
-    margin: auto;
+    margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -33,11 +33,11 @@ li:last-child {
     font-weight: bold;
 }
 
-#team-name {
+.team-name {
     font-size: 2em;
 }
 
-#registration-date, #bar-picks {
+.registration-date, .bar-picks {
     text-align: center;
     margin: 10px 0;
 }

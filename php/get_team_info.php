@@ -7,47 +7,35 @@ require_once 'db_connect.php'; // Ensure this path is correct
 
 header('Content-Type: application/json');
 
-if (!isset($_GET['team_id'])) {
-    echo json_encode(['error' => 'Team ID is required']);
-    exit;
-}
-
-$team_id = $_GET['team_id'];
-
 try {
     $query = "
-        SELECT t.TeamName, t.RegistrationDate, t.HomeBarFirstPick, t.HomeBarSecondPick, p.PlayerID, p.PlayerName, p.Email, p.Phone
+        SELECT t.TeamID, t.TeamName, t.RegistrationDate, t.HomeBarFirstPick, t.HomeBarSecondPick, p.PlayerID, p.PlayerName, p.Email, p.Phone
         FROM SportsTeam t
         LEFT JOIN Player p ON t.TeamID = p.TeamID
-        WHERE t.TeamID = ?
+        ORDER BY t.TeamID, p.PlayerID
     ";
 
-    $stmt = $db->prepare($query);
-    $stmt->bind_param("i", $team_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $db->query($query);
 
     if ($result->num_rows === 0) {
-        echo json_encode(['error' => 'Team not found']);
+        echo json_encode(['error' => 'No teams found']);
         exit;
     }
 
-    $team_info = [
-        'TeamName' => '',
-        'RegistrationDate' => '',
-        'HomeBarFirstPick' => '',
-        'HomeBarSecondPick' => '',
-        'Players' => []
-    ];
-
+    $teams = [];
     while ($row = $result->fetch_assoc()) {
-        if (empty($team_info['TeamName'])) {
-            $team_info['TeamName'] = $row['TeamName'];
-            $team_info['RegistrationDate'] = $row['RegistrationDate'];
-            $team_info['HomeBarFirstPick'] = $row['HomeBarFirstPick'];
-            $team_info['HomeBarSecondPick'] = $row['HomeBarSecondPick'];
+        $team_id = $row['TeamID'];
+        if (!isset($teams[$team_id])) {
+            $teams[$team_id] = [
+                'TeamID' => $team_id,
+                'TeamName' => $row['TeamName'],
+                'RegistrationDate' => $row['RegistrationDate'],
+                'HomeBarFirstPick' => $row['HomeBarFirstPick'],
+                'HomeBarSecondPick' => $row['HomeBarSecondPick'],
+                'Players' => []
+            ];
         }
-        $team_info['Players'][] = [
+        $teams[$team_id]['Players'][] = [
             'PlayerID' => $row['PlayerID'],
             'PlayerName' => $row['PlayerName'],
             'Email' => $row['Email'],
@@ -55,7 +43,7 @@ try {
         ];
     }
 
-    echo json_encode($team_info);
+    echo json_encode(array_values($teams));
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
