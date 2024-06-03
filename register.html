@@ -142,45 +142,45 @@
 		<!-- Scripts -->
 		<script>
 			let playerCount = 0;
-		
-			function addPlayer() {
-				playerCount++;
-				const tbody = document.getElementById('playerRows');
-				if(playerCount>1){
-					//tbody.deleteRow(playerCount-1);
-				}
-				
-				const row = tbody.insertRow(-1); // Insert a new row at the end of the tbody
-				let cell1 = row.insertCell(0);
-				let cell2 = row.insertCell(1);
-				let cell3 = row.insertCell(2);
-				let is_captain = "(Captain)";
-				if(playerCount == 1){
-					cell1.innerHTML = `<label for="player${playerCount}_name">**${is_captain} ${playerCount} Name:</label><input type="text" name="player${playerCount}_name" required>`;
-					cell2.innerHTML = `<label for="player${playerCount}_email">**${is_captain} Player ${playerCount} Email:</label><input type="email" name="player${playerCount}_email" required>`;
-					cell3.innerHTML = `<label for="player${playerCount}_phone">**${is_captain} Player ${playerCount} Phone:</label><input type="text" name="player${playerCount}_phone" required>`;
-				}
-				else{
-					cell1.innerHTML = `<label for="player${playerCount}_name">*Player ${playerCount} Name:</label><input type="text" name="player${playerCount}_name" required>`;
-					cell2.innerHTML = `<label for="player${playerCount}_email">Player ${playerCount} Email:</label><input type="email" name="player${playerCount}_email">`;
-					cell3.innerHTML = `<label for="player${playerCount}_phone">Player ${playerCount} Phone:</label><input type="text" name="player${playerCount}_phone">`;
-				}
+
+function addPlayer() {
+			playerCount++;
+			const tbody = document.getElementById('playerRows');
+			const row = tbody.insertRow(-1); // Insert a new row at the end of the tbody
+
+			let cell1 = row.insertCell(0);
+			let cell2 = row.insertCell(1);
+			let cell3 = row.insertCell(2);
+
+			let is_captain = "(Captain)";
+			if (playerCount == 1) {
+				cell1.innerHTML = `<label for="player${playerCount}_name">**${is_captain} ${playerCount} Name:</label><input type="text" name="player${playerCount}_name" required>`;
+				cell2.innerHTML = `<label for="player${playerCount}_email">**${is_captain} Player ${playerCount} Email:</label><input type="email" name="player${playerCount}_email" required>`;
+				cell3.innerHTML = `<label for="player${playerCount}_phone">**${is_captain} Player ${playerCount} Phone:</label><input type="text" name="player${playerCount}_phone" required>`;
+			} else {
+				cell1.innerHTML = `<label for="player${playerCount}_name">*Player ${playerCount} Name:</label><input type="text" name="player${playerCount}_name" required>`;
+				cell2.innerHTML = `<label for="player${playerCount}_email">Player ${playerCount} Email:</label><input type="email" name="player${playerCount}_email">`;
+				cell3.innerHTML = `<label for="player${playerCount}_phone">Player ${playerCount} Phone:</label><input type="text" name="player${playerCount}_phone">`;
 			}
 
-			function removePlayer() {
-				
-				const tbody = document.getElementById('playerRows');
-				if(playerCount>1){
-					tbody.deleteRow(playerCount);
-					playerCount--;
-				}
-				
+			// Adjust the class names to match the style
+			cell1.classList.add("question");
+			cell2.classList.add("question");
+			cell3.classList.add("question");
+		}
+
+		function removePlayer() {
+			const tbody = document.getElementById('playerRows');
+			if (playerCount > 1) {
+				tbody.deleteRow(playerCount);
+				playerCount--;
 			}
-		
-		
-			document.addEventListener('DOMContentLoaded', function() {
-				addPlayer(); // Automatically add the first player (Captain) on load
-			});
+		}
+
+		document.addEventListener('DOMContentLoaded', function() {
+			addPlayer(); // Automatically add the first player (Captain) on load
+		});
+
 		</script>
 		
 		

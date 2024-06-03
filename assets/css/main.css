@@ -4950,6 +4950,77 @@ body::-webkit-scrollbar-thumb:hover {
 .menu a:hover {
     background-color: #5d40a5;
 }
+/* General table styles */
+table.formBlockSurveyTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table.formBlockSurveyTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+}
+
+table.formBlockSurveyTable td.question {
+    width: 30%;
+    font-weight: bold;
+}
+
+table.formBlockSurveyTable input,
+table.formBlockSurveyTable select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+/* Player rows specific styles */
+#playerRows td {
+    width: 33.33%; /* Adjust to have three columns */
+    text-align: left;
+}
+
+#playerRows button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#playerRows button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive styles for mobile devices */
+@media (max-width: 768px) {
+    table.formBlockSurveyTable {
+        display: block;
+    }
+
+    table.formBlockSurveyTable tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    table.formBlockSurveyTable td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #playerRows td {
+        width: 100%;
+    }
+
+    #playerRows button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
 
 @media screen and (max-width: 1920px) {
     .menu {
