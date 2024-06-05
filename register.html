@@ -39,9 +39,19 @@
 									<td><input name="teamName" id="teamName" type="text" required></td>
 								</tr>
 								<tr>
+									<td class="question"><label for="session">DAY / DIVISION</label></td>
+									<td>
+										<select name="session" id="session" required>
+											<option value="">Select Day / Division</option>
+											<option value="SUMMER 2024">SUMMER 2024</option>
+											<option value="FALL 2024">FALL 2024</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
 									<td class="question"><label for="dayDivision">DAY / DIVISION</label></td>
 									<td>
-										<select name="dayDivision" id="dayDivision">
+										<select name="dayDivision" id="dayDivision" required>
 											<option value="">Select Day / Division</option>
 											<option value="B Division">B Division, plays Tuesday</option>
 											<option value="A Division">A Division, plays Wednesday</option>
@@ -51,7 +61,7 @@
 								<tr>
 									<td class="question"><label for="homeBarFirst">Home Bar 1st Pick</label></td>
 									<td>
-										<select name="homeBarFirst" id="homeBarFirst">
+										<select name="homeBarFirst" id="homeBarFirst" required>
 											<option value="">Select a Bar</option>
 											<option value="Tipsy Pig Pub Evanston (2060 Symons Valley Parkway NW)">Tipsy Pig Pub Evanston (2060 Symons Valley Parkway NW)</option>
 											<option value="Bowness Legion #238 (138 Bowness Center NW)">Bowness Legion #238 (138 Bowness Center NW)</option>
@@ -81,7 +91,7 @@
 								<tr>
 									<td class="question"><label for="homeBarSecond">Home Bar 2nd Pick</label></td>
 									<td>
-										<select name="homeBarSecond" id="homeBarSecond">
+										<select name="homeBarSecond" id="homeBarSecond" required>
 											<option value="">Select a Bar</option>
 											<option value="Tipsy Pig Pub Evanston (2060 Symons Valley Parkway NW)">Tipsy Pig Pub Evanston (2060 Symons Valley Parkway NW)</option>
 											<option value="Bowness Legion #238 (138 Bowness Center NW)">Bowness Legion #238 (138 Bowness Center NW)</option>

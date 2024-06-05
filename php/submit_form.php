@@ -20,17 +20,18 @@ try {
             die('Captcha verification failed.');
         }
         $teamName = $_POST['teamName'];
+        $session = $_POST['session'];
         $dayDivision = $_POST['dayDivision'];
         $homeBarFirst = $_POST['homeBarFirst'];
         $homeBarSecond = $_POST['homeBarSecond'];
         $registrationDate = date('Y-m-d');
 
         // Insert Team information
-        $stmt = $db->prepare("INSERT INTO SportsTeam (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, RegistrationDate) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO SportsTeam (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, RegistrationDate, Session) VALUES (?, ?, ?, ?, ?, ?)");
         if (!$stmt) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
-        $stmt->bind_param("sssss", $teamName, $dayDivision, $homeBarFirst, $homeBarSecond, $registrationDate);
+        $stmt->bind_param("ssssss", $teamName, $dayDivision, $homeBarFirst, $homeBarSecond, $registrationDate, $session);
         $stmt->execute();
         $teamID = $db->insert_id;
 
@@ -113,6 +114,7 @@ try {
 
                 $mail->Body = "Hello " . $data['name'] . ",<br><br>" . 
                     "Thank you for joining the team '" . $teamName . "' in the PV Pool League." . 
+                    "<br><br>Your session is: " . $session . 
                     "<br><br>Your division day: " . $dayDivision . 
                     "<br>First Home Bar: " . $homeBarFirst . 
                     "<br>Second Home Bar: " . $homeBarSecond . 
