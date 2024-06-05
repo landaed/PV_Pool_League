@@ -96,33 +96,40 @@ try {
         $mail->Host = 'mail.pvpoolleagues.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'noreply@pvpoolleagues.com';
-        $mail->Password = 'coinop911!';
+        $mail->Password = 'coinop911!';  // Consider securing your credentials.
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
         $mail->setFrom('noreply@pvpoolleagues.com', 'PV Pool Leagues');
         $mail->isHTML(true);
         $mail->Subject = 'Registration Confirmation - PV Pool League';
-        $defaultBody = "Hello, <br><br>Thank you for your participation in the league.<br><br>Friar - League Coordinator";
 
         // Send email to each player
         foreach ($playerData as $data) {
-            $mail->Body = $defaultBody;
             if (!empty($data['email'])) {
-                $mail->addAddress($data['email']);
-                
-                $mail->Body    = "Hello " . $data['name'] . ",<br><br>Thank you for joining the team '" . $teamName . "' in the PV Pool League.<br><br>Friar - League Coordinator<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+                $mail->clearAddresses();  // Clear addresses for the next loop iteration
+                $mail->addAddress($data['email']);  // Add current player email
+                $mail->addBCC('eliplanda@gmail.com');  // Admin copy
+                $mail->addBCC('friar@pvpoolleagues.com');  // Admin copy
+
+                $mail->Body = "Hello " . $data['name'] . ",<br><br>" . 
+                    "Thank you for joining the team '" . $teamName . "' in the PV Pool League." . 
+                    "<br><br>Your division day: " . $dayDivision . 
+                    "<br>First Home Bar: " . $homeBarFirst . 
+                    "<br>Second Home Bar: " . $homeBarSecond . 
+                    "<br>Registration Date: " . $registrationDate . 
+                    (!empty($data['phone']) ? "<br>Phone: " . $data['phone'] : "") . 
+                    (!empty($data['email']) ? "<br>Email: " . $data['email'] : "") . 
+                    "<br><br>Friar - League Coordinator" . 
+                    "<br><img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;'/>";
+
                 $mail->AltBody = "Hello " . $data['name'] . ",\n\nThank you for joining the team '" . $teamName . "' in the PV Pool League.";
+
                 if (!$mail->send()) {
                     throw new Exception("Mailer Error: " . $mail->ErrorInfo);
                 }
-                $mail->clearAddresses();  // Clear addresses for the next loop iteration
-                $mail->addAddress('eliplanda@gmail.com');  // Additional recipient for testing
-                $mail->addAddress('friar@pvpoolleagues.com');  // Additional recipient for testing
             }
-        } 
-        if (!$mail->send()) {
-            throw new Exception("Mailer Error: " . $mail->ErrorInfo);
         }
+
         header("Location: /registration_success.html");
         exit();
     }
