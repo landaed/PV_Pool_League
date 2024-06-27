@@ -76,6 +76,17 @@ footer, header, hgroup, menu, nav, section {
     border-color: transparent transparent #fff transparent; /* Arrow color */
     transform: translateX(-50%);
 }
+.button-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	transform: translateY(-30px) !important; /* Translate the buttons downwards by 50px */
+}
+
+.button-container a {
+	margin: 10px 0; /* Adjust spacing between buttons */
+}
+
 
 
   .horizontal_backing {
