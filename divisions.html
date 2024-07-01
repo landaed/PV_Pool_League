@@ -1,114 +1,110 @@
-<html lang="en"><head>
-  <title>PV Pool League - Divisions</title>
-  <link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="./assets/css/main.css">
-		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-		<meta http-equiv="Pragma" content="no-cache">
-		<meta http-equiv="Expires" content="0">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>PV Pool League - Divisions</title>
+	<link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="./assets/css/main.css"/>
+	<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+	<script src="https://cdn.babylonjs.com/babylon.js"></script>
+	<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+	<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+	<script src="assets/js/header_icon_move.js"></script>
+</head>
 
+<body>
+	<div id="navBar" style="position: fixed; top: 0; width: 100%; background: #333;">
+		<!-- Your logo and navigation items -->
+		<a href="index.html"><img src="assets/images/PV-Pool-League.png" alt="Logo" id="navBar_img"></a>
+	</div>
 
-	</head>
-
-	<body><div id="navBar" style=" position: fixed; top: 0; width: 100%; background: #333; /* Your styling here */">
-  <!-- Your logo and navigation items -->
-    <a href="index.html"><img src="assets\images\PV-Pool-League.png" alt="Logo" id="navBar_img"></a>
-  </div>
-
-		<!-- Wrapper -->
-		<div class="outer-wrapper">
-      <!--a class="button" href="/assets/documents/Innovation Lab Graphics + AI Curriculum.pdf">Full Curriculum</a-->
-      <section id="division_layout" class="wrapper">
-				<h1 class="major1">Divisions</h1>
-					<div>
-						<a class="division_btn" href="playoff_monday.pdf"><img src="./assets/images/divisions_1.png">- Monday -</a>
-						<a class="division_btn" href="playoff_tuesday_b.pdf"><img src="./assets/images/divisions_2.png">- Tuesday B -</a>
-						<a class="division_btn" href="playoff_tuesday_a_lower.pdf"><img src="./assets/images/divisions_2.png">-Tuesday A Lower -</a>
-            <a class="division_btn" href="playoff_tuesday_a_upper.pdf"><img src="./assets/images/divisions_2.png">- Tuesday A Upper -</a>
-            <a class="division_btn" href="playoff_wednesday_a.pdf"><img src="./assets/images/divisions_4.png">- Wednesday A -</a>
-						<a class="division_btn" href="playoff_wednesday_b_lower.pdf"><img src="./assets/images/divisions_4.png">- Wednesday B Lower -</a>
-            <a class="division_btn" href="playoff_wednesday_b_upper.pdf"><img src="./assets/images/divisions_4.png">- Wednesday B Upper -</a>
-            
-						
-				</div>
-			</section>
-		</div>
+	<div class="outer-wrapper">
+		<!-- Main -->
+		<section id="division_layout" class="wrapper">
+			<h1 class="major1">Divisions</h1>
+			<div class="button-container">
+				<a class="more" href="./assets/images/Fall_2024_Divisions.pdf">
+					<button>Fall 2024 Divisions</button>
+				</a>
+			</div>
+		</section>
+		<!--div id='calendar'></div-->
 
 		<!-- Footer -->
 		<footer id="footer">
 			<div class="inner">
-        <p>&copy; A division of Landa Investments ltd.</p>
-				<p>© Unbounded Research And Development Corp. All rights reserved.</p>
+				<p>&copy; A division of Landa Investments ltd.</p>
+				<p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
 			</div>
 		</footer>
+	</div>
 
-		<!-- Scripts -->
-		<script src="./assets/js/jquery.min.js"></script>
-		<script src="./assets/js/jquery.scrollex.min.js"></script>
-		<script src="./assets/js/jquery.scrolly.min.js"></script>
-		<script src="./assets/js/browser.min.js"></script>
-		<script src="./assets/js/breakpoints.min.js"></script>
-		<script src="./assets/js/util.js"></script>
-		<script src="./assets/js/main.js"></script>
-		<script src="./assets/js/hamburger.js"></script>
-		<script src="./assets/js/touch_screen_canvas.js"></script>
-		<script src="./assets/js/expandable.js"></script>
-    <div class="floating-menu-container">
-    <div class="floating-hamburger-menu">
-        <i class="fas fa-bars"></i>
-    </div>
-    <nav class="floating-menu-content">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="locations.html">Locations</a></li>
-            
-            <li><a href="register.html">Register</a></li>
+	<!-- Scripts -->
+	<script src="./assets/js/jquery.min.js"></script>
+	<script src="./assets/js/jquery.scrollex.min.js"></script>
+	<script src="./assets/js/jquery.scrolly.min.js"></script>
+	<script src="./assets/js/browser.min.js"></script>
+	<script src="./assets/js/breakpoints.min.js"></script>
+	<script src="./assets/js/util.js"></script>
+	<script src="./assets/js/main.js"></script>
+	<script src="./assets/js/hamburger.js"></script>
+	<script src="./assets/js/touch_screen_canvas.js"></script>
+	<div class="floating-menu-container">
+		<div class="floating-hamburger-menu">
+			<i class="fas fa-bars"></i>
+		</div>
+		<nav class="floating-menu-content">
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a href="locations.html">Locations</a></li>
+				<li><a href="register.html">Register</a></li>
 <li><a href="schedule.html">Schedule</a></li>
-						<li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">Stats</a></li>
-            <!-- Add more list items as needed -->
-        </ul>
-    </nav>
-</div>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var menuContainer = document.querySelector('.floating-menu-container');
-    var menuContent = document.querySelector('.floating-menu-content');
-    var menuButton = document.querySelector('.floating-hamburger-menu');
-    var menuItems = document.querySelectorAll('.floating-menu-content a'); // Get all menu item links
+				<li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">Stats</a></li>
+				<!-- Add more list items as needed -->
+			</ul>
+		</nav>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var menuContainer = document.querySelector('.floating-menu-container');
+			var menuContent = document.querySelector('.floating-menu-content');
+			var menuButton = document.querySelector('.floating-hamburger-menu');
+			var menuItems = document.querySelectorAll('.floating-menu-content a'); // Get all menu item links
 
-    // Function to toggle the menu's visibility
-    function toggleMenu() {
-        if (menuContent.style.display === 'block') {
-            menuContent.style.display = 'none';
-        } else {
-            menuContent.style.display = 'block';
-        }
-    }
+			// Function to toggle the menu's visibility
+			function toggleMenu() {
+				if (menuContent.style.display === 'block') {
+					menuContent.style.display = 'none';
+				} else {
+					menuContent.style.display = 'block';
+				}
+			}
 
-    // Mouse events for desktop
-    menuContainer.addEventListener('mouseenter', function() {
-        menuContent.style.display = 'block';
-    });
-    menuContainer.addEventListener('mouseleave', function() {
-        menuContent.style.display = 'none';
-    });
+			// Mouse events for desktop
+			menuContainer.addEventListener('mouseenter', function() {
+				menuContent.style.display = 'block';
+			});
+			menuContainer.addEventListener('mouseleave', function() {
+				menuContent.style.display = 'none';
+			});
 
-    // Touch event for the menu button
-    menuButton.addEventListener('touchstart', function(event) {
-        event.preventDefault(); // Prevent default touch action
-        toggleMenu();
-    }, false);
+			// Touch event for the menu button
+			menuButton.addEventListener('touchstart', function(event) {
+				event.preventDefault(); // Prevent default touch action
+				toggleMenu();
+			}, false);
 
-    // Add touch event listeners to each menu item
-    menuItems.forEach(function(menuItem) {
-        menuItem.addEventListener('touchstart', function(event) {
-            event.stopPropagation(); // Prevent the event from bubbling up to the container
-        }, false);
-    });
-});
-
-
-</script>
-</body></html>
+			// Add touch event listeners to each menu item
+			menuItems.forEach(function(menuItem) {
+				menuItem.addEventListener('touchstart', function(event) {
+					event.stopPropagation(); // Prevent the event from bubbling up to the container
+				}, false);
+			});
+		});
+	</script>
+</body>
+</html>
