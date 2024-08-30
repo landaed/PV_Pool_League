@@ -19,6 +19,13 @@ try {
 
     $result = $db->query($query);
 
+    // Check if the query execution was successful
+    if (!$result) {
+        // Log or display the SQL error message
+        echo json_encode(['error' => 'Database query failed: ' . $db->error]);
+        exit;
+    }
+
     if ($result->num_rows === 0) {
         echo json_encode(['error' => 'No teams found']);
         exit;
