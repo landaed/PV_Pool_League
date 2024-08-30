@@ -10,7 +10,7 @@ header('Content-Type: application/json');
 try {
     // Adjust the query as necessary to include fields for address or other info to detect Cochrane
     $query = "
-        SELECT t.TeamID, t.TeamName, t.RegistrationDate, t.Session, t.HomeBarFirstPick, t.HomeBarSecondPick, t.DayDivision, t.Address, 
+        SELECT t.TeamID, t.TeamName, t.RegistrationDate, t.Session, t.HomeBarFirstPick, t.HomeBarSecondPick, t.DayDivision, t.HomeBarFirstPick, 
                p.PlayerID, p.PlayerName, p.Email, p.Phone
         FROM SportsTeam t
         LEFT JOIN Player p ON t.TeamID = p.TeamID
@@ -44,7 +44,7 @@ try {
     while ($row = $result->fetch_assoc()) {
         $session = $row['Session'];
         $team_id = $row['TeamID'];
-        $isCochrane = stripos($row['TeamName'], 'Cochrane') !== false || stripos($row['Address'], 'Cochrane') !== false;
+        $isCochrane = stripos($row['TeamName'], 'Cochrane') !== false || stripos($row['HomeBarFirstPick'], 'Cochrane') !== false;
         $location = $isCochrane ? 'Cochrane' : 'Calgary';
         $division = $row['DayDivision'];
 
