@@ -8,12 +8,13 @@ require_once 'db_connect.php'; // Ensure this path is correct
 header('Content-Type: application/json');
 
 try {
-    // Adjust the query as necessary to include fields for address or other info to detect Cochrane
+    // Query adjusted to filter only "FALL 2024" session
     $query = "
-        SELECT t.TeamID, t.TeamName, t.RegistrationDate, t.Session, t.HomeBarFirstPick, t.HomeBarSecondPick, t.DayDivision, t.HomeBarFirstPick, 
+        SELECT t.TeamID, t.TeamName, t.RegistrationDate, t.Session, t.HomeBarFirstPick, t.HomeBarSecondPick, t.DayDivision, 
                p.PlayerID, p.PlayerName, p.Email, p.Phone
         FROM SportsTeam t
         LEFT JOIN Player p ON t.TeamID = p.TeamID
+        WHERE t.Session = 'FALL 2024'
         ORDER BY STR_TO_DATE(t.Session, '%M %Y') DESC, t.RegistrationDate DESC, t.TeamID, p.PlayerID
     ";
 
@@ -21,7 +22,6 @@ try {
 
     // Check if the query execution was successful
     if (!$result) {
-        // Log or display the SQL error message
         echo json_encode(['error' => 'Database query failed: ' . $db->error]);
         exit;
     }
