@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="dashboard_styles.css">
 </head>
 <body>
+    <div id="summary-container"></div>
     <div id="teams-container"></div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             fetch('./php/get_all_teams.php')
@@ -19,10 +19,43 @@
                         return;
                     }
 
+                    const summaryContainer = document.getElementById('summary-container');
                     const teamsContainer = document.getElementById('teams-container');
+
+                    // Display summary data
+                    const summary = data.summary;
+                    summaryContainer.innerHTML = `
+                        <h2>League Summary</h2>
+                        <p>Total Teams: ${summary.totalTeams}</p>
+                        <p>Total Players: ${summary.totalPlayers}</p>
+                        <div>
+                            <h3>Calgary</h3>
+                            <p>Total Teams: ${summary.locations.Calgary.totalTeams}</p>
+                            <p>Total Players: ${summary.locations.Calgary.totalPlayers}</p>
+                            ${generateDivisionBreakdown(summary.locations.Calgary.divisions)}
+                        </div>
+                        <div>
+                            <h3>Cochrane</h3>
+                            <p>Total Teams: ${summary.locations.Cochrane.totalTeams}</p>
+                            <p>Total Players: ${summary.locations.Cochrane.totalPlayers}</p>
+                            ${generateDivisionBreakdown(summary.locations.Cochrane.divisions)}
+                        </div>
+                    `;
+
+                    // Function to generate division breakdown
+                    function generateDivisionBreakdown(divisions) {
+                        let output = '<ul>';
+                        for (const [division, count] of Object.entries(divisions)) {
+                            output += `<li>${division}: ${count} teams</li>`;
+                        }
+                        output += '</ul>';
+                        return output;
+                    }
+
+                    // Existing code to display teams
                     teamsContainer.innerHTML = '';
 
-                    Object.keys(data).forEach(session => {
+                    Object.keys(data.sessions).forEach(session => {
                         const sessionDiv = document.createElement('div');
                         sessionDiv.className = 'session-block';
 
@@ -30,7 +63,7 @@
                         sessionHeader.textContent = session;
                         sessionDiv.appendChild(sessionHeader);
 
-                        data[session].forEach(team => {
+                        data.sessions[session].forEach(team => {
                             const teamCard = document.createElement('div');
                             teamCard.className = 'team-card';
 
@@ -82,4 +115,5 @@
         });
     </script>
 </body>
+
 </html>
