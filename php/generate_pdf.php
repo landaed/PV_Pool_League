@@ -1,3 +1,5 @@
+
+
 <?php
 // Start output buffering
 ob_start();
@@ -7,23 +9,24 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once  '/home3/pvd001/public_html/vendor/autoload.php';  // Correct path to one directory up
-
+require_once '/home3/pvd001/public_html/vendor/autoload.php';  // Correct path to include the autoload.php file from one directory up
 require_once 'db_connect.php';
 
 class MYPDF extends TCPDF {
     public function Header() {
         try {
-            $image_file = 'assets/images/PV-Pool-League.png'; // Corrected file path with forward slash
+            $image_file = __DIR__ . '/assets/images/PV-Pool-League.png'; // Absolute path to the image file
             if (!file_exists($image_file)) {
-                echo "Header Error: Image file not found at $image_file<br>";
+                // Remove echo statements for production, use logging instead
+                // echo "Header Error: Image file not found at $image_file<br>";
             } else {
                 $this->Image($image_file, 15, 10, 40, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
             }
             $this->SetFont('helvetica', 'B', 12);
             $this->Cell(0, 15, 'FALL 2024 Pool League Signups', 0, false, 'C', 0, '', 0, false, 'M', 'M');
         } catch (Exception $e) {
-            echo 'Header Error: ' . $e->getMessage() . '<br>';
+            // Use logging instead of echo
+            // echo 'Header Error: ' . $e->getMessage() . '<br>';
         }
     }
 
@@ -33,7 +36,8 @@ class MYPDF extends TCPDF {
             $this->SetFont('helvetica', 'I', 8);
             $this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
         } catch (Exception $e) {
-            echo 'Footer Error: ' . $e->getMessage() . '<br>';
+            // Use logging instead of echo
+            // echo 'Footer Error: ' . $e->getMessage() . '<br>';
         }
     }
 }
@@ -46,28 +50,26 @@ function createTable($pdf, $header, $data) {
 
         $w = array_fill(0, count($header), 180 / count($header));
 
-        foreach($header as $col) {
+        foreach ($header as $col) {
             $pdf->Cell($w[array_search($col, $header)], 7, $col, 1, 0, 'C', 1);
         }
         $pdf->Ln();
 
         $pdf->SetFont('');
-        foreach($data as $row) {
-            foreach($header as $col) {
+        foreach ($data as $row) {
+            foreach ($header as $col) {
                 $pdf->Cell($w[array_search($col, $header)], 6, $row[$col], 1);
             }
             $pdf->Ln();
         }
         $pdf->Ln(10);
     } catch (Exception $e) {
-        echo 'Table Creation Error: ' . $e->getMessage() . '<br>';
+        // Use logging instead of echo
+        // echo 'Table Creation Error: ' . $e->getMessage() . '<br>';
     }
 }
 
 try {
-    echo "Starting PDF generation...<br>";
-    ob_flush(); // Flush the buffer to ensure messages are sent immediately
-
     $session = 'FALL 2024';
     $query = "
         SELECT t.TeamName, t.RegistrationDate, t.HomeBarFirstPick, t.HomeBarSecondPick, t.DayDivision, 
@@ -82,8 +84,6 @@ try {
     if (!$stmt) {
         die('Database Error: Failed to prepare statement - ' . $db->error . '<br>');
     }
-    echo "Statement prepared successfully.<br>";
-    ob_flush(); // Flush the buffer
 
     $stmt->bind_param('s', $session);
     $stmt->execute();
@@ -96,9 +96,6 @@ try {
     if ($result->num_rows === 0) {
         die('No data found for this session.<br>');
     }
-
-    echo "Data fetched successfully.<br>";
-    ob_flush(); // Flush the buffer
 
     $data = [];
     while ($row = $result->fetch_assoc()) {
@@ -115,9 +112,6 @@ try {
 
     $stmt->close();
 
-    echo "Preparing PDF...<br>";
-    ob_flush(); // Flush the buffer
-
     $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
     $pdf->SetMargins(PDF_MARGIN_LEFT, 40, PDF_MARGIN_RIGHT);
     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
@@ -130,14 +124,12 @@ try {
     // Add table to PDF
     createTable($pdf, $headers, $data);
 
-    echo "Outputting PDF...<br>";
-    ob_flush(); // Flush the buffer
     $pdf->Output('fall_2024_signups.pdf', 'I');
 } catch (Exception $e) {
-    echo 'Error: ' . $e->getMessage() . '<br>';
-    ob_flush(); // Flush the buffer
+    // Use logging instead of echo
+    // echo 'Error: ' . $e->getMessage() . '<br>';
 }
 
-// End output buffering and flush the output
-ob_end_flush();
+// End output buffering
+ob_end_clean();
 ?>
