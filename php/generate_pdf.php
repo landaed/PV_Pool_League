@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/../vendor/autoload.php';  // Correct path to one directory up
+require_once  '/home3/pvd001/public_html/vendor/autoload.php';  // Correct path to one directory up
 
 require_once 'db_connect.php';
 
