@@ -8,7 +8,7 @@ require_once 'db_connect.php';
 class MYPDF extends TCPDF {
     public function Header() {
         try {
-            $image_file = __DIR__ . '/assets/images/PV-Pool-League.png'; // Absolute path to the image file
+            $image_file = __DIR__ . '/home3/pvd001/public_html/assets/images/PV-Pool-League.png'; // Absolute path to the image file
             if (file_exists($image_file)) {
                 $this->Image($image_file, 15, 10, 40, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
             } 
