@@ -4,7 +4,7 @@ require_once 'db_connect.php';
 
 class MYPDF extends TCPDF {
     public function Header() {
-        $image_file = 'img/PVD_Logo_Dark.png';
+        $image_file = 'assets\images\PV-Pool-League.png';
         $this->Image($image_file, 15, 10, 40, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         $this->SetFont('helvetica', 'B', 12);
         $this->Cell(0, 15, 'FALL 2024 Pool League Signups', 0, false, 'C', 0, '', 0, false, 'M', 'M');
