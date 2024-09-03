@@ -93,7 +93,9 @@ try {
         $data[] = [
             'Team Name' => $row['TeamName'],
             'Registration Date' => $row['RegistrationDate'],
-            'Home Bar Picks' => $row['HomeBarFirstPick'] . ', ' . $row['HomeBarSecondPick'],
+            // Modify the assignment to limit the string length to 18 characters
+            'Home Bar Picks' => substr($row['HomeBarFirstPick'] . ', ' . $row['HomeBarSecondPick'], 0, 18),
+
             'Day Division' => $row['DayDivision'],
             'Player' => $row['PlayerName'],
             'Email' => $row['Email'] ?? 'No Email',
