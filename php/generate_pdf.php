@@ -104,7 +104,7 @@ try {
     $stmt->close();
 
     // Set custom page size: A4 with increased width
-    $pdf = new MYPDF('L', PDF_UNIT, [297, 210], true, 'UTF-8', false);  // 'L' for landscape, A4 width is 297mm, height 210mm
+    $pdf = new MYPDF('L', PDF_UNIT, [597, 210], true, 'UTF-8', false);  // 'L' for landscape, A4 width is 297mm, height 210mm
     $pdf->SetMargins(10, 40, 10);  // Set smaller margins for wider content display
     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
     $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
