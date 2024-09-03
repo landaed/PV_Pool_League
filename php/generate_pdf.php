@@ -1,4 +1,12 @@
 <?php
+// Start output buffering
+ob_start();
+
+// Set error reporting to display all errors
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/vendor/autoload.php';  // Corrected file path with forward slash
 require_once 'db_connect.php';
 
@@ -57,6 +65,7 @@ function createTable($pdf, $header, $data) {
 
 try {
     echo "Starting PDF generation...<br>";
+    ob_flush(); // Flush the buffer to ensure messages are sent immediately
 
     $session = 'FALL 2024';
     $query = "
@@ -73,6 +82,7 @@ try {
         die('Database Error: Failed to prepare statement - ' . $db->error . '<br>');
     }
     echo "Statement prepared successfully.<br>";
+    ob_flush(); // Flush the buffer
 
     $stmt->bind_param('s', $session);
     $stmt->execute();
@@ -87,6 +97,7 @@ try {
     }
 
     echo "Data fetched successfully.<br>";
+    ob_flush(); // Flush the buffer
 
     $data = [];
     while ($row = $result->fetch_assoc()) {
@@ -104,6 +115,7 @@ try {
     $stmt->close();
 
     echo "Preparing PDF...<br>";
+    ob_flush(); // Flush the buffer
 
     $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
     $pdf->SetMargins(PDF_MARGIN_LEFT, 40, PDF_MARGIN_RIGHT);
@@ -118,8 +130,13 @@ try {
     createTable($pdf, $headers, $data);
 
     echo "Outputting PDF...<br>";
+    ob_flush(); // Flush the buffer
     $pdf->Output('fall_2024_signups.pdf', 'I');
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage() . '<br>';
+    ob_flush(); // Flush the buffer
 }
+
+// End output buffering and flush the output
+ob_end_flush();
 ?>
