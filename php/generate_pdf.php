@@ -1,13 +1,6 @@
-
-
 <?php
-// Start output buffering
+// Start output buffering immediately to prevent any accidental output
 ob_start();
-
-// Set error reporting to display all errors
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 require_once '/home3/pvd001/public_html/vendor/autoload.php';  // Correct path to include the autoload.php file from one directory up
 require_once 'db_connect.php';
@@ -16,17 +9,13 @@ class MYPDF extends TCPDF {
     public function Header() {
         try {
             $image_file = __DIR__ . '/assets/images/PV-Pool-League.png'; // Absolute path to the image file
-            if (!file_exists($image_file)) {
-                // Remove echo statements for production, use logging instead
-                // echo "Header Error: Image file not found at $image_file<br>";
-            } else {
+            if (file_exists($image_file)) {
                 $this->Image($image_file, 15, 10, 40, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-            }
+            } 
             $this->SetFont('helvetica', 'B', 12);
             $this->Cell(0, 15, 'FALL 2024 Pool League Signups', 0, false, 'C', 0, '', 0, false, 'M', 'M');
         } catch (Exception $e) {
-            // Use logging instead of echo
-            // echo 'Header Error: ' . $e->getMessage() . '<br>';
+            // Suppress output, use error logging if necessary
         }
     }
 
@@ -36,8 +25,7 @@ class MYPDF extends TCPDF {
             $this->SetFont('helvetica', 'I', 8);
             $this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
         } catch (Exception $e) {
-            // Use logging instead of echo
-            // echo 'Footer Error: ' . $e->getMessage() . '<br>';
+            // Suppress output, use error logging if necessary
         }
     }
 }
@@ -64,8 +52,7 @@ function createTable($pdf, $header, $data) {
         }
         $pdf->Ln(10);
     } catch (Exception $e) {
-        // Use logging instead of echo
-        // echo 'Table Creation Error: ' . $e->getMessage() . '<br>';
+        // Suppress output, use error logging if necessary
     }
 }
 
@@ -82,7 +69,8 @@ try {
 
     $stmt = $db->prepare($query);
     if (!$stmt) {
-        die('Database Error: Failed to prepare statement - ' . $db->error . '<br>');
+        // Handle error appropriately without sending output
+        exit;
     }
 
     $stmt->bind_param('s', $session);
@@ -90,11 +78,13 @@ try {
     $result = $stmt->get_result();
 
     if ($result === false) {
-        die('Database Error: Failed to execute statement - ' . $stmt->error . '<br>');
+        // Handle error appropriately without sending output
+        exit;
     }
 
     if ($result->num_rows === 0) {
-        die('No data found for this session.<br>');
+        // Handle case of no data found appropriately
+        exit;
     }
 
     $data = [];
@@ -124,12 +114,11 @@ try {
     // Add table to PDF
     createTable($pdf, $headers, $data);
 
+    // End output buffering before sending PDF
+    ob_end_clean();
     $pdf->Output('fall_2024_signups.pdf', 'I');
 } catch (Exception $e) {
-    // Use logging instead of echo
-    // echo 'Error: ' . $e->getMessage() . '<br>';
+    // Handle errors appropriately without sending output
+    ob_end_clean();
 }
-
-// End output buffering
-ob_end_clean();
 ?>
