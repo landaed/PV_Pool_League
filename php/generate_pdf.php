@@ -37,7 +37,7 @@ function createTable($pdf, $header, $data) {
         $pdf->SetFont('', 'B');
 
         // Define custom widths for each column based on the new page width
-        $w = array_fill(0, count($header), 270 / count($header)); // Adjusted width for wider page
+        $w = array_fill(0, count($header), 470 / count($header)); // Adjusted width for wider page
 
         foreach ($header as $col) {
             $pdf->Cell($w[array_search($col, $header)], 7, $col, 1, 0, 'C', 1);
@@ -104,7 +104,7 @@ try {
     $stmt->close();
 
     // Set custom page size: A4 with increased width
-    $pdf = new MYPDF('L', PDF_UNIT, [597, 210], true, 'UTF-8', false);  // 'L' for landscape, A4 width is 297mm, height 210mm
+    $pdf = new MYPDF('L', PDF_UNIT, [497, 210], true, 'UTF-8', false);  // 'L' for landscape, A4 width is 297mm, height 210mm
     $pdf->SetMargins(10, 40, 10);  // Set smaller margins for wider content display
     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
     $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
