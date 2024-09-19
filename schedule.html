@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="./assets/css/main.css"/>
-    <noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
+    <noscript><link rel="stylesheet" href="./assets/css/noscript.css" />
 
     <!-- Include Font Awesome for icons (optional) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -30,22 +30,34 @@
             border-bottom: 1px solid #ccc;
         }
         .accordion-header {
-            background-color: #f1f1f1;
+            background-color: #2c3e50; /* Dark blue-gray */
+            color: #ecf0f1; /* Light gray */
             cursor: pointer;
-            padding: 15px;
+            padding: 20px;
             font-size: 1.2em;
             text-align: left;
             outline: none;
             transition: background-color 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: block;
+            width: 100%;
+            border: none;
+            position: relative;
         }
         .accordion-header:hover {
-            background-color: #ddd;
+            background-color: #34495e; /* Slightly lighter shade */
         }
         .accordion-header.active {
-            background-color: #ddd;
+            background-color: #34495e;
+        }
+        .accordion-header .icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+        }
+        .accordion-header.active .icon {
+            transform: translateY(-50%) rotate(180deg);
         }
         .accordion-content {
             display: none;
@@ -56,25 +68,21 @@
             position: relative;
             overflow: hidden;
             width: 100%;
-            height: 100vh; /* Set a reasonable height */
+            height: 100vh; /* Adjust as needed */
         }
         .embed-container iframe {
             width: 100%;
             height: 100%;
             border: 0;
         }
-        /* Icon styles */
-        .accordion-header i {
-            transition: transform 0.2s ease;
-        }
-        .accordion-header.active i {
-            transform: rotate(180deg);
-        }
         /* Mobile adjustments */
         @media screen and (max-width: 600px) {
             .accordion-header {
                 font-size: 1em;
-                padding: 10px;
+                padding: 15px;
+            }
+            .accordion-header .icon {
+                right: 15px;
             }
         }
     </style>
@@ -97,7 +105,7 @@
                 <div class="accordion-item">
                     <button class="accordion-header">
                         Monday Open
-                        <i class="fas fa-chevron-down"></i>
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
                     </button>
                     <div class="accordion-content">
                         <div class="embed-container">
@@ -110,7 +118,7 @@
                 <div class="accordion-item">
                     <button class="accordion-header">
                         Tuesday A
-                        <i class="fas fa-chevron-down"></i>
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
                     </button>
                     <div class="accordion-content">
                         <div class="embed-container">
@@ -123,7 +131,7 @@
                 <div class="accordion-item">
                     <button class="accordion-header">
                         Tuesday B
-                        <i class="fas fa-chevron-down"></i>
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
                     </button>
                     <div class="accordion-content">
                         <div class="embed-container">
@@ -136,7 +144,7 @@
                 <div class="accordion-item">
                     <button class="accordion-header">
                         Wednesday A
-                        <i class="fas fa-chevron-down"></i>
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
                     </button>
                     <div class="accordion-content">
                         <div class="embed-container">
@@ -149,7 +157,7 @@
                 <div class="accordion-item">
                     <button class="accordion-header">
                         Wednesday B
-                        <i class="fas fa-chevron-down"></i>
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
                     </button>
                     <div class="accordion-content">
                         <div class="embed-container">
@@ -190,7 +198,7 @@
             headers.forEach(function(header) {
                 header.addEventListener('click', function() {
                     var content = this.nextElementSibling;
-                    var icon = this.querySelector('i');
+                    var icon = this.querySelector('.icon i');
 
                     // Close other open accordions
                     var openContent = document.querySelector('.accordion-content.show');
@@ -198,6 +206,10 @@
                         openContent.classList.remove('show');
                         openContent.previousElementSibling.classList.remove('active');
                         openContent.style.display = 'none';
+                        var openIcon = openContent.previousElementSibling.querySelector('.icon i');
+                        if (openIcon) {
+                            openIcon.style.transform = 'rotate(0deg)';
+                        }
                     }
 
                     // Toggle current accordion
@@ -205,10 +217,16 @@
                         content.classList.remove('show');
                         this.classList.remove('active');
                         content.style.display = 'none';
+                        if (icon) {
+                            icon.style.transform = 'rotate(0deg)';
+                        }
                     } else {
                         content.classList.add('show');
                         this.classList.add('active');
                         content.style.display = 'block';
+                        if (icon) {
+                            icon.style.transform = 'rotate(180deg)';
+                        }
                     }
                 });
             });
