@@ -74,26 +74,29 @@
       height: 450px !important;
       border: 0;
     }
-
+    .highriv {margin-top: 100px !important;}
     @media (max-width: 600px) {
       .location-list li {flex: 1 1 100%;}
       #navBar_img {height:40px;}
 
     }
-	@media (max-width: 1800px) {
+    @media (min-width: 0px) {
+      .highriv {margin-bottom: 100px !important;}
+	    .calg {margin-bottom: 1200px !important;}
+	  }
 
-	.calg {margin-bottom: 400px !important;}
-	}
-	@media (max-width: 900px) {
+    @media (min-width: 710px) {
+      .highriv {margin-bottom: 100px !important;}
+	    .calg {margin-bottom: 600px !important;}
+	  }
+    @media (min-width: 1000px) {
+	    .calg {margin-bottom: 300px !important;}
+	  }
+    @media (min-width: 1800px) {
 
-	.calg {margin-bottom: 700px !important;}
-	}
-
-	@media (max-width: 700px) {
-
-		.calg {margin-bottom: 1200px !important;}
-	}
-	
+	    .calg {margin-bottom: 300px !important;}
+	  }
+  
 	
   </style>
 </head>
@@ -143,7 +146,7 @@
     </section>
 
     <!-- HIGH RIVER ------------------------------------------------- -->
-    <section id="highriver" class="city-section">
+    <section id="highriver" class="city-section highriv">
       <h2>High River</h2>
       <ul class="location-list">
         <li><a class="loc_btn" data-target="#newSallys">Sally’s Pub & Grill</a></li>
