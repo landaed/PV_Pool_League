@@ -127,10 +127,6 @@
         sessionStorage.setItem('poolInfoShown','1');
     }
 
-    const hide = () => {
-        modal.dataset.show = 'no';
-        modal.setAttribute('aria-hidden','true');
-    };
 
     closeBtn.addEventListener('click', hide);
     modal.addEventListener('click', e => { if (e.target === modal) hide(); });
