@@ -128,7 +128,28 @@ function scrollToAboutUs() {
 			</div>
 		</div>
 
-		
+		<script>
+			(() => {
+				if (window.__poolModalWired) return;     // avoid duplicate wiring
+				window.__poolModalWired = true;
+			
+				const modal  = document.getElementById('poolInfoModal');
+				const close  = modal.querySelector('.pv-modal__close');
+			
+				/* show once per tab */
+				if (!sessionStorage.getItem('poolInfoShown')){
+					modal.dataset.show = 'yes';
+					sessionStorage.setItem('poolInfoShown','1');
+				}
+			
+				const hide = () => modal.dataset.show = 'no';
+			
+				close.addEventListener('click', hide);
+				modal.addEventListener('click', e => { if (e.target === modal) hide(); });
+				document.addEventListener('keyup', e => { if (e.key === 'Escape') hide(); });
+			})();
+			</script>
+			
 			
 		<!-- ──────────────────────────────────────────────────────────────────────── -->
 

@@ -65,68 +65,45 @@ footer, header, hgroup, menu, nav, section {
     height: 30px; /* Height of the arrow */
 }
 
-/* ===== Pool-Info Modal ============================================== */
-#poolInfoModal {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0,0,0,.75);
-    backdrop-filter: blur(2px);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .35s ease;
-    z-index: 9999;               /* sits above everything */
+/* ===== Pool-Info Modal (final) ========================================= */
+#poolInfoModal {                 /* overlay */
+    position: fixed; inset:0;
+    display:flex;justify-content:center;align-items:center;
+    background:rgba(0,0,0,.75); backdrop-filter:blur(2px);
+    opacity:0;visibility:hidden;transition:opacity .35s ease;
+    z-index:9999;
+}
+/* show state */
+#poolInfoModal[data-show="yes"] {opacity:1;visibility:visible;}
+
+.pv-modal__content {             /* card */
+    position:relative;           /* 🔑 keeps × in top-right */
+    max-width:min(90vw, 900px);
+    max-height:90vh;
+    overflow:auto;
+    border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.6);
+    transform:translateY(24px);transition:transform .35s ease;
+    background:transparent;
+}
+#poolInfoModal[data-show="yes"] .pv-modal__content{transform:none;}
+
+.pv-modal__img{
+    width:100%;height:auto;
+    max-height:90vh;
+    object-fit:contain;          /* scale without cropping */
+    border-radius:10px;display:block;
 }
 
-/* state toggle */
-#poolInfoModal[aria-hidden="false"] {
-    opacity: 1;
-    visibility: visible;
+.pv-modal__close{
+    position:absolute;top:6px;right:10px;
+    font:700 2rem/1 system-ui,sans-serif;
+    color:#fff;text-shadow:0 0 4px #000;
+    background:none;border:0;cursor:pointer;
 }
+.pv-modal__close:hover{transform:scale(1.15);}
+.pv-modal__close:focus{outline:2px solid #0bf;}
 
-/* inner card ---------------------------------------------------------- */
-.pv-modal__content {
-    position: relative;
-    display: flex;
-    overflow-y: auto;            /* trap scroll if image is tall */
-    max-width: min(90vw, 900px);
-    max-height: 90vh;
-    border-radius: 10px;
-    box-shadow: 0 6px 24px rgba(0,0,0,.6);
-    transform: translateY(20px); /* small lift-in effect */
-    transition: transform .35s ease;
-    background: transparent;
-}
-#poolInfoModal[aria-hidden="false"] .pv-modal__content {
-    transform: translateY(0);
-}
-
-.pv-modal__img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    display: block;
-}
-
-/* close button -------------------------------------------------------- */
-.pv-modal__close {
-    position: absolute;
-    top: 4px;
-    right: 8px;
-    font: 700 2rem/1.1 system-ui, sans-serif;
-    color: #fff;
-    background: none;
-    border: none;
-    text-shadow: 0 0 4px #000;
-    cursor: pointer;
-}
-.pv-modal__close:hover { transform: scale(1.15); }
-.pv-modal__close:focus { outline: 2px solid #0bf; }
-
-/* nav bar layering ---------------------------------------------------- */
-#navBar { z-index: 1000; }
+#navBar{z-index:1000;}           /* under modal */
 
 .up-arrow::before {
     content: "";
