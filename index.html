@@ -121,12 +121,11 @@
     const modal    = document.getElementById('poolInfoModal');
     const closeBtn = modal.querySelector('.pv-modal__close');
 
-    if (!sessionStorage.getItem('poolInfoShown')) {
-        modal.dataset.show = 'yes';
-        modal.removeAttribute('aria-hidden');
-        sessionStorage.setItem('poolInfoShown','1');
-    }
 
+    const hide = () => {
+        modal.dataset.show = 'no';
+        modal.setAttribute('aria-hidden','true');
+    };
 
     closeBtn.addEventListener('click', hide);
     modal.addEventListener('click', e => { if (e.target === modal) hide(); });
