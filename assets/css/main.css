@@ -65,35 +65,68 @@ footer, header, hgroup, menu, nav, section {
     height: 30px; /* Height of the arrow */
 }
 
-/* ─── Modal base ────────────────────────────────────────────────────────── */
-.pv-modal {
-    position: fixed; inset: 0;
-    display: flex; justify-content: center; align-items: center;
+/* ===== Pool-Info Modal ============================================== */
+#poolInfoModal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: rgba(0,0,0,.75);
-    z-index: 9999;
-    visibility: hidden;              /* keep out of flow until shown */
-    opacity: 0; transition: opacity .3s ease;
-}
-.pv-modal[aria-hidden="false"] {     /* toggled by JS */
-    visibility: visible; opacity: 1;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .35s ease;
+    z-index: 9999;               /* sits above everything */
 }
 
-/* ─── Modal inner box ───────────────────────────────────────────────────── */
+/* state toggle */
+#poolInfoModal[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* inner card ---------------------------------------------------------- */
 .pv-modal__content {
     position: relative;
-    max-width: 90vw; max-height: 90vh;
-    background: #111; padding: 1rem;
-    border-radius: 8px; box-shadow: 0 4px 25px rgba(0,0,0,.6);
+    display: flex;
+    overflow-y: auto;            /* trap scroll if image is tall */
+    max-width: min(90vw, 900px);
+    max-height: 90vh;
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.6);
+    transform: translateY(20px); /* small lift-in effect */
+    transition: transform .35s ease;
+    background: transparent;
 }
-.pv-modal__img { width: 100%; height: auto; display: block; }
+#poolInfoModal[aria-hidden="false"] .pv-modal__content {
+    transform: translateY(0);
+}
 
-/* ─── Close button ──────────────────────────────────────────────────────── */
-.pv-modal__close {
-    position: absolute; top: .25rem; right: .5rem;
-    font: bold 2rem/1 Arial, sans-serif;
-    background: none; border: 0; color: #fff; cursor: pointer;
+.pv-modal__img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
 }
+
+/* close button -------------------------------------------------------- */
+.pv-modal__close {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    font: 700 2rem/1.1 system-ui, sans-serif;
+    color: #fff;
+    background: none;
+    border: none;
+    text-shadow: 0 0 4px #000;
+    cursor: pointer;
+}
+.pv-modal__close:hover { transform: scale(1.15); }
 .pv-modal__close:focus { outline: 2px solid #0bf; }
+
+/* nav bar layering ---------------------------------------------------- */
+#navBar { z-index: 1000; }
 
 .up-arrow::before {
     content: "";
