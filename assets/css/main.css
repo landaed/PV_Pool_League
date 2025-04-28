@@ -19,6 +19,42 @@
     font-weight: 800;
     font-style: normal;
 }
+/* ===== Pool-Info Modal ================================================= */
+#poolInfoModal{
+    position:fixed;inset:0;
+    display:flex;justify-content:center;align-items:center;
+    background:rgba(0,0,0,.75);backdrop-filter:blur(2px);
+    z-index:9999;
+    visibility:hidden;opacity:0;transition:opacity .35s ease;
+}
+#poolInfoModal[data-show="yes"]{visibility:visible;opacity:1;}
+
+.pv-modal__content{
+    position:relative;
+    max-width:min(90vw,900px);
+    max-height:90vh;
+    overflow:auto;
+    border-radius:10px;
+    box-shadow:0 6px 24px rgba(0,0,0,.6);
+    transform:translateY(32px);
+    transition:transform .35s ease;
+    background:transparent;
+}
+#poolInfoModal[data-show="yes"] .pv-modal__content{transform:none;}
+
+.pv-modal__img{
+    width:100%;height:auto;max-height:90vh;
+    object-fit:contain;border-radius:10px;display:block;
+}
+
+.pv-modal__close{
+    position:absolute;top:6px;right:10px;
+    font:700 2rem/1 system-ui,sans-serif;
+    color:#fff;text-shadow:0 0 4px #000;
+    background:none;border:0;cursor:pointer;
+}
+.pv-modal__close:hover{transform:scale(1.15);}
+.pv-modal__close:focus{outline:2px solid #0bf;}
 
 /*
 	Hyperspace by HTML5 UP
@@ -65,42 +101,6 @@ footer, header, hgroup, menu, nav, section {
     height: 30px; /* Height of the arrow */
 }
 
-/* ===== Pool-Info Modal ================================================= */
-#poolInfoModal{
-    position:fixed;inset:0;
-    display:flex;justify-content:center;align-items:center;
-    background:rgba(0,0,0,.75);backdrop-filter:blur(2px);
-    z-index:9999;
-    visibility:hidden;opacity:0;transition:opacity .35s ease;
-}
-#poolInfoModal[data-show="yes"]{visibility:visible;opacity:1;}
-
-.pv-modal__content{
-    position:relative;
-    max-width:min(90vw,900px);
-    max-height:90vh;
-    overflow:auto;
-    border-radius:10px;
-    box-shadow:0 6px 24px rgba(0,0,0,.6);
-    transform:translateY(32px);
-    transition:transform .35s ease;
-    background:transparent;
-}
-#poolInfoModal[data-show="yes"] .pv-modal__content{transform:none;}
-
-.pv-modal__img{
-    width:100%;height:auto;max-height:90vh;
-    object-fit:contain;border-radius:10px;display:block;
-}
-
-.pv-modal__close{
-    position:absolute;top:6px;right:10px;
-    font:700 2rem/1 system-ui,sans-serif;
-    color:#fff;text-shadow:0 0 4px #000;
-    background:none;border:0;cursor:pointer;
-}
-.pv-modal__close:hover{transform:scale(1.15);}
-.pv-modal__close:focus{outline:2px solid #0bf;}
 
 .up-arrow::before {
     content: "";
