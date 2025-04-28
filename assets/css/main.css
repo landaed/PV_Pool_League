@@ -65,6 +65,35 @@ footer, header, hgroup, menu, nav, section {
     height: 30px; /* Height of the arrow */
 }
 
+/* ─── Modal base ────────────────────────────────────────────────────────── */
+.pv-modal {
+    position: fixed; inset: 0;
+    display: flex; justify-content: center; align-items: center;
+    background: rgba(0,0,0,.75);
+    z-index: 9999;
+    visibility: hidden;              /* keep out of flow until shown */
+    opacity: 0; transition: opacity .3s ease;
+}
+.pv-modal[aria-hidden="false"] {     /* toggled by JS */
+    visibility: visible; opacity: 1;
+}
+
+/* ─── Modal inner box ───────────────────────────────────────────────────── */
+.pv-modal__content {
+    position: relative;
+    max-width: 90vw; max-height: 90vh;
+    background: #111; padding: 1rem;
+    border-radius: 8px; box-shadow: 0 4px 25px rgba(0,0,0,.6);
+}
+.pv-modal__img { width: 100%; height: auto; display: block; }
+
+/* ─── Close button ──────────────────────────────────────────────────────── */
+.pv-modal__close {
+    position: absolute; top: .25rem; right: .5rem;
+    font: bold 2rem/1 Arial, sans-serif;
+    background: none; border: 0; color: #fff; cursor: pointer;
+}
+.pv-modal__close:focus { outline: 2px solid #0bf; }
 
 .up-arrow::before {
     content: "";

@@ -118,21 +118,46 @@ function scrollToAboutUs() {
     <div></div>
 </div>
 
-		<div id="myModal" class="modal">
-			<div class="modal-content">
-			  <span class="close">&times;</span>
-			  <div class="modal-header">
-				<h2>April 16, 2025</h2>
-			  </div>
-			  <div class="modal-body">
-				<p>Hello Players!</p>
-				<p>More info on Summer Session coming soon!</p>
-			  </div>
-			  <div class="modal-footer">
-				<p>Have FUN Shooting Pool!!!<br>Donna & Warren</p>
-			  </div>
+		<!-- ─── Summer-Pool-Info Modal ───────────────────────────────────────────── -->
+		<div id="poolInfoModal" class="pv-modal" aria-hidden="true">
+			<div class="pv-modal__content" role="dialog" aria-label="Summer session info">
+				<button class="pv-modal__close" aria-label="Close modal">&times;</button>
+				<img src="./assets/images/summer_pool_info_2025.png"
+					alt="Summer Pool League 2025 information poster"
+					class="pv-modal__img">
 			</div>
-		  </div>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				const modal = document.getElementById('poolInfoModal');
+				const closeBtn = modal.querySelector('.pv-modal__close');
+			
+				/* show modal on page load */
+				modal.setAttribute('aria-hidden', 'false');
+			
+				/* helper: hide & trap only once per visit */
+				function hideModal () { modal.setAttribute('aria-hidden', 'true'); }
+			
+				/* click the × button */
+				closeBtn.addEventListener('click', hideModal);
+			
+				/* click outside the inner box */
+				modal.addEventListener('click', e => {
+					if (e.target === modal) hideModal();
+				});
+			
+				/* escape key accessibility */
+				document.addEventListener('keyup', e => {
+					if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+						hideModal();
+					}
+				});
+			});
+			</script>
+			
+		<!-- ──────────────────────────────────────────────────────────────────────── -->
+
 		  
 		  
 		  <script>
