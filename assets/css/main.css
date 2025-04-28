@@ -65,33 +65,32 @@ footer, header, hgroup, menu, nav, section {
     height: 30px; /* Height of the arrow */
 }
 
-/* ===== Pool-Info Modal (final) ========================================= */
-#poolInfoModal {                 /* overlay */
-    position: fixed; inset:0;
+/* ===== Pool-Info Modal ================================================= */
+#poolInfoModal{
+    position:fixed;inset:0;
     display:flex;justify-content:center;align-items:center;
-    background:rgba(0,0,0,.75); backdrop-filter:blur(2px);
-    opacity:0;visibility:hidden;transition:opacity .35s ease;
+    background:rgba(0,0,0,.75);backdrop-filter:blur(2px);
     z-index:9999;
+    visibility:hidden;opacity:0;transition:opacity .35s ease;
 }
-/* show state */
-#poolInfoModal[data-show="yes"] {opacity:1;visibility:visible;}
+#poolInfoModal[data-show="yes"]{visibility:visible;opacity:1;}
 
-.pv-modal__content {             /* card */
-    position:relative;           /* 🔑 keeps × in top-right */
-    max-width:min(90vw, 900px);
+.pv-modal__content{
+    position:relative;
+    max-width:min(90vw,900px);
     max-height:90vh;
     overflow:auto;
-    border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.6);
-    transform:translateY(24px);transition:transform .35s ease;
+    border-radius:10px;
+    box-shadow:0 6px 24px rgba(0,0,0,.6);
+    transform:translateY(32px);
+    transition:transform .35s ease;
     background:transparent;
 }
 #poolInfoModal[data-show="yes"] .pv-modal__content{transform:none;}
 
 .pv-modal__img{
-    width:100%;height:auto;
-    max-height:90vh;
-    object-fit:contain;          /* scale without cropping */
-    border-radius:10px;display:block;
+    width:100%;height:auto;max-height:90vh;
+    object-fit:contain;border-radius:10px;display:block;
 }
 
 .pv-modal__close{
@@ -102,8 +101,6 @@ footer, header, hgroup, menu, nav, section {
 }
 .pv-modal__close:hover{transform:scale(1.15);}
 .pv-modal__close:focus{outline:2px solid #0bf;}
-
-#navBar{z-index:1000;}           /* under modal */
 
 .up-arrow::before {
     content: "";

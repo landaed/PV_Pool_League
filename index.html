@@ -1,396 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>PV Pool Leagues - Home</title>
-		<link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="stylesheet" href="./assets/css/main_1.css"/>
-		<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
-	
-		<script src="https://cdn.babylonjs.com/babylon.js"></script>
-		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+<head>
+    <title>PV Pool Leagues - Home</title>
+    <link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <!-- site styles -->
+    <link rel="stylesheet" href="./assets/css/main_1.css">
+    <!-- modal styles -->
+    <link rel="stylesheet" href="./assets/css/pool-modal.css">
 
+    <noscript><link rel="stylesheet" href="./assets/css/noscript.css"></noscript>
 
-		<script>
-    document.addEventListener('DOMContentLoaded', function () {
- var canvas = document.getElementById('renderCanvas');
+    <!-- libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 
-    function disableScroll(event) {
-        event.preventDefault();
-    }
+    <!-- disable scroll on renderCanvas and loc_btn smooth-scroll logic -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('renderCanvas');
+        const prevent = e => e.preventDefault();
+        ['touchstart','touchmove','touchend'].forEach(evt =>
+            canvas.addEventListener(evt, prevent, {passive:false})
+        );
 
-    // Add event listeners to the canvas
-    canvas.addEventListener('touchstart', disableScroll, {passive: false});
-    canvas.addEventListener('touchmove', disableScroll, {passive: false});
-    canvas.addEventListener('touchend', disableScroll, {passive: false});
-    // Function to handle division button click
-    function scrollToSection(event) {
-        event.preventDefault();
-        const targetId = event.currentTarget.getAttribute('data-target');
-        const targetSection = document.querySelector(targetId);
-
-        if (targetSection) {
-            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        function scrollToSection(e){
+            e.preventDefault();
+            const targetId = e.currentTarget.getAttribute('data-target');
+            const target   = document.querySelector(targetId);
+            if (target) target.scrollIntoView({behavior:'smooth',block:'start'});
         }
-    }
-
-    // Add click event listeners to division buttons
-    const divisionButtons = document.querySelectorAll('.loc_btn');
-    divisionButtons.forEach(button => {
-        button.addEventListener('click', scrollToSection);
+        document.querySelectorAll('.loc_btn').forEach(btn =>
+            btn.addEventListener('click', scrollToSection)
+        );
     });
-});
-</script>
-		<script>
-			const texts = ["Where Everybody Is A Winner", "Summer registration is now open!"];
-			let currentIndex = 1;
+    </script>
 
-			function fadeOutText() {
-				const infoElement = document.getElementById("info");
-				infoElement.style.opacity = 0; // fade out
-			}
+    <!-- rotating header text -->
+    <script>
+    const texts = ["Where Everybody Is A Winner", "Summer registration is now open!"];
+    let currentIndex = 1;
+    function fadeOutText(){
+        document.getElementById("info").style.opacity = 0;
+    }
+    function updateText(){
+        const el = document.getElementById("info");
+        el.textContent = texts[currentIndex];
+        currentIndex = (currentIndex + 1) % texts.length;
+        el.style.opacity = 1;
+    }
+    setInterval(()=>{
+        fadeOutText();
+        setTimeout(updateText, 1000);
+    }, 3000);
+    </script>
 
-			function updateText() {
-				const infoElement = document.getElementById("info");
-				infoElement.textContent = texts[currentIndex];
-				currentIndex = (currentIndex + 1) % texts.length;
-				infoElement.style.opacity = 1; // fade in
-			}
+    <!-- header opacity on scroll + “about us” helper -->
+    <script>
+    window.onscroll = function(){
+        const header = document.getElementById('header');
+        if(header){
+            const scroll  = window.pageYOffset || document.documentElement.scrollTop;
+            const opacity = Math.min(1, 1 - (scroll/500));
+            header.style.opacity = opacity;
+        }
+    };
+    function scrollToAboutUs(){
+        document.getElementById("ourLeague")
+                .scrollIntoView({behavior:'smooth'});
+    }
+    </script>
 
-			setInterval(() => {
-				fadeOutText();
-				setTimeout(updateText, 1000); // wait for the fade out to complete
-			}, 3000);
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];
+        w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+        j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+        f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NVFMCM3W');
+    </script>
+    <!-- End GTM -->
+</head>
 
-		</script>
-		<script>
-window.onscroll = function() {
-    var header = document.getElementById('header');
-	if(header){
-		var scroll = window.pageYOffset || document.documentElement.scrollTop;
-
-		// Calculate opacity
-		var opacity = Math.min(1, 1.-(scroll / 500));
-		header.style.opacity = opacity;
-	}
-    
-};
-function scrollToAboutUs() {
-    // Find the element with the "about" ID
-    var aboutUsSection = document.getElementById("ourLeague");
-
-    // Scroll to the "about" element smoothly
-    aboutUsSection.scrollIntoView({ behavior: 'smooth' });
-}
-
-
-</script>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-	})(window,document,'script','dataLayer','GTM-NVFMCM3W');</script>
-	<!-- End Google Tag Manager -->
-	</head>
-	
 <body>
-	<!-- Google Tag Manager (noscript) -->
-	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NVFMCM3W"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<!-- End Google Tag Manager (noscript) -->
-				<!-- Loading Screen Overlay -->
-<div id="navBar" style="display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; width: 100%; background: #333; padding: 10px 20px;">
-    <div style="display: flex; align-items: center; min-width: 250px;">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NVFMCM3W"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End GTM -->
+
+<!-- ─── Fixed Navigation Bar ─────────────────────────────────────────── -->
+<div id="navBar" style="display:flex;align-items:center;justify-content:space-between;
+     position:fixed;top:0;width:100%;background:#333;padding:10px 20px;z-index:1000;">
+    <div style="display:flex;align-items:center;min-width:250px;">
         <div>
             <h3>Contact</h3>
-            <p><b>Cell# 403-990-6128<br>Office 1-800-663-5953</b></p>
+            <p><b>Cell 403-990-6128<br>Office 1-800-663-5953</b></p>
         </div>
     </div>
-    <!-- Centering the image in the available space -->
-    <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
-        <img src="assets/images/PV-Pool-League.png" alt="Logo" id="navBar_img" style="margin-left: -35px; min-width:142.7px !important; min-height: 100px;"> <!-- Adjust max-height as needed -->
+    <div style="flex-grow:1;display:flex;justify-content:center;align-items:center;">
+        <img src="assets/images/PV-Pool-League.png" alt="Logo" id="navBar_img"
+             style="margin-left:-35px;min-width:142.7px;min-height:100px;">
     </div>
-    <!-- This empty div helps to keep the image centered -->
     <div></div>
 </div>
 
-		<!-- ─── Summer-Pool-Info Modal ───────────────────────────────────────────── -->
-		<div id="poolInfoModal" class="pv-modal" aria-hidden="true">
-			<div class="pv-modal__content" role="dialog" aria-label="Summer session info">
-				<button class="pv-modal__close" aria-label="Close modal">&times;</button>
-				<img src="./assets/images/summer_pool_info_2025.png"
-					alt="Summer Pool League 2025 information poster"
-					class="pv-modal__img">
-			</div>
-		</div>
+<!-- ─── Summer-Pool-Info Modal (starts hidden) ───────────────────────── -->
+<div id="poolInfoModal" class="pv-modal" data-show="no" aria-hidden="true">
+    <div class="pv-modal__content" role="dialog" aria-label="Summer session info">
+        <button class="pv-modal__close" aria-label="Close modal">&times;</button>
+        <img src="./assets/images/summer_pool_info_2025.png"
+             alt="Summer Pool League 2025 information poster"
+             class="pv-modal__img">
+    </div>
+</div>
 
-		<script>
-			(() => {
-				if (window.__poolModalWired) return;     // avoid duplicate wiring
-				window.__poolModalWired = true;
-			
-				const modal  = document.getElementById('poolInfoModal');
-				const close  = modal.querySelector('.pv-modal__close');
-			
-				/* show once per tab */
-				if (!sessionStorage.getItem('poolInfoShown')){
-					modal.dataset.show = 'yes';
-					sessionStorage.setItem('poolInfoShown','1');
-				}
-			
-				const hide = () => modal.dataset.show = 'no';
-			
-				close.addEventListener('click', hide);
-				modal.addEventListener('click', e => { if (e.target === modal) hide(); });
-				document.addEventListener('keyup', e => { if (e.key === 'Escape') hide(); });
-			})();
-			</script>
-			
-			
-		<!-- ──────────────────────────────────────────────────────────────────────── -->
+<!-- Modal wiring -->
+<script>
+(() => {
+    const modal    = document.getElementById('poolInfoModal');
+    const closeBtn = modal.querySelector('.pv-modal__close');
 
-		  
-		<div id="mainContent">
-        <!-- ... all your other body content ... -->
+    if (!sessionStorage.getItem('poolInfoShown')) {
+        modal.dataset.show = 'yes';
+        modal.removeAttribute('aria-hidden');
+        sessionStorage.setItem('poolInfoShown','1');
+    }
 
+    const hide = () => {
+        modal.dataset.show = 'no';
+        modal.setAttribute('aria-hidden','true');
+    };
 
+    closeBtn.addEventListener('click', hide);
+    modal.addEventListener('click', e => { if (e.target === modal) hide(); });
+    document.addEventListener('keyup', e => { if (e.key === 'Escape') hide(); });
+})();
+</script>
 
-		<!-- Wrapper -->
-		<div id="top" >
+<!-- ─── Main Content ─────────────────────────────────────────────────── -->
+<div id="mainContent">
 
-			<!-- Intro -->
-			<section id="intro" class="wrapper style1 fullscreen">
-				<canvas id="renderCanvas"></canvas>
-				<button class="more" onclick="scrollToAboutUs()">more<i class="fas fa-caret-down"></i></button>
-				<a class="more" href="./schedule.html" style="position: absolute; top: 60% !important; left: 50%; transform: translateX(-50%);">
-					<button>Summer Schedule</button>
-				</a>
-				
-				<div id="text-overlay">
-					<p id="info">Where Everybody Is A Winner</p>
-					
+    <!-- Wrapper Top -->
+    <div id="top">
 
-				</div>
-				<script src="./assets/js/scene.js"></script>
-			</section>
+        <!-- Intro section -->
+        <section id="intro" class="wrapper style1 fullscreen">
+            <canvas id="renderCanvas"></canvas>
 
-			<section class="wrapper style2 spotlights">
+            <button class="more" onclick="scrollToAboutUs()">more<i class="fas fa-caret-down"></i></button>
+            <a class="more" href="./schedule.html"
+               style="position:absolute;top:60%;left:50%;transform:translateX(-50%);">
+                <button>Summer Schedule</button>
+            </a>
 
-				<section class="wrapper">
-					<div class="inner leftMarginAlign">
-						<div class="center-container">
-						    <h2 id="ourLeague"></h2>
-						</div>
-						<section class="  spotlights">
-							<section class="">
-					<a  class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/about_us.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
-					<div class="content">
-							<h2 id="about">About Us</h2>
-							<p>Read about our history!</p>
-							<ul class="actions">
-								<li><a href="about.html" class="button">Learn More</a></li>
-							</ul>
-					</div>
-				</section>
-				
-				<section class="">
-					<a  class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/locations.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
-					<div class="content">
+            <div id="text-overlay">
+                <p id="info">Where Everybody Is A Winner</p>
+            </div>
 
-							<h2 id="about">Locations</h2>
-							<p>We are adding new locations all the time</p>
-							<ul class="actions">
-								<li><a href="locations.html" class="button">Learn More</a></li>
-							</ul>
+            <script src="./assets/js/scene.js"></script>
+        </section>
 
-					</div>
-				</section>
-				<section class="">
-					<a  class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/register.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
-					<div class="content">
+        <!-- Spotlights wrapper -->
+        <section class="wrapper style2 spotlights">
 
-							<h2 id="about">Register</h2>
-							<p>Join our leagues, its fun!</p>
-							<ul class="actions">
-								<li><a href="register.html" class="button">Learn More</a></li>
-							</ul>
+            <section class="wrapper">
+                <div class="inner leftMarginAlign">
+                    <div class="center-container">
+                        <h2 id="ourLeague"></h2>
+                    </div>
 
-					</div>
-				</section>
-				<section class="horizontal_backing">
-					<a class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/stats.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
-					<div class="content">
+                    <section class="spotlights">
 
-							<h2 id="about">Stats</h2>
-							<p>See your score right here on CompuSport</p>
-							<ul class="actions">
-								<li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True" class="button">Learn More</a></li>
-							</ul>
+                        <!-- About Us -->
+                        <section>
+                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                                    background-position:center center;">
+                                <img src="./assets/images/about_us.png" alt="About" data-position="center center" style="display:none;">
+                            </a>
+                            <div class="content">
+                                <h2 id="about">About Us</h2>
+                                <p>Read about our history!</p>
+                                <ul class="actions">
+                                    <li><a href="about.html" class="button">Learn More</a></li>
+                                </ul>
+                            </div>
+                        </section>
 
-					</div>
-				</section>
-				<section class="">
-					<a class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/schedule_icon.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
-					<div class="content">
+                        <!-- Locations -->
+                        <section>
+                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                                    background-position:center center;">
+                                <img src="./assets/images/locations.png" alt="Locations" data-position="center center" style="display:none;">
+                            </a>
+                            <div class="content">
+                                <h2>Locations</h2>
+                                <p>We are adding new locations all the time</p>
+                                <ul class="actions">
+                                    <li><a href="locations.html" class="button">Learn More</a></li>
+                                </ul>
+                            </div>
+                        </section>
 
-							<h2 id="about">Schedule</h2>
-							<p>See the Schedule!</p>
-							<ul class="actions">
-								<li><a href="schedule.html" class="button">Learn More</a></li>
-							</ul>
-					</div>
-				</section>
-				<section class="">
-					<a class="image" style="background-image: url(&quot;./assets/images/SimChopIcon.png&quot;); background-position: center center;"><img src="./assets/images/divisions.png" alt="SimChop Icon" data-position="center center" style="display: none;"></a>
-					<div class="content">
+                        <!-- Register -->
+                        <section>
+                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                                    background-position:center center;">
+                                <img src="./assets/images/register.png" alt="Register" data-position="center center" style="display:none;">
+                            </a>
+                            <div class="content">
+                                <h2>Register</h2>
+                                <p>Join our leagues, it's fun!</p>
+                                <ul class="actions">
+                                    <li><a href="register.html" class="button">Learn More</a></li>
+                                </ul>
+                            </div>
+                        </section>
 
-							<h2 id="about">Divisions</h2>
-							<p>Fall divisions now available!</p>
-							<ul class="actions">
-								<li><a href="divisions.html" class="button">Learn More</a></li>
-							</ul>
-					</div>
-				</section>
+                        <!-- Stats -->
+                        <section class="horizontal_backing">
+                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                                    background-position:center center;">
+                                <img src="./assets/images/stats.png" alt="Stats" data-position="center center" style="display:none;">
+                            </a>
+                            <div class="content">
+                                <h2>Stats</h2>
+                                <p>See your score right here on CompuSport</p>
+                                <ul class="actions">
+                                    <li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True"
+                                           class="button">Learn More</a></li>
+                                </ul>
+                            </div>
+                        </section>
 
-</section>
+                        <!-- Schedule -->
+                        <section>
+                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                                    background-position:center center;">
+                                <img src="./assets/images/schedule_icon.png" alt="Schedule" data-position="center center" style="display:none;">
+                            </a>
+                            <div class="content">
+                                <h2>Schedule</h2>
+                                <p>See the Schedule!</p>
+                                <ul class="actions">
+                                    <li><a href="schedule.html" class="button">Learn More</a></li>
+                                </ul>
+                            </div>
+                        </section>
 
-		<!-- Footer -->
-		<footer id="footer">
-			<div class="inner">
-			<h3>Contact</h3>
-			<p><b>Cell# 403 990-6128</p>
-			<p>Office 1-800-663-5953</p></b>
-			</div>
-			<div class="inner">
-				<p>&copy; A division of Landa Investments ltd.</p>
-				<p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
+                        <!-- Divisions -->
+                        <section>
+                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                                    background-position:center center;">
+                                <img src="./assets/images/divisions.png" alt="Divisions" data-position="center center" style="display:none;">
+                            </a>
+                            <div class="content">
+                                <h2>Divisions</h2>
+                                <p>Fall divisions now available!</p>
+                                <ul class="actions">
+                                    <li><a href="divisions.html" class="button">Learn More</a></li>
+                                </ul>
+                            </div>
+                        </section>
 
-			</div>
-		</footer>
-		  </div>
+                    </section>
+                </div>
+            </section>
+        </section>
+    </div> <!-- /#top -->
 
-		<!-- Scripts -->
-		<script src="./assets/js/jquery.min.js"></script>
-		<div class="back-to-top">
-      <div class="back-to-top-container">
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <h3>Contact</h3>
+            <p><b>Cell 403-990-6128</p>
+            <p>Office 1-800-663-5953</p></b>
+        </div>
+        <div class="inner">
+            <p>&copy; A division of Landa Investments Ltd.</p>
+            <p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
+        </div>
+    </footer>
+</div> <!-- /#mainContent -->
+
+<!-- ─── Scripts (same order you supplied) ─────────────────────────────── -->
+<script src="./assets/js/jquery.min.js"></script>
+
+<!-- Back-to-top arrow -->
+<div class="back-to-top">
+    <div class="back-to-top-container">
         <div class="up-arrow loc_btn" data-target="#top"></div>
-
-      </div>
     </div>
-		<script>
-		window.onscroll = function() {
-		var navBar = document.getElementById('navBar');
-		var scroll = window.pageYOffset || document.documentElement.scrollTop;
+</div>
 
-		// Show the navigation bar if scrolled more than 800px
-		if (scroll > 800) {
-			navBar.style.display = 'flex';
-		} else {
-			navBar.style.display = 'none';
-		}
+<script>
+window.onscroll = function(){
+    const navBar = document.getElementById('navBar');
+    const scroll = window.pageYOffset || document.documentElement.scrollTop;
+    navBar.style.display = scroll > 800 ? 'flex' : 'none';
 
-		// Your existing opacity code
-		var header = document.getElementById('header');
-		if(header){
-			var opacity = Math.min(1, 1 - (scroll / 500));
-			header.style.opacity = opacity;
-		}		
+    const header = document.getElementById('header');
+    if(header){
+        const opacity = Math.min(1, 1 - (scroll/500));
+        header.style.opacity = opacity;
+    }
 };
+</script>
 
-		</script>
-		<script src="./assets/js/jquery.scrollex.min.js"></script>
-		<script src="./assets/js/jquery.scrolly.min.js"></script>
-		<script src="./assets/js/browser.min.js"></script>
-		<script src="./assets/js/breakpoints.min.js"></script>
-		<script src="./assets/js/util.js"></script>
-		<script src="./assets/js/main.js"></script>
-		<script src="./assets/js/touch_screen_canvas.js"></script>
-		<div class="floating-menu-container">
-    <div class="floating-hamburger-menu">
-        <i class="fas fa-bars"></i>
-    </div>
+<script src="./assets/js/jquery.scrollex.min.js"></script>
+<script src="./assets/js/jquery.scrolly.min.js"></script>
+<script src="./assets/js/browser.min.js"></script>
+<script src="./assets/js/breakpoints.min.js"></script>
+<script src="./assets/js/util.js"></script>
+<script src="./assets/js/main.js"></script>
+<script src="./assets/js/touch_screen_canvas.js"></script>
+
+<!-- Floating menu -->
+<div class="floating-menu-container">
+    <div class="floating-hamburger-menu"><i class="fas fa-bars"></i></div>
     <nav class="floating-menu-content">
         <ul>
-						<li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="locations.html">Locations</a></li>
             <li><a href="register.html">Register</a></li>
-			<li><a href="schedule.html">Schedule</a></li>
-<li><a href="divisions.html">Divisions</a></li>
-			<li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">Stats</a></li>
-            <!-- Add more list items as needed -->
+            <li><a href="schedule.html">Schedule</a></li>
+            <li><a href="divisions.html">Divisions</a></li>
+            <li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">Stats</a></li>
         </ul>
     </nav>
 </div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-	var menuContainer = document.querySelector('.floating-menu-container');
-	var menuContent = document.querySelector('.floating-menu-content');
-	var menuButton = document.querySelector('.floating-hamburger-menu');
-	var menuItems = document.querySelectorAll('.floating-menu-content a'); // Get all menu item links
+document.addEventListener('DOMContentLoaded', () => {
+    const menuContainer = document.querySelector('.floating-menu-container');
+    const menuContent  = document.querySelector('.floating-menu-content');
+    const menuButton   = document.querySelector('.floating-hamburger-menu');
+    const menuItems    = document.querySelectorAll('.floating-menu-content a');
 
-	// Function to toggle the menu's visibility
-	function toggleMenu() {
-			if (menuContent.style.display === 'block') {
-					menuContent.style.display = 'none';
-			} else {
-					menuContent.style.display = 'block';
-			}
-	}
+    function toggleMenu(){
+        menuContent.style.display = menuContent.style.display === 'block' ? 'none' : 'block';
+    }
 
-	// Mouse events for desktop
-	menuContainer.addEventListener('mouseenter', function() {
-			menuContent.style.display = 'block';
-	});
-	menuContainer.addEventListener('mouseleave', function() {
-			menuContent.style.display = 'none';
-	});
-
-	// Touch event for the menu button
-	menuButton.addEventListener('touchstart', function(event) {
-			event.preventDefault(); // Prevent default touch action
-			toggleMenu();
-	}, false);
-
-	// Add touch event listeners to each menu item
-	menuItems.forEach(function(menuItem) {
-			menuItem.addEventListener('touchstart', function(event) {
-					event.stopPropagation(); // Prevent the event from bubbling up to the container
-			}, false);
-	});
+    menuContainer.addEventListener('mouseenter', () => menuContent.style.display = 'block');
+    menuContainer.addEventListener('mouseleave', () => menuContent.style.display = 'none');
+    menuButton   .addEventListener('touchstart', e => {e.preventDefault(); toggleMenu();}, false);
+    menuItems.forEach(item =>
+        item.addEventListener('touchstart', e => e.stopPropagation(), false)
+    );
 });
-
 </script>
-<script>
-	document.addEventListener('DOMContentLoaded', () => {
-		const modal = document.getElementById('poolInfoModal');
-		const closeBtn = modal.querySelector('.pv-modal__close');
-	
-		/* show modal on page load */
-		modal.setAttribute('aria-hidden', 'false');
-	
-		/* helper: hide & trap only once per visit */
-		function hideModal () { modal.setAttribute('aria-hidden', 'true'); }
-	
-		/* click the × button */
-		closeBtn.addEventListener('click', hideModal);
-	
-		/* click outside the inner box */
-		modal.addEventListener('click', e => {
-			if (e.target === modal) hideModal();
-		});
-	
-		/* escape key accessibility */
-		document.addEventListener('keyup', e => {
-			if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
-				hideModal();
-			}
-		});
-	});
-	</script>
-	</body>
+
+</body>
 </html>
