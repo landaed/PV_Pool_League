@@ -4,123 +4,591 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pool League Dashboard</title>
-    <link rel="stylesheet" href="dashboard_styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--light-gray);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 2rem 0;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            background: var(--white);
+            color: var(--gray);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 1.5rem;
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-info {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .info-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .player-list {
+            list-style: none;
+        }
+
+        .player-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .player-item:hover {
+            background-color: var(--light-gray);
+        }
+
+        .player-item:last-child {
+            border-bottom: none;
+        }
+
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .player-details {
+            flex: 1;
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .player-contact {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+            font-size: 1.125rem;
+        }
+
+        .session-divider {
+            margin: 3rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .session-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .session-title {
+            background: var(--light-gray);
+            display: inline-block;
+            padding: 0.5rem 2rem;
+            position: relative;
+            z-index: 1;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
 </head>
 <body>
-    <div id="top-controls">
-        <button id="generate-pdf">Generate PDF for FALL 2024 Signups</button>
+    <header>
+        <div class="container">
+            <h1>🎱 Pool League Dashboard</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchInput" placeholder="Search teams, players, divisions, or sessions...">
+        </div>
+
+        <div class="filters" id="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <!-- Dynamic session filters will be added here -->
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalTeams">0</div>
+                <div class="stat-label">Total Teams</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalPlayers">0</div>
+                <div class="stat-label">Total Players</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalSessions">0</div>
+                <div class="stat-label">Active Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalDivisions">0</div>
+                <div class="stat-label">Divisions</div>
+            </div>
+        </div>
+
+        <div id="content">
+            <!-- Dynamic content will be loaded here -->
+        </div>
     </div>
-    <div id="summary-container"></div>
-    <div id="teams-container"></div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('./php/get_all_teams.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                        return;
-                    }
+        // Global data storage
+        let allData = null;
+        let teams = [];
+        let currentFilter = 'all';
+        let searchTerm = '';
 
-                    const summaryContainer = document.getElementById('summary-container');
-                    const teamsContainer = document.getElementById('teams-container');
+        // Initialize dashboard
+        async function init() {
+            await loadData();
+            setupEventListeners();
+        }
 
-                    // Display summary data
-                    const summary = data.summary;
-                    summaryContainer.innerHTML = `
-                        <h2>League Summary</h2>
-                        <p>Total Teams: ${summary.totalTeams}</p>
-                        <p>Total Players: ${summary.totalPlayers}</p>
-                        <div>
-                            <h3>Calgary</h3>
-                            <p>Total Teams: ${summary.locations.Calgary.totalTeams}</p>
-                            <p>Total Players: ${summary.locations.Calgary.totalPlayers}</p>
-                            ${generateDivisionBreakdown(summary.locations.Calgary.divisions)}
-                        </div>
-                        <div>
-                            <h3>Cochrane</h3>
-                            <p>Total Teams: ${summary.locations.Cochrane.totalTeams}</p>
-                            <p>Total Players: ${summary.locations.Cochrane.totalPlayers}</p>
-                            ${generateDivisionBreakdown(summary.locations.Cochrane.divisions)}
+        // Load data from API
+        async function loadData() {
+            try {
+                const response = await fetch('./php/get_all_teams.php');
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                allData = data;
+                processData();
+                updateStats();
+                createFilters();
+                renderContent();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('content').innerHTML = 
+                    '<div class="no-results">Error loading data. Please refresh the page.</div>';
+            }
+        }
+
+        // Process the data into a flat structure for easier filtering
+        function processData() {
+            teams = [];
+            
+            if (!allData || !allData.sessions) return;
+            
+            Object.entries(allData.sessions).forEach(([sessionName, sessionTeams]) => {
+                sessionTeams.forEach(team => {
+                    teams.push({
+                        ...team,
+                        Session: sessionName,
+                        Location: determineLocation(team)
+                    });
+                });
+            });
+        }
+
+        // Determine location from team data
+        function determineLocation(team) {
+            const isCochrane = 
+                (team.TeamName && team.TeamName.toLowerCase().includes('cochrane')) || 
+                (team.HomeBarFirstPick && team.HomeBarFirstPick.toLowerCase().includes('cochrane'));
+            return isCochrane ? 'Cochrane' : 'Calgary';
+        }
+
+        function updateStats() {
+            if (!allData || !allData.summary) return;
+            
+            document.getElementById('totalTeams').textContent = allData.summary.totalTeams;
+            document.getElementById('totalPlayers').textContent = allData.summary.totalPlayers;
+            
+            const sessions = Object.keys(allData.sessions || {});
+            document.getElementById('totalSessions').textContent = sessions.length;
+            
+            const divisions = new Set();
+            teams.forEach(team => {
+                if (team.DayDivision) divisions.add(team.DayDivision);
+            });
+            document.getElementById('totalDivisions').textContent = divisions.size;
+        }
+
+        function createFilters() {
+            const filtersContainer = document.getElementById('filters');
+            
+            // Clear existing filters except the "All" button
+            filtersContainer.querySelectorAll('.filter-btn:not([data-filter="all"])').forEach(btn => btn.remove());
+            
+            // Add session filters
+            const sessions = [...new Set(teams.map(t => t.Session))];
+            sessions.forEach(session => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.dataset.filter = session;
+                btn.textContent = session;
+                filtersContainer.appendChild(btn);
+            });
+            
+            // Add location filters
+            const locations = [...new Set(teams.map(t => t.Location))];
+            locations.forEach(location => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.dataset.filter = `location-${location}`;
+                btn.textContent = `📍 ${location}`;
+                filtersContainer.appendChild(btn);
+            });
+        }
+
+        function setupEventListeners() {
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchTerm = e.target.value.toLowerCase();
+                renderContent();
+            });
+
+            // Filter functionality
+            document.getElementById('filters').addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentFilter = e.target.dataset.filter;
+                    renderContent();
+                }
+            });
+        }
+
+        function filterTeams() {
+            let filtered = teams;
+
+            // Apply filter
+            if (currentFilter !== 'all') {
+                if (currentFilter.startsWith('location-')) {
+                    const location = currentFilter.replace('location-', '');
+                    filtered = filtered.filter(team => team.Location === location);
+                } else {
+                    filtered = filtered.filter(team => team.Session === currentFilter);
+                }
+            }
+
+            // Apply search filter
+            if (searchTerm) {
+                filtered = filtered.filter(team => {
+                    // Check team properties
+                    const teamMatch = 
+                        (team.TeamName && team.TeamName.toLowerCase().includes(searchTerm)) ||
+                        (team.DayDivision && team.DayDivision.toLowerCase().includes(searchTerm)) ||
+                        (team.Session && team.Session.toLowerCase().includes(searchTerm)) ||
+                        (team.HomeBarFirstPick && team.HomeBarFirstPick.toLowerCase().includes(searchTerm)) ||
+                        (team.HomeBarSecondPick && team.HomeBarSecondPick.toLowerCase().includes(searchTerm));
+
+                    // Check player properties
+                    const playerMatch = team.Players && team.Players.some(player => 
+                        (player.PlayerName && player.PlayerName.toLowerCase().includes(searchTerm)) ||
+                        (player.Email && player.Email.toLowerCase().includes(searchTerm)) ||
+                        (player.Phone && player.Phone.includes(searchTerm))
+                    );
+
+                    return teamMatch || playerMatch;
+                });
+            }
+
+            return filtered;
+        }
+
+        function renderContent() {
+            const content = document.getElementById('content');
+            const filteredTeams = filterTeams();
+
+            if (filteredTeams.length === 0) {
+                content.innerHTML = '<div class="no-results">No teams found matching your criteria.</div>';
+                return;
+            }
+
+            // Group teams by session
+            const teamsBySession = {};
+            filteredTeams.forEach(team => {
+                if (!teamsBySession[team.Session]) {
+                    teamsBySession[team.Session] = [];
+                }
+                teamsBySession[team.Session].push(team);
+            });
+
+            let html = '';
+            Object.entries(teamsBySession).forEach(([session, sessionTeams]) => {
+                html += `
+                    <div class="session-divider">
+                        <div class="session-title">${session}</div>
+                    </div>
+                    <div class="content-grid">
+                `;
+
+                sessionTeams.forEach(team => {
+                    const playerCount = team.Players ? team.Players.length : 0;
+                    
+                    html += `
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="team-name">${team.TeamName || 'Unnamed Team'}</div>
+                                <div class="team-info">
+                                    <span class="info-badge">${team.DayDivision || 'No Division'}</span>
+                                    <span class="info-badge">${playerCount} Players</span>
+                                    <span class="info-badge">📍 ${team.Location}</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Home Bars:</strong><br>
+                                    1st: ${team.HomeBarFirstPick || 'Not specified'}<br>
+                                    2nd: ${team.HomeBarSecondPick || 'Not specified'}
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    <strong>Registered:</strong> ${team.RegistrationDate ? new Date(team.RegistrationDate).toLocaleDateString() : 'Unknown'}
+                                </div>
+                                <div>
+                                    <strong>Roster:</strong>
+                                    <ul class="player-list">
+                                        ${team.Players && team.Players.length > 0 ? 
+                                            team.Players.map(player => `
+                                                <li class="player-item">
+                                                    <div class="player-avatar">${player.PlayerName ? player.PlayerName.charAt(0).toUpperCase() : '?'}</div>
+                                                    <div class="player-details">
+                                                        <div class="player-name">${player.PlayerName || 'Unknown Player'}</div>
+                                                        <div class="player-contact">
+                                                            ${player.Email || 'No email'} • ${player.Phone || 'No phone'}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            `).join('') :
+                                            '<li class="player-item"><div class="player-details">No players registered</div></li>'
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     `;
+                });
 
-                    // Function to generate division breakdown
-                    function generateDivisionBreakdown(divisions) {
-                        let output = '<ul>';
-                        for (const [division, count] of Object.entries(divisions)) {
-                            output += `<li>${division}: ${count} teams</li>`;
-                        }
-                        output += '</ul>';
-                        return output;
-                    }
-
-                    // Existing code to display teams
-                    teamsContainer.innerHTML = '';
-
-                    Object.keys(data.sessions).forEach(session => {
-                        const sessionDiv = document.createElement('div');
-                        sessionDiv.className = 'session-block';
-
-                        const sessionHeader = document.createElement('h1');
-                        sessionHeader.textContent = session;
-                        sessionDiv.appendChild(sessionHeader);
-
-                        data.sessions[session].forEach(team => {
-                            const teamCard = document.createElement('div');
-                            teamCard.className = 'team-card';
-
-                            const teamName = document.createElement('h1');
-                            teamName.className = 'team-name';
-                            teamName.textContent = team.TeamName;
-
-                            const registrationDate = document.createElement('p');
-                            registrationDate.className = 'registration-date';
-                            registrationDate.textContent = `Registered on: ${team.RegistrationDate}`;
-
-                            const barPicks = document.createElement('p');
-                            barPicks.className = 'bar-picks';
-                            barPicks.textContent = `Bar Picks: ${team.HomeBarFirstPick}, ${team.HomeBarSecondPick}`;
-
-                            const dayDivision = document.createElement('p');
-                            dayDivision.className = 'day-division';
-                            dayDivision.textContent = `Day Division: ${team.DayDivision}`;
-
-                            const playersHeader = document.createElement('h2');
-                            playersHeader.textContent = 'Players';
-
-                            const playersList = document.createElement('ul');
-
-                            team.Players.forEach((player, index) => {
-                                const li = document.createElement('li');
-                                li.textContent = `${player.PlayerName} - ${player.Email || 'No Email'} - ${player.Phone || 'No Phone'}`;
-                                if (index === 0) {
-                                    li.classList.add('captain');
-                                    li.textContent += ' (Captain)';
-                                }
-                                playersList.appendChild(li);
-                            });
-
-                            teamCard.appendChild(teamName);
-                            teamCard.appendChild(registrationDate);
-                            teamCard.appendChild(barPicks);
-                            teamCard.appendChild(dayDivision);
-                            teamCard.appendChild(playersHeader);
-                            teamCard.appendChild(playersList);
-
-                            sessionDiv.appendChild(teamCard);
-                        });
-
-                        teamsContainer.appendChild(sessionDiv);
-                    });
-                })
-                .catch(error => console.error('Error fetching team info:', error));
-                // Add event listener for the PDF button
-            document.getElementById('generate-pdf').addEventListener('click', function() {
-                window.open('./php/generate_pdf.php?session=FALL 2024', '_blank');
+                html += '</div>';
             });
-        });
+
+            content.innerHTML = html;
+        }
+
+        // Initialize the dashboard when page loads
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-
 </html>
