@@ -7,106 +7,103 @@
   <link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
 
   <!-- ===== Standalone CSS (no external stylesheet needed) ===== -->
-  <style>
-    :root{
-      --bg:#000; --fg:#fff; --muted:#cbd5e1; --line:#2b2b2b;
-      --accent:#0a7cff; --nav-h:64px; --maxw:1100px; --gap:16px;
-      --radius:12px; --shadow:0 10px 30px rgba(0,0,0,.35);
-    }
-    *,*::before,*::after{ box-sizing:border-box; }
-    html,body{ margin:0; background:var(--bg); color:var(--fg); font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial,sans-serif; }
+<style>
+  :root{
+    --bg:#000; --fg:#fff; --muted:#cbd5e1; --line:#2b2b2b;
+    --accent:#0a7cff; --nav-h:68px; --maxw:1100px; --gap:16px;
+    --radius:12px; --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  @media (min-width:640px){ :root{ --nav-h:84px; } }
+  @media (min-width:1024px){ :root{ --nav-h:104px; } }
 
-    /* Top bar & logo (prevents squish) */
-    #navBar{
-      position:fixed; inset:0 0 auto 0; height:var(--nav-h);
-      background:#323232; z-index:1000; display:flex; align-items:center; justify-content:center;
-      box-shadow: inset 0 -1px 0 rgba(255,255,255,.08);
-    }
-    #navBar a{ display:flex; align-items:center; }
-    #navBar_img{
-      max-height: calc(var(--nav-h) - 18px) !important;
-      height:auto !important; width:auto !important; object-fit:contain; display:block;
-      padding:8px 12px !important;
-    }
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ margin:0; background:var(--bg); color:var(--fg); font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial,sans-serif; }
 
-    /* Layout spacing (kills the big void) */
-    .outer-wrapper{ padding-top: calc(var(--nav-h) + 18px) !important; }
-    section#main.wrapper{ max-width:var(--maxw); margin:0 auto; padding:24px 16px !important; }
-    h1.major1{ margin:0 0 18px !important; font-size:clamp(28px,4.2vw,48px) !important; line-height:1.1; text-align:center; color:var(--fg) !important; }
+  /* Top bar & bigger logo (no squish) */
+  #navBar{
+    position:fixed; inset:0 0 auto 0; height:var(--nav-h);
+    background:#323232; z-index:1000; display:flex; align-items:center; justify-content:center;
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,.08);
+  }
+  #navBar a{ display:flex; align-items:center; }
+  #navBar_img{
+    max-height: calc(var(--nav-h) - 12px) !important;  /* bigger */
+    height:auto !important; width:auto !important; object-fit:contain; display:block;
+    padding:6px 12px !important;
+  }
 
-    /* Hide any stray hero/canvas */
-    .outer-wrapper canvas{ display:none !important; }
+  /* Layout spacing */
+  .outer-wrapper{ padding-top: calc(var(--nav-h) + 18px) !important; }
+  section#main.wrapper{ max-width:var(--maxw); margin:0 auto; padding:24px 16px !important; }
+  h1.major1{ margin:0 0 18px !important; font-size:clamp(28px,4.2vw,48px) !important; line-height:1.1; text-align:center; color:var(--fg) !important; }
+  .outer-wrapper canvas{ display:none !important; }
 
-    /* Form container using the existing table markup */
-    #poolLeagueSignupForm{ width:100%; }
-    table.formBlockSurveyTable{ width:100%; border-collapse:separate; border-spacing:0; }
-    table.formBlockSurveyTable tr{
-      display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); margin-bottom:var(--gap);
-    }
-    @media (max-width: 900px){ table.formBlockSurveyTable tr{ grid-template-columns:1fr; } }
-    table.formBlockSurveyTable td{
-      background:transparent !important; border:1px solid var(--line) !important;
-      border-radius:var(--radius); padding:14px; vertical-align:top;
-    }
+  /* Form layout (grid) */
+  #poolLeagueSignupForm{ width:100%; }
+  table.formBlockSurveyTable{ width:100%; border-collapse:separate; border-spacing:0; }
+  table.formBlockSurveyTable tr{
+    display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); margin-bottom:var(--gap);
+  }
+  @media (max-width:900px){ table.formBlockSurveyTable tr{ grid-template-columns:1fr; } }
+  table.formBlockSurveyTable td{
+    background:transparent !important; border:1px solid var(--line) !important;
+    border-radius:var(--radius); padding:14px; vertical-align:top;
+  }
 
-    /* Labels & small text (white on black) */
-    #poolLeagueSignupForm .question,
-    #poolLeagueSignupForm .question *:not(input):not(select):not(button):not(textarea){
-      color:#ffffff !important;
-    }
-    #poolLeagueSignupForm .question label{
-      color:#ffffff !important; font-weight:600 !important; display:block !important; margin-bottom:6px !important;
-    }
-    #poolLeagueSignupForm .required{ color:#ffd54f !important; }
+  /* Labels white */
+  #poolLeagueSignupForm .question,
+  #poolLeagueSignupForm .question *:not(input):not(select):not(button):not(textarea){
+    color:#ffffff !important;
+  }
+  #poolLeagueSignupForm .question label{ color:#ffffff !important; font-weight:600 !important; display:block !important; margin-bottom:6px !important; }
+  #poolLeagueSignupForm .required{ color:#ffd54f !important; }
 
-    /* Inputs/selects (light for readability) */
-    #poolLeagueSignupForm input[type="text"],
-    #poolLeagueSignupForm input[type="email"],
-    #poolLeagueSignupForm input[type="tel"],
-    #poolLeagueSignupForm select{
-      background:#ffffff !important; color:#111 !important; border:2px solid #d0d0d0 !important;
-      border-radius:var(--radius) !important; padding:12px 14px !important; font-size:16px !important;
-      width:100% !important; box-sizing:border-box !important; -webkit-appearance:none; appearance:none;
-      box-shadow: inset 0 1px 0 rgba(0,0,0,.04);
-    }
-    #poolLeagueSignupForm input:focus,
-    #poolLeagueSignupForm select:focus{
-      outline:none !important; border-color:var(--accent) !important; box-shadow:0 0 0 3px rgba(10,124,255,.25) !important;
-    }
-    ::placeholder{ color:#6b7280; }
+  /* Inputs/selects: light fields */
+  #poolLeagueSignupForm input[type="text"],
+  #poolLeagueSignupForm input[type="email"],
+  #poolLeagueSignupForm input[type="tel"],
+  #poolLeagueSignupForm select{
+    background:#ffffff !important; color:#111 !important; border:2px solid #d0d0d0 !important;
+    border-radius:var(--radius) !important; padding:12px 14px !important; font-size:16px !important;
+    width:100% !important; box-sizing:border-box !important; -webkit-appearance:none; appearance:none;
+    box-shadow: inset 0 1px 0 rgba(0,0,0,.04);
+  }
+  #poolLeagueSignupForm input:focus,
+  #poolLeagueSignupForm select:focus{
+    outline:none !important; border-color:var(--accent) !important; box-shadow:0 0 0 3px rgba(10,124,255,.25) !important;
+  }
+  ::placeholder{ color:#6b7280; }
 
-    /* Buttons */
-    #poolLeagueSignupForm .formBlockSubmitButton{
-      background:var(--accent) !important; color:#fff !important; border:none !important;
-      border-radius:var(--radius) !important; padding:14px 18px !important; font-size:18px !important;
-      width:100% !important; cursor:pointer; box-shadow:var(--shadow);
-    }
-    #poolLeagueSignupForm button[type="button"]{
-      background:#f2f4f7 !important; color:#111 !important; border:1px solid #d0d5dd !important;
-      border-radius:var(--radius) !important; padding:12px 14px !important; font-size:16px !important;
-      cursor:pointer; width:100%;
-    }
+  /* Buttons */
+  #poolLeagueSignupForm .formBlockSubmitButton{
+    background:var(--accent) !important; color:#fff !important; border:none !important;
+    border-radius:var(--radius) !important; padding:14px 18px !important; font-size:18px !important;
+    width:100% !important; cursor:pointer; box-shadow:var(--shadow);
+  }
+  #poolLeagueSignupForm button[type="button"]{
+    background:#f2f4f7 !important; color:#111 !important; border:1px solid #d0d5dd !important;
+    border-radius:var(--radius) !important; padding:12px 14px !important; font-size:16px !important;
+    cursor:pointer; width:100%;
+  }
 
-    /* Recaptcha spacing */
-    .g-recaptcha{ transform-origin:left top; }
+  /* Floating menu */
+  .floating-menu-container{ position:fixed; right:18px; bottom:18px; z-index:1200; }
+  .floating-hamburger-menu{
+    width:46px; height:46px; border-radius:50%; background:#3a3a3a; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:22px; line-height:1; cursor:pointer; box-shadow:0 8px 22px rgba(0,0,0,.45);
+    user-select:none;
+  }
+  .floating-menu-content{
+    display:none; position:fixed; right:18px; bottom:86px; background:#ffffff; color:#111; border-radius:12px;
+    box-shadow:0 12px 30px rgba(0,0,0,.35); overflow:hidden; min-width:180px;
+  }
+  .floating-menu-content ul{ list-style:none; margin:0; padding:8px 0; }
+  .floating-menu-content a{ display:block; padding:10px 14px; color:#111; text-decoration:none; }
+  .floating-menu-content a:hover{ background:#f2f4f7; }
 
-    /* Floating menu: compact + non-overlapping */
-    .floating-menu-container{ position:fixed; right:18px; bottom:18px; z-index:1200; }
-    .floating-hamburger-menu{
-      width:46px; height:46px; border-radius:50%; background:#3a3a3a; display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:22px; line-height:1; cursor:pointer; box-shadow:0 8px 22px rgba(0,0,0,.45);
-    }
-    .floating-menu-content{
-      display:none; position:fixed; right:18px; bottom:86px; background:#ffffff; color:#111; border-radius:12px;
-      box-shadow:0 12px 30px rgba(0,0,0,.35); overflow:hidden; min-width:170px;
-    }
-    .floating-menu-content ul{ list-style:none; margin:0; padding:8px 0; }
-    .floating-menu-content a{ display:block; padding:10px 14px; color:#111; text-decoration:none; }
-    .floating-menu-content a:hover{ background:#f2f4f7; }
-
-    /* Footer */
-    #footer .inner{ color:#bfc9d9; text-align:center; padding:28px 16px; }
-  </style>
+  /* Footer */
+  #footer .inner{ color:#bfc9d9; text-align:center; padding:28px 16px; }
+</style>
 
   <!-- Google Tag Manager (kept) -->
   <script>
@@ -354,6 +351,36 @@
       btn.addEventListener('click', toggle);
     });
   </script>
+
+  <script>
+  // Remove any old hover-based handlers first if present
+  (function(){
+    const menu = document.querySelector('.floating-menu-content');
+    const btn  = document.querySelector('.floating-hamburger-menu');
+    if(!menu || !btn) return;
+
+    let open = false;
+    function openMenu(){ menu.style.display='block'; open=true; }
+    function closeMenu(){ menu.style.display='none'; open=false; }
+
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      open ? closeMenu() : openMenu();
+    });
+
+    // Keep menu open when interacting inside
+    menu.addEventListener('click', (e)=> e.stopPropagation());
+
+    // Click anywhere else closes it
+    document.addEventListener('click', ()=> { if(open) closeMenu(); });
+
+    // Keyboard: Esc closes
+    document.addEventListener('keydown', (e)=> {
+      if(e.key === 'Escape' && open) closeMenu();
+    });
+  })();
+</script>
+
 
   <!-- Floating menu -->
   <div class="floating-menu-container">
