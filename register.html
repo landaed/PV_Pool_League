@@ -1,371 +1,417 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>PV Pool League - Register</title>
-		<link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="stylesheet" href="./assets/css/main.css"/>
-		<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
-		<script src="https://cdn.babylonjs.com/babylon.js"></script>
-		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<head>
+  <title>PV Pool League - Register</title>
+  <link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-		<!-- Google Tag Manager -->
-		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','GTM-NVFMCM3W');</script>
-			<!-- End Google Tag Manager -->
+  <!-- Page-scoped INLINE overrides: lighter inputs, better mobile readability -->
+  <style>
+    /* Scope to this page only via the form id */
+    body #poolLeagueSignupForm input[type="text"],
+    body #poolLeagueSignupForm input[type="email"],
+    body #poolLeagueSignupForm input[type="tel"],
+    body #poolLeagueSignupForm select {
+      background: #ffffff !important;
+      color: #111 !important;
+      border: 2px solid #ccc !important;
+      border-radius: 10px !important;
+      padding: 12px 14px !important;
+      font-size: 16px !important;
+      line-height: 1.3 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    body #poolLeagueSignupForm .question label {
+      color: #111 !important;
+      font-weight: 600 !important;
+      display: block !important;
+      margin-bottom: 6px !important;
+    }
+    body #poolLeagueSignupForm .formBlockSubmitButton {
+      background: #0a7cff !important;
+      color: #fff !important;
+      border: none !important;
+      border-radius: 12px !important;
+      padding: 14px 18px !important;
+      font-size: 18px !important;
+      width: 100% !important;
+      cursor: pointer;
+    }
+    body #poolLeagueSignupForm input:focus,
+    body #poolLeagueSignupForm select:focus {
+      outline: none !important;
+      border-color: #0a7cff !important;
+      box-shadow: 0 0 0 3px rgba(10,124,255,0.15) !important;
+    }
+    body #poolLeagueSignupForm button[type="button"] {
+      background: #f2f4f7 !important;
+      color: #111 !important;
+      border: 1px solid #d0d5dd !important;
+      border-radius: 10px !important;
+      padding: 12px 14px !important;
+      font-size: 16px !important;
+      cursor: pointer;
+      width: 100%;
+    }
+    @media (max-width: 640px) {
+      body #poolLeagueSignupForm table.formBlockSurveyTable td {
+        display: block !important;
+        width: 100% !important;
+      }
+      body #poolLeagueSignupForm table.formBlockSurveyTable tr {
+        display: block !important;
+        margin-bottom: 14px !important;
+      }
+    }
+  </style>
 
-	</head>
+  <link rel="stylesheet" href="./assets/css/main.css"/>
+  <noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
 
-	<body>
-		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NVFMCM3W"
-			height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-			<!-- End Google Tag Manager (noscript) -->
-		<div id="navBar" style=" position: fixed; top: 0; width: 100%; background: #333; /* Your styling here */">
-		<!-- Your logo and navigation items -->
-			<a href="index.html"><img src="assets\images\PV-Pool-League.png" alt="Logo" id="navBar_img"></a>
-		</div>
-		<!--a href="index.html" id="scrolling-header-logo">
-				<img src="./assets/images/pool_logo.png" alt="PV Pool League Logo">
-		</a-->
-		<!-- Wrapper -->
-		<div class="outer-wrapper">
+  <!-- (Unchanged) libraries your site already includes -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-			<!-- Main -->
-			<section id="main" class="wrapper">
+  <!-- Google Tag Manager -->
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NVFMCM3W');
+  </script>
+  <!-- End Google Tag Manager -->
+</head>
 
-				<div>
-					<h1 class="major1">Register</h1>
-					<form id="poolLeagueSignupForm" action="./php/submit_form.php" method="post">
-						<table class="formBlockSurveyTable">
-							<tbody>
-								<tr>
-									<td class="question"><label for="teamName">Team Name<span class="required">*</span></label></td>
-									<td><input name="teamName" id="teamName" type="text" required></td>
-								</tr>
-								<tr>
-									<td class="question"><label for="session">Session</label></td>
-									<td>
-										<select name="session" id="session" required>
-											<option value="Fall 2025/2026">Fall</option>
-											<option value="Fall 2025">Summer</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td class="question"><label for="dayDivision">DAY / DIVISION</label></td>
-									<td>
-										<select name="dayDivision" id="dayDivision" required>
-											<option value="MONDAY OPEN">MONDAY OPEN</option>
-											<option value="MONDAY A+">MONDAY A+</option>
-											<option value="TUESDAY A">TUESDAY A</option>
-											<option value="TUESDAY B">TUESDAY B</option>
-											<option value="WEDNESDAY A">WEDNESDAY A</option>
-											<option value="WEDNESDAY B">WEDNESDAY B</option>
-											<option value="THURSDAY LOWER B">THURSDAY LOWER B</option>
-											<option value="COCHRANE">COCHRANE</option>
-											<option value="HIGH RIVER">HIGH RIVER</option>
-											<option value="SCOTCH DOUBLES">SCOTCH DOUBLES</option>
-										</select>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NVFMCM3W"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
-									</td>
-								</tr>
-								<tr>
-									<td class="question"><label for="homeBarFirst">Home Bar 1st Pick</label></td>
-									<td>
-										<select name="homeBarFirst" id="homeBarFirst" required>
-											<option value="">Select a Bar</option>
-									  
-											<!-- ————— CALGARY ————— -->
-											<option value="Boston Pizza (7 Heritage Gate SE)">Boston Pizza (7 Heritage Gate SE)</option>
-											<option value="Dixon’s Pub (15425 Bannister Rd SE #24)">Dixon’s Pub (15425 Bannister Rd SE #24)</option>
-											<option value="Huntington Hills Community Centre (520 78 Ave NW)">Huntington Hills Community Centre (520 78 Ave NW)</option>
-											<option value="Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)">Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)</option>
-											<option value="Bowness Legion #238 (138 Bowness Ctr NW)">Bowness Legion #238 (138 Bowness Ctr NW)</option>
-											<option value="The Club House Lounge (5012 16 Ave NW)">The Club House Lounge (5012 16 Ave NW)</option>
-											<option value="Bonasera Pizza (1204 Edmonton Tr NE)">Bonasera Pizza (1204 Edmonton Tr NE)</option>
-											<option value="Leather Pocket Billiards (3715 Edmonton Tr NE)">Leather Pocket Billiards (3715 Edmonton Tr NE)</option>
-											<option value="Chapelhow Legion #284 (606 38 Ave NE)">Chapelhow Legion #284 (606 38 Ave NE)</option>
-											<option value="Top Brass Restaurant (1725 32 Ave NE)">Top Brass Restaurant (1725 32 Ave NE)</option>
-											<option value="Neighbourhood Pub (834 68 St NE)">Neighbourhood Pub (834 68 St NE)</option>
-											<option value="Boddums Up Pub (1704 61 St SE)">Boddums Up Pub (1704 61 St SE)</option>
-											<option value="Border Crossing Pub (1814 36 St SE)">Border Crossing Pub (1814 36 St SE)</option>
-											<option value="Forest Lawn Legion #275 (755 40 St SE)">Forest Lawn Legion #275 (755 40 St SE)</option>
-											<option value="Kokonut Kove Pub & Grill (3309 17 Ave SE)">Kokonut Kove Pub & Grill (3309 17 Ave SE)</option>
-											<option value="Hose & Hound Pub (1030 9 Ave SE)">Hose & Hound Pub (1030 9 Ave SE)</option>
-											<option value="Crazy Horse Bar & Grill (4068 Ogden Rd SE)">Crazy Horse Bar & Grill (4068 Ogden Rd SE)</option>
-											<option value="Chill Billiards (134‑13226 Macleod Tr SE)">Chill Billiards (134‑13226 Macleod Tr SE)</option>
-											<option value="Chalks Billiards (15110 Bannister Rd SE)">Chalks Billiards (15110 Bannister Rd SE)</option>
-											<option value="King’s Head Pub (9116 Macleod Tr S)">King’s Head Pub (9116 Macleod Tr S)</option>
-											<option value="Stonegate Pub (7640 Fairmont Dr SE)">Stonegate Pub (7640 Fairmont Dr SE)</option>
-											<option value="Pig & Duke Pub (1312 12 Ave SW)">Pig & Duke Pub (1312 12 Ave SW)</option>
-											<option value="City Pub (2835 37 St SW)">City Pub (2835 37 St SW)</option>
-											<option value="Murdoch’s Bar & Grill (1935 37 St SW)">Murdoch’s Bar & Grill (1935 37 St SW)</option>
-											<option value="The Blues Can (Calgary)">The Blues Can (Calgary)</option>
-									  
-											<!-- ————— HIGH RIVER ————— -->
-											<option value="Sally’s Pub & Grill (High River)">Sally’s Pub & Grill (High River)</option>
-											<option value="Stix & Bones (30‑3 Ave SE Unit 22, High River)">Stix & Bones (30‑3 Ave SE Unit 22, High River)</option>
-									  
-											<!-- ————— COCHRANE ————— -->
-											<option value="Cochrane Legion (114 5 Ave W)">Cochrane Legion (114 5 Ave W)</option>
-											<option value="Texas Gate Bar & Grill (304 1 St W)">Texas Gate Bar & Grill (304 1 St W)</option>
-											<option value="Boston Pizza (15 Westside Dr, Cochrane)">Boston Pizza (15 Westside Dr)</option>
-											<option value="The Venue Music Sportsbar (79 Railway St E)">The Venue Music Sportsbar (79 Railway St E)</option>
-										  </select>
-									</td>
-								</tr>
-								<tr>
-									<td class="question"><label for="homeBarSecond">Home Bar 2nd Pick</label></td>
-									<td>
-										<select name="homeBarSecond" id="homeBarSecond" required>
-											<option value="">Select a Bar</option>
-									  
-											<!-- ————— CALGARY ————— -->
-											<option value="Boston Pizza (7 Heritage Gate SE)">Boston Pizza (7 Heritage Gate SE)</option>
-											<option value="Dixon’s Pub (15425 Bannister Rd SE #24)">Dixon’s Pub (15425 Bannister Rd SE #24)</option>
-											<option value="Huntington Hills Community Centre (520 78 Ave NW)">Huntington Hills Community Centre (520 78 Ave NW)</option>
-											<option value="Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)">Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)</option>
-											<option value="Bowness Legion #238 (138 Bowness Ctr NW)">Bowness Legion #238 (138 Bowness Ctr NW)</option>
-											<option value="The Club House Lounge (5012 16 Ave NW)">The Club House Lounge (5012 16 Ave NW)</option>
-											<option value="Bonasera Pizza (1204 Edmonton Tr NE)">Bonasera Pizza (1204 Edmonton Tr NE)</option>
-											<option value="Leather Pocket Billiards (3715 Edmonton Tr NE)">Leather Pocket Billiards (3715 Edmonton Tr NE)</option>
-											<option value="Chapelhow Legion #284 (606 38 Ave NE)">Chapelhow Legion #284 (606 38 Ave NE)</option>
-											<option value="Top Brass Restaurant (1725 32 Ave NE)">Top Brass Restaurant (1725 32 Ave NE)</option>
-											<option value="Neighbourhood Pub (834 68 St NE)">Neighbourhood Pub (834 68 St NE)</option>
-											<option value="Boddums Up Pub (1704 61 St SE)">Boddums Up Pub (1704 61 St SE)</option>
-											<option value="Border Crossing Pub (1814 36 St SE)">Border Crossing Pub (1814 36 St SE)</option>
-											<option value="Forest Lawn Legion #275 (755 40 St SE)">Forest Lawn Legion #275 (755 40 St SE)</option>
-											<option value="Kokonut Kove Pub & Grill (3309 17 Ave SE)">Kokonut Kove Pub & Grill (3309 17 Ave SE)</option>
-											<option value="Hose & Hound Pub (1030 9 Ave SE)">Hose & Hound Pub (1030 9 Ave SE)</option>
-											<option value="Crazy Horse Bar & Grill (4068 Ogden Rd SE)">Crazy Horse Bar & Grill (4068 Ogden Rd SE)</option>
-											<option value="Chill Billiards (134‑13226 Macleod Tr SE)">Chill Billiards (134‑13226 Macleod Tr SE)</option>
-											<option value="Chalks Billiards (15110 Bannister Rd SE)">Chalks Billiards (15110 Bannister Rd SE)</option>
-											<option value="King’s Head Pub (9116 Macleod Tr S)">King’s Head Pub (9116 Macleod Tr S)</option>
-											<option value="Stonegate Pub (7640 Fairmont Dr SE)">Stonegate Pub (7640 Fairmont Dr SE)</option>
-											<option value="Pig & Duke Pub (1312 12 Ave SW)">Pig & Duke Pub (1312 12 Ave SW)</option>
-											<option value="City Pub (2835 37 St SW)">City Pub (2835 37 St SW)</option>
-											<option value="Murdoch’s Bar & Grill (1935 37 St SW)">Murdoch’s Bar & Grill (1935 37 St SW)</option>
-											<option value="The Blues Can (Calgary)">The Blues Can (Calgary)</option>
-									  
-											<!-- ————— HIGH RIVER ————— -->
-											<option value="Sally’s Pub & Grill (High River)">Sally’s Pub & Grill (High River)</option>
-											<option value="Stix & Bones (30‑3 Ave SE Unit 22, High River)">Stix & Bones (30‑3 Ave SE Unit 22, High River)</option>
-									  
-											<!-- ————— COCHRANE ————— -->
-											<option value="Cochrane Legion (114 5 Ave W)">Cochrane Legion (114 5 Ave W)</option>
-											<option value="Texas Gate Bar & Grill (304 1 St W)">Texas Gate Bar & Grill (304 1 St W)</option>
-											<option value="Boston Pizza (15 Westside Dr, Cochrane)">Boston Pizza (15 Westside Dr)</option>
-											<option value="The Venue Music Sportsbar (79 Railway St E)">The Venue Music Sportsbar (79 Railway St E)</option>
-										  </select>
-									</td>
-								</tr>
-							</tbody>
-							<tbody id="playerRows">
-								<tr>
-									<td class="question"><button type="button" onclick="addPlayer()">Add Player</button></td>
-									<td class="question"><button type="button" onclick="removePlayer()">Remove Player</button></td>
-								</tr-->
-								<!-- Players will be dynamically inserted here -->
-							</tbody>
-							<tbody>
-								<tr>
-									<td><div class="g-recaptcha" data-sitekey="6LcdPNopAAAAAAhoGsDZKuli7C3v_hnFcIp8IFpt"></div></td>
-									<td><input class="formBlockSubmitButton" type="submit" value="Submit"></td>
-								</tr>
-							</tbody>
-						</table>
-					</form>
-					
-				</div>
-				
-				
-			</section>
+  <!-- Top nav -->
+  <div id="navBar" style="position: fixed; top: 0; width: 100%; background: #333; z-index: 999;">
+    <a href="index.html"><img src="assets/images/PV-Pool-League.png" alt="Logo" id="navBar_img" style="height:48px; padding:8px 12px;"></a>
+  </div>
 
+  <!-- Wrapper -->
+  <div class="outer-wrapper" style="padding-top:64px;">
+    <!-- Main -->
+    <section id="main" class="wrapper">
+      <div>
+        <h1 class="major1">Register</h1>
 
-		<!-- Footer -->
-		<footer id="footer">
-			<div class="inner">
-				<p>&copy; A division of Landa Investments ltd.</p>
-				<p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
-			</div>
-		</footer>
+        <form id="poolLeagueSignupForm" action="./php/submit_form.php" method="post" novalidate>
+          <table class="formBlockSurveyTable" style="width:100%; border-collapse:separate; border-spacing:0 8px;">
+            <tbody>
+              <tr>
+                <td class="question">
+                  <label for="teamName">Team Name <span class="required">*</span></label>
+                  <input name="teamName" id="teamName" type="text" required>
+                </td>
+                <td class="question">
+                  <label for="session">Session <span class="required">*</span></label>
+                  <select name="session" id="session" required>
+                    <option value="" selected disabled>Select a session</option>
+                    <option value="Fall 2025/2026">Fall 2025/2026</option>
+                    <option value="Summer 2025">Summer 2025</option>
+                  </select>
+                </td>
+              </tr>
 
-		<!-- Scripts -->
-		<script>
-			let playerCount = 0;
+              <tr>
+                <td class="question">
+                  <label for="dayDivision">DAY / DIVISION <span class="required">*</span></label>
+                  <select name="dayDivision" id="dayDivision" required>
+                    <option value="" selected disabled>Select a division</option>
+                    <option value="MONDAY OPEN">MONDAY OPEN</option>
+                    <option value="MONDAY A+">MONDAY A+</option>
+                    <option value="TUESDAY A">TUESDAY A</option>
+                    <option value="TUESDAY B">TUESDAY B</option>
+                    <option value="WEDNESDAY A">WEDNESDAY A</option>
+                    <option value="WEDNESDAY B">WEDNESDAY B</option>
+                    <option value="THURSDAY LOWER B">THURSDAY LOWER B</option>
+                    <option value="COCHRANE">COCHRANE</option>
+                    <option value="HIGH RIVER">HIGH RIVER</option>
+                    <option value="SCOTCH DOUBLES">SCOTCH DOUBLES</option>
+                  </select>
+                </td>
 
-function addPlayer() {
-			playerCount++;
-			const tbody = document.getElementById('playerRows');
-			const row = tbody.insertRow(-1); // Insert a new row at the end of the tbody
+                <td class="question">
+                  <label for="homeBarFirst">Home Bar 1st Pick <span class="required">*</span></label>
+                  <select name="homeBarFirst" id="homeBarFirst" required>
+                    <option value="">Select a Bar</option>
 
-			let cell1 = row.insertCell(0);
-			let cell2 = row.insertCell(1);
-			let cell3 = row.insertCell(2);
+                    <!-- ————— CALGARY ————— -->
+                    <option value="Boston Pizza (7 Heritage Gate SE)">Boston Pizza (7 Heritage Gate SE)</option>
+                    <option value="Dixon’s Pub (15425 Bannister Rd SE #24)">Dixon’s Pub (15425 Bannister Rd SE #24)</option>
+                    <option value="Huntington Hills Community Centre (520 78 Ave NW)">Huntington Hills Community Centre (520 78 Ave NW)</option>
+                    <option value="Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)">Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)</option>
+                    <option value="Bowness Legion #238 (138 Bowness Ctr NW)">Bowness Legion #238 (138 Bowness Ctr NW)</option>
+                    <option value="The Club House Lounge (5012 16 Ave NW)">The Club House Lounge (5012 16 Ave NW)</option>
+                    <option value="Bonasera Pizza (1204 Edmonton Tr NE)">Bonasera Pizza (1204 Edmonton Tr NE)</option>
+                    <option value="Leather Pocket Billiards (3715 Edmonton Tr NE)">Leather Pocket Billiards (3715 Edmonton Tr NE)</option>
+                    <option value="Chapelhow Legion #284 (606 38 Ave NE)">Chapelhow Legion #284 (606 38 Ave NE)</option>
+                    <option value="Top Brass Restaurant (1725 32 Ave NE)">Top Brass Restaurant (1725 32 Ave NE)</option>
+                    <option value="Neighbourhood Pub (834 68 St NE)">Neighbourhood Pub (834 68 St NE)</option>
+                    <option value="Boddums Up Pub (1704 61 St SE)">Boddums Up Pub (1704 61 St SE)</option>
+                    <option value="Border Crossing Pub (1814 36 St SE)">Border Crossing Pub (1814 36 St SE)</option>
+                    <option value="Forest Lawn Legion #275 (755 40 St SE)">Forest Lawn Legion #275 (755 40 St SE)</option>
+                    <option value="Kokonut Kove Pub & Grill (3309 17 Ave SE)">Kokonut Kove Pub & Grill (3309 17 Ave SE)</option>
+                    <option value="Hose & Hound Pub (1030 9 Ave SE)">Hose & Hound Pub (1030 9 Ave SE)</option>
+                    <option value="Crazy Horse Bar & Grill (4068 Ogden Rd SE)">Crazy Horse Bar & Grill (4068 Ogden Rd SE)</option>
+                    <option value="Chill Billiards (134-13226 Macleod Tr SE)">Chill Billiards (134-13226 Macleod Tr SE)</option>
+                    <option value="Chalks Billiards (15110 Bannister Rd SE)">Chalks Billiards (15110 Bannister Rd SE)</option>
+                    <option value="King’s Head Pub (9116 Macleod Tr S)">King’s Head Pub (9116 Macleod Tr S)</option>
+                    <option value="Stonegate Pub (7640 Fairmont Dr SE)">Stonegate Pub (7640 Fairmont Dr SE)</option>
+                    <option value="Pig & Duke Pub (1312 12 Ave SW)">Pig & Duke Pub (1312 12 Ave SW)</option>
+                    <option value="City Pub (2835 37 St SW)">City Pub (2835 37 St SW)</option>
+                    <option value="Murdoch’s Bar & Grill (1935 37 St SW)">Murdoch’s Bar & Grill (1935 37 St SW)</option>
+                    <option value="The Blues Can (Calgary)">The Blues Can (Calgary)</option>
 
-			let is_captain = "(Captain)";
-			if (playerCount == 1) {
-				cell1.innerHTML = `<label for="player${playerCount}_name">**${is_captain} ${playerCount} Name:</label><input type="text" name="player${playerCount}_name" required>`;
-				cell2.innerHTML = `<label for="player${playerCount}_email">**${is_captain} Player ${playerCount} Email:</label><input type="email" name="player${playerCount}_email" required>`;
-				cell3.innerHTML = `<label for="player${playerCount}_phone">**${is_captain} Player ${playerCount} Phone:</label><input type="text" name="player${playerCount}_phone" required>`;
-			} else {
-				cell1.innerHTML = `<label for="player${playerCount}_name">*Player ${playerCount} Name:</label><input type="text" name="player${playerCount}_name" required>`;
-				cell2.innerHTML = `<label for="player${playerCount}_email">Player ${playerCount} Email:</label><input type="email" name="player${playerCount}_email">`;
-				cell3.innerHTML = `<label for="player${playerCount}_phone">Player ${playerCount} Phone:</label><input type="text" name="player${playerCount}_phone">`;
-			}
+                    <!-- ————— HIGH RIVER ————— -->
+                    <option value="Sally’s Pub & Grill (High River)">Sally’s Pub & Grill (High River)</option>
+                    <option value="Stix & Bones (30-3 Ave SE Unit 22, High River)">Stix & Bones (30-3 Ave SE Unit 22, High River)</option>
 
-			// Adjust the class names to match the style
-			cell1.classList.add("question");
-			cell2.classList.add("question");
-			cell3.classList.add("question");
-		}
+                    <!-- ————— COCHRANE ————— -->
+                    <option value="Cochrane Legion (114 5 Ave W)">Cochrane Legion (114 5 Ave W)</option>
+                    <option value="Texas Gate Bar & Grill (304 1 St W)">Texas Gate Bar & Grill (304 1 St W)</option>
+                    <option value="Boston Pizza (15 Westside Dr, Cochrane)">Boston Pizza (15 Westside Dr)</option>
+                    <option value="The Venue Music Sportsbar (79 Railway St E)">The Venue Music Sportsbar (79 Railway St E)</option>
+                  </select>
+                </td>
+              </tr>
 
-		function removePlayer() {
-			const tbody = document.getElementById('playerRows');
-			if (playerCount > 1) {
-				tbody.deleteRow(playerCount);
-				playerCount--;
-			}
-		}
+              <tr>
+                <td class="question">
+                  <label for="homeBarSecond">Home Bar 2nd Pick <span class="required">*</span></label>
+                  <select name="homeBarSecond" id="homeBarSecond" required>
+                    <option value="">Select a Bar</option>
 
-		document.addEventListener('DOMContentLoaded', function() {
-			addPlayer(); // Automatically add the first player (Captain) on load
-		});
+                    <!-- ————— CALGARY ————— -->
+                    <option value="Boston Pizza (7 Heritage Gate SE)">Boston Pizza (7 Heritage Gate SE)</option>
+                    <option value="Dixon’s Pub (15425 Bannister Rd SE #24)">Dixon’s Pub (15425 Bannister Rd SE #24)</option>
+                    <option value="Huntington Hills Community Centre (520 78 Ave NW)">Huntington Hills Community Centre (520 78 Ave NW)</option>
+                    <option value="Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)">Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)</option>
+                    <option value="Bowness Legion #238 (138 Bowness Ctr NW)">Bowness Legion #238 (138 Bowness Ctr NW)</option>
+                    <option value="The Club House Lounge (5012 16 Ave NW)">The Club House Lounge (5012 16 Ave NW)</option>
+                    <option value="Bonasera Pizza (1204 Edmonton Tr NE)">Bonasera Pizza (1204 Edmonton Tr NE)</option>
+                    <option value="Leather Pocket Billiards (3715 Edmonton Tr NE)">Leather Pocket Billiards (3715 Edmonton Tr NE)</option>
+                    <option value="Chapelhow Legion #284 (606 38 Ave NE)">Chapelhow Legion #284 (606 38 Ave NE)</option>
+                    <option value="Top Brass Restaurant (1725 32 Ave NE)">Top Brass Restaurant (1725 32 Ave NE)</option>
+                    <option value="Neighbourhood Pub (834 68 St NE)">Neighbourhood Pub (834 68 St NE)</option>
+                    <option value="Boddums Up Pub (1704 61 St SE)">Boddums Up Pub (1704 61 St SE)</option>
+                    <option value="Border Crossing Pub (1814 36 St SE)">Border Crossing Pub (1814 36 St SE)</option>
+                    <option value="Forest Lawn Legion #275 (755 40 St SE)">Forest Lawn Legion #275 (755 40 St SE)</option>
+                    <option value="Kokonut Kove Pub & Grill (3309 17 Ave SE)">Kokonut Kove Pub & Grill (3309 17 Ave SE)</option>
+                    <option value="Hose & Hound Pub (1030 9 Ave SE)">Hose & Hound Pub (1030 9 Ave SE)</option>
+                    <option value="Crazy Horse Bar & Grill (4068 Ogden Rd SE)">Crazy Horse Bar & Grill (4068 Ogden Rd SE)</option>
+                    <option value="Chill Billiards (134-13226 Macleod Tr SE)">Chill Billiards (134-13226 Macleod Tr SE)</option>
+                    <option value="Chalks Billiards (15110 Bannister Rd SE)">Chalks Billiards (15110 Bannister Rd SE)</option>
+                    <option value="King’s Head Pub (9116 Macleod Tr S)">King’s Head Pub (9116 Macleod Tr S)</option>
+                    <option value="Stonegate Pub (7640 Fairmont Dr SE)">Stonegate Pub (7640 Fairmont Dr SE)</option>
+                    <option value="Pig & Duke Pub (1312 12 Ave SW)">Pig & Duke Pub (1312 12 Ave SW)</option>
+                    <option value="City Pub (2835 37 St SW)">City Pub (2835 37 St SW)</option>
+                    <option value="Murdoch’s Bar & Grill (1935 37 St SW)">Murdoch’s Bar & Grill (1935 37 St SW)</option>
+                    <option value="The Blues Can (Calgary)">The Blues Can (Calgary)</option>
 
-		</script>
-		
-		
-		<script>
-		document.addEventListener('DOMContentLoaded', function() {
+                    <!-- ————— HIGH RIVER ————— -->
+                    <option value="Sally’s Pub & Grill (High River)">Sally’s Pub & Grill (High River)</option>
+                    <option value="Stix & Bones (30-3 Ave SE Unit 22, High River)">Stix & Bones (30-3 Ave SE Unit 22, High River)</option>
 
-		
-			var form = document.getElementById('poolLeagueSignupForm');
-			/*var captchaQuestion = document.getElementById('captchaQuestion');
-			var captchaAnswer = document.getElementById('captchaAnswer');
+                    <!-- ————— COCHRANE ————— -->
+                    <option value="Cochrane Legion (114 5 Ave W)">Cochrane Legion (114 5 Ave W)</option>
+                    <option value="Texas Gate Bar & Grill (304 1 St W)">Texas Gate Bar & Grill (304 1 St W)</option>
+                    <option value="Boston Pizza (15 Westside Dr, Cochrane)">Boston Pizza (15 Westside Dr)</option>
+                    <option value="The Venue Music Sportsbar (79 Railway St E)">The Venue Music Sportsbar (79 Railway St E)</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
 
-			function generateCaptcha() {
-				var num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
-				var num2 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
-				captchaQuestion.textContent = `What is ${num1} + ${num2}?`;
-				captchaAnswer.dataset.correctAnswer = num1 + num2;
-			}
+            <!-- Dynamic players will be inserted here -->
+            <tbody id="playerRows"></tbody>
 
-			// Run the CAPTCHA generator when the page loads
-			generateCaptcha();
-			*/
-    		form.onsubmit = function(event) {
-				var isValid = true;
+            <!-- Buttons to control players -->
+            <tbody>
+              <tr>
+                <td class="question">
+                  <button type="button" onclick="addPlayer()">Add Player</button>
+                </td>
+                <td class="question">
+                  <button type="button" onclick="removePlayer()">Remove Player</button>
+                </td>
+              </tr>
+            </tbody>
 
-				// Existing validation code here...
-				var response = grecaptcha.getResponse();
-				if(response.length == 0) { 
-					alert("Please complete the CAPTCHA!");
-					event.preventDefault(); //prevent form submit
-					isValid = false;
-				}
-				// Email validation
-				var email = document.getElementById('captainEmail');
-				if (!email.value.includes('@')) {
-					alert('Please enter a valid email address.');
-					isValid = false;
-				}
+            <tbody>
+              <tr>
+                <td>
+                  <div class="g-recaptcha" data-sitekey="6LcdPNopAAAAAAhoGsDZKuli7C3v_hnFcIp8IFpt"></div>
+                </td>
+                <td>
+                  <input class="formBlockSubmitButton" type="submit" value="Submit">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </section>
 
-				// Phone number validation
-				var phone = document.getElementById('captainPhone');
-				if (!/^\d+$/.test(phone.value)) {
-					alert('Phone number should contain only digits.');
-					isValid = false;
-				}
+    <!-- Footer -->
+    <footer id="footer">
+      <div class="inner">
+        <p>&copy; A division of Landa Investments Ltd.</p>
+        <p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
 
-				// Captain name validation
-				var name = document.getElementById('captainName');
-				if (/[^a-zA-Z\s]/.test(name.value)) {
-					alert('Captain name should contain only letters and spaces.');
-					isValid = false;
-				}
+  <!-- Player rows + client-side checks (safe) -->
+  <script>
+    let playerCount = 0;
 
-				// CAPTCHA validation
-				if (parseInt(captchaAnswer.value) !== parseInt(captchaAnswer.dataset.correctAnswer)) {
-					alert('Incorrect CAPTCHA answer. Please try again.');
-					isValid = false;
-				}
+    function addPlayer() {
+      playerCount++;
+      const tbody = document.getElementById('playerRows');
+      const row = tbody.insertRow(-1);
 
-				if (!isValid) {
-					event.preventDefault(); // Prevent form submission
-				}
-    		};
-		});
-	
-</script>
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      const cell3 = row.insertCell(2);
 
-		<script src="./assets/js/jquery.min.js"></script>
-		<script src="./assets/js/browser.min.js"></script>
-		<script src="./assets/js/breakpoints.min.js"></script>
-		<script src="./assets/js/util.js"></script>
-		<script src="./assets/js/hamburger.js"></script>
-		<script src="./assets/js/touch_screen_canvas.js"></script>
-		<div class="floating-menu-container">
-		<div class="floating-hamburger-menu">
-				<i class="fas fa-bars"></i>
-		</div>
-		<nav class="floating-menu-content">
-				<ul>
-						<li><a href="index.html">Home</a></li>
-						<li><a href="about.html">About</a></li>
-						<li><a href="locations.html">Locations</a></li>
-						<li><a href="register.html">Register</a></li>
-<li><a href="schedule.html">Schedule</a></li>
-<li><a href="divisions.html">Divisions</a></li>
-						<li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">Stats</a></li>
-						<!-- Add more list items as needed -->
-				</ul>
-		</nav>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-	var menuContainer = document.querySelector('.floating-menu-container');
-	var menuContent = document.querySelector('.floating-menu-content');
-	var menuButton = document.querySelector('.floating-hamburger-menu');
-	var menuItems = document.querySelectorAll('.floating-menu-content a'); // Get all menu item links
+      const isCaptain = (playerCount === 1);
+      const tag = isCaptain ? ' (Captain)' : ` ${playerCount}`;
 
-	// Function to toggle the menu's visibility
-	function toggleMenu() {
-			if (menuContent.style.display === 'block') {
-					menuContent.style.display = 'none';
-			} else {
-					menuContent.style.display = 'block';
-			}
-	}
+      cell1.innerHTML = `
+        <label for="player${playerCount}_name">Player${tag} Name:</label>
+        <input type="text" name="player${playerCount}_name" id="player${playerCount}_name" required>
+      `;
+      cell2.innerHTML = `
+        <label for="player${playerCount}_email">Player${tag} Email:</label>
+        <input type="email" name="player${playerCount}_email" id="player${playerCount}_email" ${isCaptain ? 'required' : ''}>
+      `;
+      cell3.innerHTML = `
+        <label for="player${playerCount}_phone">Player${tag} Phone:</label>
+        <input type="tel" name="player${playerCount}_phone" id="player${playerCount}_phone"
+               pattern="[0-9 +()\\-]*" inputmode="tel" ${isCaptain ? 'required' : ''}>
+      `;
 
-	// Mouse events for desktop
-	menuContainer.addEventListener('mouseenter', function() {
-			menuContent.style.display = 'block';
-	});
-	menuContainer.addEventListener('mouseleave', function() {
-			menuContent.style.display = 'none';
-	});
+      cell1.classList.add("question");
+      cell2.classList.add("question");
+      cell3.classList.add("question");
+    }
 
-	// Touch event for the menu button
-	menuButton.addEventListener('touchstart', function(event) {
-			event.preventDefault(); // Prevent default touch action
-			toggleMenu();
-	}, false);
+    function removePlayer() {
+      // Keep at least the captain row
+      if (playerCount > 1) {
+        const tbody = document.getElementById('playerRows');
+        tbody.deleteRow(-1); // last row
+        playerCount--;
+      }
+    }
 
-	// Add touch event listeners to each menu item
-	menuItems.forEach(function(menuItem) {
-			menuItem.addEventListener('touchstart', function(event) {
-					event.stopPropagation(); // Prevent the event from bubbling up to the container
-			}, false);
-	});
-});
-</script>
-	</body>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Auto-add captain row
+      addPlayer();
+
+      const form = document.getElementById('poolLeagueSignupForm');
+      form.addEventListener('submit', function (event) {
+        // reCAPTCHA quick check (server also validates)
+        const recaptchaOk = (typeof grecaptcha !== 'undefined') && grecaptcha.getResponse().length > 0;
+        if (!recaptchaOk) {
+          alert("Please complete the CAPTCHA!");
+          event.preventDefault();
+          return;
+        }
+
+        // Home bars must differ
+        const hb1 = document.getElementById('homeBarFirst').value;
+        const hb2 = document.getElementById('homeBarSecond').value;
+        if (hb1 && hb2 && hb1 === hb2) {
+          alert('Home Bar 1st Pick and 2nd Pick must be different.');
+          event.preventDefault();
+          return;
+        }
+
+        // Light phone sanity across all entered players
+        for (let i = 1; i <= playerCount; i++) {
+          const phoneEl = document.getElementById(`player${i}_phone`);
+          if (phoneEl && phoneEl.value && !/^[0-9 +()\-]*$/.test(phoneEl.value)) {
+            alert(`Player ${i} phone has invalid characters.`);
+            event.preventDefault();
+            return;
+          }
+        }
+      });
+    });
+  </script>
+
+  <!-- Your existing site scripts -->
+  <script src="./assets/js/jquery.min.js"></script>
+  <script src="./assets/js/browser.min.js"></script>
+  <script src="./assets/js/breakpoints.min.js"></script>
+  <script src="./assets/js/util.js"></script>
+  <script src="./assets/js/hamburger.js"></script>
+  <script src="./assets/js/touch_screen_canvas.js"></script>
+
+  <!-- Floating menu (unchanged) -->
+  <div class="floating-menu-container">
+    <div class="floating-hamburger-menu">
+      <i class="fas fa-bars"></i>
+    </div>
+    <nav class="floating-menu-content" style="display:none;">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="locations.html">Locations</a></li>
+        <li><a href="register.html">Register</a></li>
+        <li><a href="schedule.html">Schedule</a></li>
+        <li><a href="divisions.html">Divisions</a></li>
+        <li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">Stats</a></li>
+      </ul>
+    </nav>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var menuContainer = document.querySelector('.floating-menu-container');
+      var menuContent = document.querySelector('.floating-menu-content');
+      var menuButton = document.querySelector('.floating-hamburger-menu');
+      var menuItems = document.querySelectorAll('.floating-menu-content a');
+
+      function toggleMenu() {
+        menuContent.style.display = (menuContent.style.display === 'block') ? 'none' : 'block';
+      }
+
+      // Desktop hover
+      menuContainer.addEventListener('mouseenter', function() {
+        menuContent.style.display = 'block';
+      });
+      menuContainer.addEventListener('mouseleave', function() {
+        menuContent.style.display = 'none';
+      });
+
+      // Touch toggle
+      menuButton.addEventListener('touchstart', function(event) {
+        event.preventDefault();
+        toggleMenu();
+      }, false);
+
+      // Prevent touch bubbling
+      menuItems.forEach(function(menuItem) {
+        menuItem.addEventListener('touchstart', function(event) {
+          event.stopPropagation();
+        }, false);
+      });
+    });
+  </script>
+</body>
 </html>
