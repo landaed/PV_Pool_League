@@ -152,7 +152,7 @@ try {
                 $rosterHtml .
                 "<hr style='border:none;border-top:1px solid #ddd'/>" .
                 "<p><em>Next steps:</em> We’ll confirm schedules, match times, and bar assignments once registrations close. " .
-                "If anything looks off, reply to this email with corrections.</p>" .
+                "If anything looks off, email pvpoolleague@gmail.com with corrections.</p>" .
                 "<br>— Mark Mapatac<br>League Coordinator, PV Pool Leagues<br>" .
                 "<img src='https://i.imgur.com/Xw7k2Gp.png' style='width:100px;' alt='PV Logo'/>";
 
