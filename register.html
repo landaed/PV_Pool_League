@@ -6,68 +6,91 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-  <!-- Page-scoped INLINE overrides: lighter inputs, better mobile readability -->
-  <style>
-    /* Scope to this page only via the form id */
-    body #poolLeagueSignupForm input[type="text"],
-    body #poolLeagueSignupForm input[type="email"],
-    body #poolLeagueSignupForm input[type="tel"],
-    body #poolLeagueSignupForm select {
-      background: #ffffff !important;
-      color: #111 !important;
-      border: 2px solid #ccc !important;
-      border-radius: 10px !important;
-      padding: 12px 14px !important;
-      font-size: 16px !important;
-      line-height: 1.3 !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-    body #poolLeagueSignupForm .question label {
-      color: #111 !important;
-      font-weight: 600 !important;
+<style>
+  /* Page-scoped INLINE overrides: high contrast on dark bg */
+  /* Make all non-input text in form white */
+  body #poolLeagueSignupForm .formBlockSurveyTable,
+  body #poolLeagueSignupForm .question,
+  body #poolLeagueSignupForm .question *:not(input):not(select):not(button):not(textarea) {
+    color: #ffffff !important;
+  }
+
+  /* Labels: white text, readable weight */
+  body #poolLeagueSignupForm .question label {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    display: block !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* Asterisk color for required fields */
+  body #poolLeagueSignupForm .required {
+    color: #ffd54f !important; /* warm yellow for visibility */
+  }
+
+  /* Headline on dark backgrounds */
+  h1.major1 { color: #ffffff !important; }
+
+  /* Inputs remain light for readability; dark text inside */
+  body #poolLeagueSignupForm input[type="text"],
+  body #poolLeagueSignupForm input[type="email"],
+  body #poolLeagueSignupForm input[type="tel"],
+  body #poolLeagueSignupForm select {
+    background: #ffffff !important;
+    color: #111111 !important;
+    border: 2px solid #cccccc !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* Focus visibility on dark bg */
+  body #poolLeagueSignupForm input:focus,
+  body #poolLeagueSignupForm select:focus {
+    outline: none !important;
+    border-color: #0a7cff !important;
+    box-shadow: 0 0 0 3px rgba(10,124,255,0.25) !important;
+  }
+
+  /* Submit + utility buttons */
+  body #poolLeagueSignupForm .formBlockSubmitButton {
+    background: #0a7cff !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 14px 18px !important;
+    font-size: 18px !important;
+    width: 100% !important;
+    cursor: pointer;
+  }
+  body #poolLeagueSignupForm button[type="button"] {
+    background: #f2f4f7 !important;
+    color: #111111 !important;
+    border: 1px solid #d0d5dd !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  /* Mobile layout improvements */
+  @media (max-width: 640px) {
+    body #poolLeagueSignupForm table.formBlockSurveyTable td {
       display: block !important;
-      margin-bottom: 6px !important;
-    }
-    body #poolLeagueSignupForm .formBlockSubmitButton {
-      background: #0a7cff !important;
-      color: #fff !important;
-      border: none !important;
-      border-radius: 12px !important;
-      padding: 14px 18px !important;
-      font-size: 18px !important;
       width: 100% !important;
-      cursor: pointer;
     }
-    body #poolLeagueSignupForm input:focus,
-    body #poolLeagueSignupForm select:focus {
-      outline: none !important;
-      border-color: #0a7cff !important;
-      box-shadow: 0 0 0 3px rgba(10,124,255,0.15) !important;
+    body #poolLeagueSignupForm table.formBlockSurveyTable tr {
+      display: block !important;
+      margin-bottom: 14px !important;
     }
-    body #poolLeagueSignupForm button[type="button"] {
-      background: #f2f4f7 !important;
-      color: #111 !important;
-      border: 1px solid #d0d5dd !important;
-      border-radius: 10px !important;
-      padding: 12px 14px !important;
-      font-size: 16px !important;
-      cursor: pointer;
-      width: 100%;
-    }
-    @media (max-width: 640px) {
-      body #poolLeagueSignupForm table.formBlockSurveyTable td {
-        display: block !important;
-        width: 100% !important;
-      }
-      body #poolLeagueSignupForm table.formBlockSurveyTable tr {
-        display: block !important;
-        margin-bottom: 14px !important;
-      }
-    }
-  </style>
+  }
+</style>
 
   <link rel="stylesheet" href="./assets/css/main.css"/>
   <noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
