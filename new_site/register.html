@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PV Pool League — Register</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="icon" href="../assets/favicon_io/favicon.ico" type="image/x-icon">
+  <style>
+    :root{ --bg:#0b0b0b; --fg:#fff; --muted:#cbd5e1; --line:#2b2b2b; --accent:#0a7cff; --nav-h:84px; --radius:12px; }
+    *,*::before,*::after{ box-sizing:border-box; }
+    html,body{ margin:0; background:var(--bg); color:var(--fg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif; }
+    #navBar{ position:fixed; inset:0 0 auto 0; height:var(--nav-h); background:#323232;
+      z-index:1000; display:flex; align-items:center; justify-content:center; }
+    #navBar img{ max-height:calc(var(--nav-h) - 16px); padding:6px 12px; }
+    .wrap{ max-width:1000px; margin:0 auto; padding:calc(var(--nav-h) + 24px) 18px 60px; }
+    h1{ text-align:center; font-size:clamp(28px,4vw,44px); margin:0 0 8px; }
+    .sub{ text-align:center; color:var(--muted); margin:0 0 24px; }
+
+    .region-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+    .region-card{ background:#161616; border:1px solid var(--line); border-radius:var(--radius);
+      padding:26px; text-align:center; cursor:pointer; transition:.15s; font-size:20px; font-weight:600; }
+    .region-card:hover{ border-color:var(--accent); transform:translateY(-3px); }
+
+    .field{ margin-bottom:16px; }
+    label{ display:block; font-weight:600; margin-bottom:6px; }
+    .req{ color:#ffd54f; }
+    input,select{ width:100%; background:#fff; color:#111; border:2px solid #d0d0d0;
+      border-radius:var(--radius); padding:12px 14px; font-size:16px; }
+    input:focus,select:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(10,124,255,.25); }
+    .row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media (max-width:760px){ .row{ grid-template-columns:1fr; } }
+    .players .pcard{ border:1px solid var(--line); border-radius:var(--radius); padding:14px; margin-bottom:12px; }
+    .players .pcard h3{ margin:0 0 10px; font-size:15px; color:var(--accent); }
+    button{ cursor:pointer; border-radius:var(--radius); font-size:16px; padding:12px 16px; border:none; }
+    .btn-secondary{ background:#f2f4f7; color:#111; }
+    .btn-primary{ background:var(--accent); color:#fff; width:100%; font-size:18px; padding:14px; }
+    .btn-row{ display:flex; gap:12px; margin:12px 0 22px; }
+    .btn-row button{ flex:1; }
+    .back{ background:none; color:var(--accent); padding:0; font-size:15px; }
+    .hidden{ display:none; }
+    .notice{ background:#3a2a00; border:1px solid #7a5a00; color:#ffd98a; padding:12px 14px;
+      border-radius:var(--radius); margin-bottom:16px; }
+    .error{ color:#ff8a8a; text-align:center; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <div id="navBar">
+    <a href="index.html"><img src="../assets/images/PV-Pool-League.png" alt="PV Pool League"></a>
+  </div>
+
+  <div class="wrap">
+    <h1>Register</h1>
+
+    <!-- STEP 1: region selection -->
+    <div id="step-region">
+      <p class="sub">Choose your region to get started.</p>
+      <div class="region-grid" id="regionGrid"><p class="sub">Loading regions…</p></div>
+    </div>
+
+    <!-- STEP 2: region-specific form -->
+    <div id="step-form" class="hidden">
+      <p class="sub">Registering in <strong id="regionLabel"></strong> &middot;
+        <button type="button" class="back" id="changeRegion">change region</button></p>
+
+      <div id="noSessions" class="notice hidden">Registration is currently closed for this region. Please check back later.</div>
+
+      <form id="regForm" class="hidden" method="post" action="api/submit_registration.php">
+        <input type="hidden" name="regionSlug" id="regionSlug">
+        <div class="row">
+          <div class="field">
+            <label for="teamName">Team Name <span class="req">*</span></label>
+            <input type="text" name="teamName" id="teamName" required>
+          </div>
+          <div class="field">
+            <label for="session">Session <span class="req">*</span></label>
+            <select name="session" id="session" required></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="dayDivision">Day / Division <span class="req">*</span></label>
+            <select name="dayDivision" id="dayDivision" required></select>
+          </div>
+          <div class="field">
+            <label for="homeBarFirst">Home Bar — 1st Pick</label>
+            <select name="homeBarFirst" id="homeBarFirst"></select>
+          </div>
+        </div>
+        <div class="field" id="homeBarSecondField">
+          <label for="homeBarSecond">Home Bar — 2nd Pick</label>
+          <select name="homeBarSecond" id="homeBarSecond"></select>
+        </div>
+
+        <h2 style="border-top:1px solid var(--line); padding-top:18px;">Players</h2>
+        <div class="players" id="playerRows"></div>
+        <div class="btn-row">
+          <button type="button" class="btn-secondary" onclick="addPlayer()">+ Add Player</button>
+          <button type="button" class="btn-secondary" onclick="removePlayer()">– Remove Player</button>
+        </div>
+
+        <button type="submit" class="btn-primary">Submit Registration</button>
+        <div class="error" id="formError"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+    let currentRegion = null;
+
+    async function loadRegions(){
+      const grid = document.getElementById('regionGrid');
+      try{
+        const res = await fetch('api/public.php?action=regions');
+        const data = await res.json();
+        const regions = data.regions || [];
+        if(!regions.length){ grid.innerHTML = '<p class="sub">No regions are open for registration yet.</p>'; return; }
+        grid.innerHTML = regions.map(r =>
+          `<div class="region-card" data-slug="${esc(r.slug)}">${esc(r.name)}</div>`).join('');
+        grid.querySelectorAll('.region-card').forEach(card =>
+          card.addEventListener('click', () => selectRegion(card.dataset.slug)));
+      }catch(e){ grid.innerHTML = '<p class="sub">Could not load regions.</p>'; }
+    }
+
+    async function selectRegion(slug){
+      try{
+        const res = await fetch('api/public.php?action=region&slug=' + encodeURIComponent(slug));
+        const data = await res.json();
+        if(data.error){ alert(data.error); return; }
+        currentRegion = data.region;
+        renderForm();
+      }catch(e){ alert('Could not load that region.'); }
+    }
+
+    function fillSelect(sel, items, placeholder, useId){
+      sel.innerHTML = `<option value="" disabled selected>${placeholder}</option>` +
+        items.map(i => `<option value="${useId ? i.id : esc(i.name)}">${esc(i.name)}</option>`).join('');
+    }
+
+    function renderForm(){
+      document.getElementById('step-region').classList.add('hidden');
+      document.getElementById('step-form').classList.remove('hidden');
+      document.getElementById('regionLabel').textContent = currentRegion.name;
+      document.getElementById('regionSlug').value = currentRegion.slug;
+
+      const form = document.getElementById('regForm');
+      const noSessions = document.getElementById('noSessions');
+      if(!currentRegion.sessions.length){
+        form.classList.add('hidden'); noSessions.classList.remove('hidden'); return;
+      }
+      noSessions.classList.add('hidden'); form.classList.remove('hidden');
+
+      fillSelect(document.getElementById('session'), currentRegion.sessions, 'Select a session', true);
+      fillSelect(document.getElementById('dayDivision'), currentRegion.divisions, 'Select a division', true);
+
+      const locs = currentRegion.locations || [];
+      const hb1 = document.getElementById('homeBarFirst');
+      const hb2 = document.getElementById('homeBarSecond');
+      if(locs.length){
+        fillSelect(hb1, locs, 'Select a bar', false);
+        fillSelect(hb2, locs, 'Select a bar', false);
+        document.getElementById('homeBarSecondField').classList.remove('hidden');
+      } else {
+        hb1.innerHTML = ''; hb2.innerHTML = '';
+        document.getElementById('homeBarSecondField').classList.add('hidden');
+      }
+
+      document.getElementById('playerRows').innerHTML = '';
+      playerCount = 0; addPlayer();
+    }
+
+    let playerCount = 0;
+    function addPlayer(){
+      playerCount++;
+      const isCaptain = playerCount === 1;
+      const div = document.createElement('div');
+      div.className = 'pcard';
+      div.innerHTML = `
+        <h3>${isCaptain ? 'Captain' : 'Player ' + playerCount}</h3>
+        <div class="row">
+          <div class="field"><label>Name <span class="req">*</span></label>
+            <input type="text" name="player${playerCount}_name" required></div>
+          <div class="field"><label>Email ${isCaptain ? '<span class="req">*</span>' : ''}</label>
+            <input type="email" name="player${playerCount}_email" ${isCaptain ? 'required' : ''}></div>
+        </div>
+        <div class="field"><label>Phone ${isCaptain ? '<span class="req">*</span>' : ''}</label>
+          <input type="tel" name="player${playerCount}_phone" ${isCaptain ? 'required' : ''}></div>`;
+      document.getElementById('playerRows').appendChild(div);
+    }
+    function removePlayer(){
+      if(playerCount > 1){
+        document.getElementById('playerRows').lastElementChild.remove();
+        playerCount--;
+      }
+    }
+
+    document.getElementById('changeRegion').addEventListener('click', () => {
+      document.getElementById('step-form').classList.add('hidden');
+      document.getElementById('step-region').classList.remove('hidden');
+    });
+
+    document.getElementById('regForm').addEventListener('submit', (e) => {
+      const err = document.getElementById('formError'); err.textContent = '';
+      const hb1 = document.getElementById('homeBarFirst').value;
+      const hb2 = document.getElementById('homeBarSecond').value;
+      if(hb1 && hb2 && hb1 === hb2){ e.preventDefault(); err.textContent = 'Home Bar 1st and 2nd picks must be different.'; }
+    });
+
+    loadRegions();
+  </script>
+</body>
+</html>

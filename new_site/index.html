@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PV Pool Leagues — Home</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="icon" href="../assets/favicon_io/favicon.ico" type="image/x-icon">
+  <style>
+    :root{ --bg:#0b0b0b; --fg:#fff; --muted:#cbd5e1; --line:#2b2b2b; --accent:#0a7cff; --nav-h:84px; }
+    *,*::before,*::after{ box-sizing:border-box; }
+    html,body{ margin:0; background:var(--bg); color:var(--fg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif; }
+    #navBar{ position:fixed; inset:0 0 auto 0; height:var(--nav-h); background:#323232;
+      z-index:1000; display:flex; align-items:center; justify-content:center; }
+    #navBar img{ max-height:calc(var(--nav-h) - 16px); padding:6px 12px; }
+    .hero{ padding:calc(var(--nav-h) + 40px) 20px 40px; text-align:center; }
+    .hero h1{ font-size:clamp(30px,5vw,56px); margin:0 0 10px; }
+    .hero p{ color:var(--muted); font-size:clamp(16px,2vw,20px); margin:0 0 28px; }
+    .cta{ display:inline-block; background:var(--accent); color:#fff; text-decoration:none;
+      padding:14px 26px; border-radius:12px; font-size:18px; font-weight:600; }
+    .grid{ max-width:1100px; margin:30px auto; display:grid; gap:18px;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); padding:0 20px; }
+    .tile{ background:#161616; border:1px solid var(--line); border-radius:14px; padding:22px; }
+    .tile h2{ margin:0 0 8px; font-size:20px; }
+    .tile p{ color:var(--muted); margin:0 0 14px; font-size:14px; }
+    .tile a{ color:var(--accent); text-decoration:none; font-weight:600; }
+    footer{ color:#9aa6b6; text-align:center; padding:40px 16px; border-top:1px solid var(--line); margin-top:40px; }
+
+    /* Poster modal */
+    .pv-modal{ position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:2000;
+      display:none; align-items:center; justify-content:center; padding:20px; }
+    .pv-modal[data-show="yes"]{ display:flex; }
+    .pv-modal__content{ position:relative; max-width:min(92vw,720px); max-height:90vh; }
+    .pv-modal__img{ width:100%; height:auto; max-height:90vh; object-fit:contain; border-radius:8px; }
+    .pv-modal__close{ position:absolute; top:-14px; right:-14px; width:40px; height:40px;
+      border-radius:50%; border:none; background:#fff; color:#111; font-size:24px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <div id="navBar">
+    <a href="index.html"><img src="../assets/images/PV-Pool-League.png" alt="PV Pool League"></a>
+  </div>
+
+  <!-- Poster modal (image + visibility controlled from the admin dashboard) -->
+  <div id="poolInfoModal" class="pv-modal" data-show="no" aria-hidden="true">
+    <div class="pv-modal__content" role="dialog" aria-label="League info">
+      <button class="pv-modal__close" aria-label="Close">&times;</button>
+      <img id="posterImg" src="" alt="League information poster" class="pv-modal__img">
+    </div>
+  </div>
+
+  <section class="hero">
+    <h1>PV Pool Leagues</h1>
+    <p>Where Everybody Is A Winner — Have Fun and Shoot ’Em Up</p>
+    <a class="cta" href="register.html">Register Your Team</a>
+  </section>
+
+  <div class="grid">
+    <div class="tile"><h2>Locations</h2><p>Find a venue near you across all our regions.</p><a href="locations.html">View locations →</a></div>
+    <div class="tile"><h2>Register</h2><p>Pick your region and sign up your team.</p><a href="register.html">Register →</a></div>
+    <div class="tile"><h2>Stats</h2><p>See your scores on CompuSport.</p><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">View stats →</a></div>
+    <div class="tile"><h2>Admin</h2><p>League organizers sign in here.</p><a href="dashboard.html">Dashboard →</a></div>
+  </div>
+
+  <footer>
+    <p>&copy; A division of Landa Investments Ltd.</p>
+    <p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
+  </footer>
+
+  <script>
+    (async () => {
+      const modal = document.getElementById('poolInfoModal');
+      const img = document.getElementById('posterImg');
+      const closeBtn = modal.querySelector('.pv-modal__close');
+      const hide = () => { modal.dataset.show = 'no'; modal.setAttribute('aria-hidden','true'); };
+      closeBtn.addEventListener('click', hide);
+      modal.addEventListener('click', e => { if (e.target === modal) hide(); });
+      document.addEventListener('keyup', e => { if (e.key === 'Escape') hide(); });
+      try {
+        const res = await fetch('api/public.php?action=poster');
+        const data = await res.json();
+        if (data.enabled && data.url) {
+          img.src = data.url;
+          modal.dataset.show = 'yes';
+          modal.removeAttribute('aria-hidden');
+        }
+      } catch (e) { /* no poster: just don't show the modal */ }
+    })();
+  </script>
+</body>
+</html>
