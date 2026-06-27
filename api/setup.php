@@ -1,9 +1,8 @@
 <?php
 /**
- * One-time installer for the NEW SITE.
+ * One-time installer for the site.
  *
- * Visit /new_site/api/setup.php once in a browser (while logged into the
- * server / or just open it) to:
+ * Visit /api/setup.php?run=1 once in a browser to:
  *   - create all ns_* tables (idempotent: CREATE TABLE IF NOT EXISTS)
  *   - seed the default admin (username: eli, password: 1!Cheddar) if none exist
  *   - seed the four regions + their locations / sessions / divisions if empty
@@ -15,12 +14,12 @@ require_once __DIR__ . '/db.php';
 header('Content-Type: text/plain');
 
 // Light guard so the installer isn't triggered by drive-by bots.
-// Visit:  /new_site/api/setup.php?run=1
+// Visit:  /api/setup.php?run=1
 if (($_GET['run'] ?? '') !== '1') {
-    echo "PV Pool League — new site installer.\n\n";
+    echo "PV Pool League — site installer.\n\n";
     echo "To create the database tables and seed the default admin + regions,\n";
     echo "re-open this page with ?run=1 appended, i.e.:\n\n";
-    echo "    /new_site/api/setup.php?run=1\n\n";
+    echo "    /api/setup.php?run=1\n\n";
     echo "Running it is safe to repeat; it never overwrites existing data.\n";
     echo "Delete this file once setup is complete.\n";
     exit;
@@ -137,9 +136,14 @@ if ($adminCount === 0) {
 
 // --------------------------------------------------------- seed settings ----
 $db->query("INSERT IGNORE INTO ns_settings (setting_key, setting_value)
-            VALUES ('home_poster', '../assets/images/Fall_2025_league.jpg')");
+            VALUES ('home_poster', 'assets/images/Fall_2025_league.jpg')");
 $db->query("INSERT IGNORE INTO ns_settings (setting_key, setting_value)
             VALUES ('home_poster_enabled', '1')");
+// The site now lives at the web root, so older "../assets/..." poster paths
+// (from when it was under /new_site) would resolve above the root. Strip the
+// leading "../" so they point at the real assets folder.
+$db->query("UPDATE ns_settings SET setting_value = SUBSTRING(setting_value, 4)
+            WHERE setting_key = 'home_poster' AND setting_value LIKE '../%'");
 
 // --------------------------------------------------------- seed regions -----
 $regionCount = (int) ($db->query("SELECT COUNT(*) c FROM ns_regions")->fetch_assoc()['c'] ?? 0);

@@ -1,401 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>PV Pool League - Register</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
+  <title>PV Pool League — Register</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="icon" href="assets/favicon_io/favicon.ico" type="image/x-icon">
+  <style>
+    :root{ --bg:#0b0b0b; --fg:#fff; --muted:#cbd5e1; --line:#2b2b2b; --accent:#0a7cff; --nav-h:84px; --radius:12px; }
+    *,*::before,*::after{ box-sizing:border-box; }
+    html,body{ margin:0; background:var(--bg); color:var(--fg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif; }
+    #navBar{ position:fixed; inset:0 0 auto 0; height:var(--nav-h); background:#323232;
+      z-index:1000; display:flex; align-items:center; justify-content:center; }
+    #navBar img{ max-height:calc(var(--nav-h) - 16px); padding:6px 12px; }
+    .wrap{ max-width:1000px; margin:0 auto; padding:calc(var(--nav-h) + 24px) 18px 60px; }
+    h1{ text-align:center; font-size:clamp(28px,4vw,44px); margin:0 0 8px; }
+    .sub{ text-align:center; color:var(--muted); margin:0 0 24px; }
 
-  <!-- ===== Standalone CSS (no external stylesheet needed) ===== -->
-<style>
-  :root{
-    --bg:#000; --fg:#fff; --muted:#cbd5e1; --line:#2b2b2b;
-    --accent:#0a7cff; --nav-h:68px; --maxw:1100px; --gap:16px;
-    --radius:12px; --shadow:0 10px 30px rgba(0,0,0,.35);
-  }
-  @media (min-width:640px){ :root{ --nav-h:84px; } }
-  @media (min-width:1024px){ :root{ --nav-h:104px; } }
+    .region-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+    .region-card{ background:#161616; border:1px solid var(--line); border-radius:var(--radius);
+      padding:26px; text-align:center; cursor:pointer; transition:.15s; font-size:20px; font-weight:600; }
+    .region-card:hover{ border-color:var(--accent); transform:translateY(-3px); }
 
-  *,*::before,*::after{ box-sizing:border-box; }
-  html,body{ margin:0; background:var(--bg); color:var(--fg); font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial,sans-serif; }
-
-  /* Top bar & bigger logo (no squish) */
-  #navBar{
-    position:fixed; inset:0 0 auto 0; height:var(--nav-h);
-    background:#323232; z-index:1000; display:flex; align-items:center; justify-content:center;
-    box-shadow: inset 0 -1px 0 rgba(255,255,255,.08);
-  }
-  #navBar a{ display:flex; align-items:center; }
-  #navBar_img{
-    max-height: calc(var(--nav-h) - 12px) !important;  /* bigger */
-    height:auto !important; width:auto !important; object-fit:contain; display:block;
-    padding:6px 12px !important;
-  }
-
-  /* Layout spacing */
-  .outer-wrapper{ padding-top: calc(var(--nav-h) + 18px) !important; }
-  section#main.wrapper{ max-width:var(--maxw); margin:0 auto; padding:24px 16px !important; }
-  h1.major1{ margin:0 0 18px !important; font-size:clamp(28px,4.2vw,48px) !important; line-height:1.1; text-align:center; color:var(--fg) !important; }
-  .outer-wrapper canvas{ display:none !important; }
-
-  /* Form layout (grid) */
-  #poolLeagueSignupForm{ width:100%; }
-  table.formBlockSurveyTable{ width:100%; border-collapse:separate; border-spacing:0; }
-  table.formBlockSurveyTable tr{
-    display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); margin-bottom:var(--gap);
-  }
-  @media (max-width:900px){ table.formBlockSurveyTable tr{ grid-template-columns:1fr; } }
-  table.formBlockSurveyTable td{
-    background:transparent !important; border:1px solid var(--line) !important;
-    border-radius:var(--radius); padding:14px; vertical-align:top;
-  }
-
-  /* Labels white */
-  #poolLeagueSignupForm .question,
-  #poolLeagueSignupForm .question *:not(input):not(select):not(button):not(textarea){
-    color:#ffffff !important;
-  }
-  #poolLeagueSignupForm .question label{ color:#ffffff !important; font-weight:600 !important; display:block !important; margin-bottom:6px !important; }
-  #poolLeagueSignupForm .required{ color:#ffd54f !important; }
-
-  /* Inputs/selects: light fields */
-  #poolLeagueSignupForm input[type="text"],
-  #poolLeagueSignupForm input[type="email"],
-  #poolLeagueSignupForm input[type="tel"],
-  #poolLeagueSignupForm select{
-    background:#ffffff !important; color:#111 !important; border:2px solid #d0d0d0 !important;
-    border-radius:var(--radius) !important; padding:12px 14px !important; font-size:16px !important;
-    width:100% !important; box-sizing:border-box !important; -webkit-appearance:none; appearance:none;
-    box-shadow: inset 0 1px 0 rgba(0,0,0,.04);
-  }
-  #poolLeagueSignupForm input:focus,
-  #poolLeagueSignupForm select:focus{
-    outline:none !important; border-color:var(--accent) !important; box-shadow:0 0 0 3px rgba(10,124,255,.25) !important;
-  }
-  ::placeholder{ color:#6b7280; }
-
-  /* Buttons */
-  #poolLeagueSignupForm .formBlockSubmitButton{
-    background:var(--accent) !important; color:#fff !important; border:none !important;
-    border-radius:var(--radius) !important; padding:14px 18px !important; font-size:18px !important;
-    width:100% !important; cursor:pointer; box-shadow:var(--shadow);
-  }
-  #poolLeagueSignupForm button[type="button"]{
-    background:#f2f4f7 !important; color:#111 !important; border:1px solid #d0d5dd !important;
-    border-radius:var(--radius) !important; padding:12px 14px !important; font-size:16px !important;
-    cursor:pointer; width:100%;
-  }
-
-  /* Floating menu */
-  .floating-menu-container{ position:fixed; right:18px; bottom:18px; z-index:1200; }
-  .floating-hamburger-menu{
-    width:46px; height:46px; border-radius:50%; background:#3a3a3a; display:flex; align-items:center; justify-content:center;
-    color:#fff; font-size:22px; line-height:1; cursor:pointer; box-shadow:0 8px 22px rgba(0,0,0,.45);
-    user-select:none;
-  }
-  .floating-menu-content{
-    display:none; position:fixed; right:18px; bottom:20px; background:#ffffff; color:#111; border-radius:12px;
-    box-shadow:0 12px 30px rgba(0,0,0,.35); overflow:hidden; min-width:180px;
-  }
-  .floating-menu-content ul{ list-style:none; margin:0; padding:8px 0; }
-  .floating-menu-content a{ display:block; padding:10px 14px; color:#111; text-decoration:none; }
-  .floating-menu-content a:hover{ background:#f2f4f7; }
-
-  /* Footer */
-  #footer .inner{ color:#bfc9d9; text-align:center; padding:28px 16px; }
-</style>
-
-  <!-- Google Tag Manager (kept) -->
-  <script>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-      j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NVFMCM3W');
-  </script>
-
-  <!-- Google reCAPTCHA -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    .field{ margin-bottom:16px; }
+    label{ display:block; font-weight:600; margin-bottom:6px; }
+    .req{ color:#ffd54f; }
+    input,select{ width:100%; background:#fff; color:#111; border:2px solid #d0d0d0;
+      border-radius:var(--radius); padding:12px 14px; font-size:16px; }
+    input:focus,select:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(10,124,255,.25); }
+    .row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media (max-width:760px){ .row{ grid-template-columns:1fr; } }
+    .players .pcard{ border:1px solid var(--line); border-radius:var(--radius); padding:14px; margin-bottom:12px; }
+    .players .pcard h3{ margin:0 0 10px; font-size:15px; color:var(--accent); }
+    button{ cursor:pointer; border-radius:var(--radius); font-size:16px; padding:12px 16px; border:none; }
+    .btn-secondary{ background:#f2f4f7; color:#111; }
+    .btn-primary{ background:var(--accent); color:#fff; width:100%; font-size:18px; padding:14px; }
+    .btn-row{ display:flex; gap:12px; margin:12px 0 22px; }
+    .btn-row button{ flex:1; }
+    .back{ background:none; color:var(--accent); padding:0; font-size:15px; }
+    .hidden{ display:none; }
+    .notice{ background:#3a2a00; border:1px solid #7a5a00; color:#ffd98a; padding:12px 14px;
+      border-radius:var(--radius); margin-bottom:16px; }
+    .error{ color:#ff8a8a; text-align:center; margin-top:10px; }
+  </style>
 </head>
-
 <body>
-  <!-- GTM noscript -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NVFMCM3W" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
-  <!-- Top nav -->
   <div id="navBar">
-    <a href="index.html"><img src="assets/images/PV-Pool-League.png" alt="PV Pool League Logo" id="navBar_img"></a>
+    <a href="index.html"><img src="assets/images/PV-Pool-League.png" alt="PV Pool League"></a>
   </div>
 
-  <!-- Wrapper -->
-  <div class="outer-wrapper">
-    <section id="main" class="wrapper">
-      <h1 class="major1">Register</h1>
+  <div class="wrap">
+    <h1>Register</h1>
 
-      <form id="poolLeagueSignupForm" action="./php/submit_form.php" method="post" novalidate>
-        <table class="formBlockSurveyTable">
-          <tbody>
-            <tr>
-              <td class="question">
-                <label for="teamName">Team Name <span class="required">*</span></label>
-                <input name="teamName" id="teamName" type="text" required>
-              </td>
-              <td class="question">
-                <label for="session">Session <span class="required">*</span></label>
-                <select name="session" id="session" required>
-                  <option value="" selected disabled>Select a session</option>
-                  <option value="Fall 2025/2026">Fall 2025/2026</option>
-                </select>
-              </td>
-            </tr>
+    <!-- STEP 1: region selection -->
+    <div id="step-region">
+      <p class="sub">Choose your region to get started.</p>
+      <div class="region-grid" id="regionGrid"><p class="sub">Loading regions…</p></div>
+    </div>
 
-            <tr>
-              <td class="question">
-                <label for="dayDivision">DAY / DIVISION <span class="required">*</span></label>
-                <select name="dayDivision" id="dayDivision" required>
-                  <option value="" selected disabled>Select a division</option>
-                  <option value="COCHRANE">COCHRANE</option>
-                  <option value="HIGH RIVER">HIGH RIVER</option>
-                  <option value="MONDAY OPEN">MONDAY OPEN</option>
-                  <option value="MONDAY A+">MONDAY A+</option>
-                  <option value="TUESDAY A">TUESDAY A</option>
-                  <option value="TUESDAY B">TUESDAY B</option>
-                  <option value="WEDNESDAY A">WEDNESDAY A</option>
-                  <option value="WEDNESDAY B">WEDNESDAY B</option>
-                  <option value="THURSDAY LOWER B">THURSDAY LOWER B</option>
-                  <option value="SCOTCH DOUBLES">SCOTCH DOUBLES A</option>
-                  <option value="SCOTCH DOUBLES">SCOTCH DOUBLES B</option>
-                </select>
-              </td>
+    <!-- STEP 2: region-specific form -->
+    <div id="step-form" class="hidden">
+      <p class="sub">Registering in <strong id="regionLabel"></strong> &middot;
+        <button type="button" class="back" id="changeRegion">change region</button></p>
 
-              <td class="question">
-                <label for="homeBarFirst">Home Bar 1st Pick <span class="required">*</span></label>
-                <select name="homeBarFirst" id="homeBarFirst" required>
-                  <option value="">Select a Bar</option>
-                  <!-- CALGARY -->
-                  <option value="Boston Pizza (7 Heritage Gate SE)">Boston Pizza (7 Heritage Gate SE)</option>
-                  <option value="Dixon’s Pub (15425 Bannister Rd SE #24)">Dixon’s Pub (15425 Bannister Rd SE #24)</option>
-                  <option value="Huntington Hills Community Centre (520 78 Ave NW)">Huntington Hills Community Centre (520 78 Ave NW)</option>
-                  <option value="Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)">Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)</option>
-                  <option value="Bowness Legion #238 (138 Bowness Ctr NW)">Bowness Legion #238 (138 Bowness Ctr NW)</option>
-                  <option value="The Club House Lounge (5012 16 Ave NW)">The Club House Lounge (5012 16 Ave NW)</option>
-                  <option value="Bonasera Pizza (1204 Edmonton Tr NE)">Bonasera Pizza (1204 Edmonton Tr NE)</option>
-                  <option value="Leather Pocket Billiards (3715 Edmonton Tr NE)">Leather Pocket Billiards (3715 Edmonton Tr NE)</option>
-                  <option value="Chapelhow Legion #284 (606 38 Ave NE)">Chapelhow Legion #284 (606 38 Ave NE)</option>
-                  <option value="Top Brass Restaurant (1725 32 Ave NE)">Top Brass Restaurant (1725 32 Ave NE)</option>
-                  <option value="Neighbourhood Pub (834 68 St NE)">Neighbourhood Pub (834 68 St NE)</option>
-                  <option value="Boddums Up Pub (1704 61 St SE)">Boddums Up Pub (1704 61 St SE)</option>
-                  <option value="Border Crossing Pub (1814 36 St SE)">Border Crossing Pub (1814 36 St SE)</option>
-                  <option value="Forest Lawn Legion #275 (755 40 St SE)">Forest Lawn Legion #275 (755 40 St SE)</option>
-                  <option value="Kokonut Kove Pub & Grill (3309 17 Ave SE)">Kokonut Kove Pub & Grill (3309 17 Ave SE)</option>
-                  <option value="Hose & Hound Pub (1030 9 Ave SE)">Hose & Hound Pub (1030 9 Ave SE)</option>
-                  <option value="Crazy Horse Bar & Grill (4068 Ogden Rd SE)">Crazy Horse Bar & Grill (4068 Ogden Rd SE)</option>
-                  <option value="Chill Billiards (134-13226 Macleod Tr SE)">Chill Billiards (134-13226 Macleod Tr SE)</option>
-                  <option value="Chalks Billiards (15110 Bannister Rd SE)">Chalks Billiards (15110 Bannister Rd SE)</option>
-                  <option value="King’s Head Pub (9116 Macleod Tr S)">King’s Head Pub (9116 Macleod Tr S)</option>
-                  <option value="Stonegate Pub (7640 Fairmont Dr SE)">Stonegate Pub (7640 Fairmont Dr SE)</option>
-                  <option value="Pig & Duke Pub (1312 12 Ave SW)">Pig & Duke Pub (1312 12 Ave SW)</option>
-                  <option value="City Pub (2835 37 St SW)">City Pub (2835 37 St SW)</option>
-                  <option value="Murdoch’s Bar & Grill (1935 37 St SW)">Murdoch’s Bar & Grill (1935 37 St SW)</option>
-                  <option value="The Blues Can (Calgary) 2002 16th Ave NW">The Blues Can 2002 16th Ave NW</option>
-                  <!-- HIGH RIVER -->
-                  <option value="Sally’s Pub & Grill (High River) 402 Centre St. SE">Sally’s Pub & Grill 402 Centre St. SE (High River)</option>
-                  <option value="Stix & Bones (30-3 Ave SE Unit 22, High River)">Stix & Bones (30-3 Ave SE Unit 22, High River)</option>
-                  <!-- COCHRANE -->
-                  <option value="Cochrane Legion (114 5 Ave W)">Cochrane Legion (114 5 Ave W)</option>
-                  <option value="Texas Gate Bar & Grill (304 1 St W)">Texas Gate Bar & Grill (304 1 St W)</option>
-                  <option value="Boston Pizza (15 Westside Dr, Cochrane)">Boston Pizza (15 Westside Dr)</option>
-                  <option value="The Venue Music Sportsbar (79 Railway St E)">The Venue Music Sportsbar (79 Railway St E)</option>
-                </select>
-              </td>
-            </tr>
+      <div id="noSessions" class="notice hidden">Registration is currently closed for this region. Please check back later.</div>
 
-            <tr>
-              <td class="question">
-                <label for="homeBarSecond">Home Bar 2nd Pick <span class="required">*</span></label>
-                <select name="homeBarSecond" id="homeBarSecond" required>
-                  <option value="">Select a Bar</option>
-                  <!-- same list as above -->
-                  <option value="Boston Pizza (7 Heritage Gate SE)">Boston Pizza (7 Heritage Gate SE)</option>
-                  <option value="Dixon’s Pub (15425 Bannister Rd SE #24)">Dixon’s Pub (15425 Bannister Rd SE #24)</option>
-                  <option value="Huntington Hills Community Centre (520 78 Ave NW)">Huntington Hills Community Centre (520 78 Ave NW)</option>
-                  <option value="Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)">Tipsy Pig Pub Evanston (2060 Symons Valley Pkwy NW)</option>
-                  <option value="Bowness Legion #238 (138 Bowness Ctr NW)">Bowness Legion #238 (138 Bowness Ctr NW)</option>
-                  <option value="The Club House Lounge (5012 16 Ave NW)">The Club House Lounge (5012 16 Ave NW)</option>
-                  <option value="Bonasera Pizza (1204 Edmonton Tr NE)">Bonasera Pizza (1204 Edmonton Tr NE)</option>
-                  <option value="Leather Pocket Billiards (3715 Edmonton Tr NE)">Leather Pocket Billiards (3715 Edmonton Tr NE)</option>
-                  <option value="Chapelhow Legion #284 (606 38 Ave NE)">Chapelhow Legion #284 (606 38 Ave NE)</option>
-                  <option value="Top Brass Restaurant (1725 32 Ave NE)">Top Brass Restaurant (1725 32 Ave NE)</option>
-                  <option value="Neighbourhood Pub (834 68 St NE)">Neighbourhood Pub (834 68 St NE)</option>
-                  <option value="Boddums Up Pub (1704 61 St SE)">Boddums Up Pub (1704 61 St SE)</option>
-                  <option value="Border Crossing Pub (1814 36 St SE)">Border Crossing Pub (1814 36 St SE)</option>
-                  <option value="Forest Lawn Legion #275 (755 40 St SE)">Forest Lawn Legion #275 (755 40 St SE)</option>
-                  <option value="Kokonut Kove Pub & Grill (3309 17 Ave SE)">Kokonut Kove Pub & Grill (3309 17 Ave SE)</option>
-                  <option value="Hose & Hound Pub (1030 9 Ave SE)">Hose & Hound Pub (1030 9 Ave SE)</option>
-                  <option value="Crazy Horse Bar & Grill (4068 Ogden Rd SE)">Crazy Horse Bar & Grill (4068 Ogden Rd SE)</option>
-                  <option value="Chill Billiards (134-13226 Macleod Tr SE)">Chill Billiards (134-13226 Macleod Tr SE)</option>
-                  <option value="Chalks Billiards (15110 Bannister Rd SE)">Chalks Billiards (15110 Bannister Rd SE)</option>
-                  <option value="King’s Head Pub (9116 Macleod Tr S)">King’s Head Pub (9116 Macleod Tr S)</option>
-                  <option value="Stonegate Pub (7640 Fairmont Dr SE)">Stonegate Pub (7640 Fairmont Dr SE)</option>
-                  <option value="Pig & Duke Pub (1312 12 Ave SW)">Pig & Duke Pub (1312 12 Ave SW)</option>
-                  <option value="City Pub (2835 37 St SW)">City Pub (2835 37 St SW)</option>
-                  <option value="Murdoch’s Bar & Grill (1935 37 St SW)">Murdoch’s Bar & Grill (1935 37 St SW)</option>
-                  <option value="The Blues Can (Calgary)">The Blues Can (Calgary)</option>
-                  <option value="Sally’s Pub & Grill (High River)">Sally’s Pub & Grill (High River)</option>
-                  <option value="Stix & Bones (30-3 Ave SE Unit 22, High River)">Stix & Bones (30-3 Ave SE Unit 22, High River)</option>
-                  <option value="Cochrane Legion (114 5 Ave W)">Cochrane Legion (114 5 Ave W)</option>
-                  <option value="Texas Gate Bar & Grill (304 1 St W)">Texas Gate Bar & Grill (304 1 St W)</option>
-                  <option value="Boston Pizza (15 Westside Dr, Cochrane)">Boston Pizza (15 Westside Dr)</option>
-                  <option value="The Venue Music Sportsbar (79 Railway St E)">The Venue Music Sportsbar (79 Railway St E)</option>
-                </select>
-              </td>
-            </tr>
-          </tbody>
+      <form id="regForm" class="hidden" method="post" action="api/submit_registration.php">
+        <input type="hidden" name="regionSlug" id="regionSlug">
+        <div class="row">
+          <div class="field">
+            <label for="teamName">Team Name <span class="req">*</span></label>
+            <input type="text" name="teamName" id="teamName" required>
+          </div>
+          <div class="field">
+            <label for="session">Session <span class="req">*</span></label>
+            <select name="session" id="session" required></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="dayDivision">Day / Division <span class="req">*</span></label>
+            <select name="dayDivision" id="dayDivision" required></select>
+          </div>
+          <div class="field">
+            <label for="homeBarFirst">Home Bar — 1st Pick</label>
+            <select name="homeBarFirst" id="homeBarFirst"></select>
+          </div>
+        </div>
+        <div class="field" id="homeBarSecondField">
+          <label for="homeBarSecond">Home Bar — 2nd Pick</label>
+          <select name="homeBarSecond" id="homeBarSecond"></select>
+        </div>
 
-          <!-- Dynamic players inserted here -->
-          <tbody id="playerRows"></tbody>
+        <h2 style="border-top:1px solid var(--line); padding-top:18px;">Players</h2>
+        <div class="players" id="playerRows"></div>
+        <div class="btn-row">
+          <button type="button" class="btn-secondary" onclick="addPlayer()">+ Add Player</button>
+          <button type="button" class="btn-secondary" onclick="removePlayer()">– Remove Player</button>
+        </div>
 
-          <!-- Player controls -->
-          <tbody>
-            <tr>
-              <td class="question">
-                <button type="button" onclick="addPlayer()">Add Player</button>
-              </td>
-              <td class="question">
-                <button type="button" onclick="removePlayer()">Remove Player</button>
-              </td>
-            </tr>
-          </tbody>
-
-          <tbody>
-            <tr>
-              <td>
-                <div class="g-recaptcha" data-sitekey="6LcdPNopAAAAAAhoGsDZKuli7C3v_hnFcIp8IFpt"></div>
-              </td>
-              <td>
-                <input class="formBlockSubmitButton" type="submit" value="Submit">
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <button type="submit" class="btn-primary">Submit Registration</button>
+        <div class="error" id="formError"></div>
       </form>
-    </section>
-
-    <!-- Footer -->
-    <footer id="footer">
-      <div class="inner">
-        <p>&copy; A division of Landa Investments Ltd.</p>
-        <p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
-      </div>
-    </footer>
+    </div>
   </div>
 
-  <!-- Minimal JS: players, validation, floating menu -->
   <script>
-    // Players
+    function esc(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+    let currentRegion = null;
+
+    async function loadRegions(){
+      const grid = document.getElementById('regionGrid');
+      try{
+        const res = await fetch('api/public.php?action=regions');
+        const data = await res.json();
+        const regions = data.regions || [];
+        if(!regions.length){ grid.innerHTML = '<p class="sub">No regions are open for registration yet.</p>'; return; }
+        grid.innerHTML = regions.map(r =>
+          `<div class="region-card" data-slug="${esc(r.slug)}">${esc(r.name)}</div>`).join('');
+        grid.querySelectorAll('.region-card').forEach(card =>
+          card.addEventListener('click', () => selectRegion(card.dataset.slug)));
+      }catch(e){ grid.innerHTML = '<p class="sub">Could not load regions.</p>'; }
+    }
+
+    async function selectRegion(slug){
+      try{
+        const res = await fetch('api/public.php?action=region&slug=' + encodeURIComponent(slug));
+        const data = await res.json();
+        if(data.error){ alert(data.error); return; }
+        currentRegion = data.region;
+        renderForm();
+      }catch(e){ alert('Could not load that region.'); }
+    }
+
+    function fillSelect(sel, items, placeholder, useId){
+      sel.innerHTML = `<option value="" disabled selected>${placeholder}</option>` +
+        items.map(i => `<option value="${useId ? i.id : esc(i.name)}">${esc(i.name)}</option>`).join('');
+    }
+
+    function renderForm(){
+      document.getElementById('step-region').classList.add('hidden');
+      document.getElementById('step-form').classList.remove('hidden');
+      document.getElementById('regionLabel').textContent = currentRegion.name;
+      document.getElementById('regionSlug').value = currentRegion.slug;
+
+      const form = document.getElementById('regForm');
+      const noSessions = document.getElementById('noSessions');
+      if(!currentRegion.sessions.length){
+        form.classList.add('hidden'); noSessions.classList.remove('hidden'); return;
+      }
+      noSessions.classList.add('hidden'); form.classList.remove('hidden');
+
+      fillSelect(document.getElementById('session'), currentRegion.sessions, 'Select a session', true);
+      fillSelect(document.getElementById('dayDivision'), currentRegion.divisions, 'Select a division', true);
+
+      const locs = currentRegion.locations || [];
+      const hb1 = document.getElementById('homeBarFirst');
+      const hb2 = document.getElementById('homeBarSecond');
+      if(locs.length){
+        fillSelect(hb1, locs, 'Select a bar', false);
+        fillSelect(hb2, locs, 'Select a bar', false);
+        document.getElementById('homeBarSecondField').classList.remove('hidden');
+      } else {
+        hb1.innerHTML = ''; hb2.innerHTML = '';
+        document.getElementById('homeBarSecondField').classList.add('hidden');
+      }
+
+      document.getElementById('playerRows').innerHTML = '';
+      playerCount = 0; addPlayer();
+    }
+
     let playerCount = 0;
     function addPlayer(){
       playerCount++;
-      const tbody = document.getElementById('playerRows');
-      const row = tbody.insertRow(-1);
-      const c1 = row.insertCell(0), c2 = row.insertCell(1), c3 = row.insertCell(2);
-      const isCaptain = (playerCount === 1);
-      const tag = isCaptain ? ' (Captain)' : ` ${playerCount}`;
-
-      c1.innerHTML = `
-        <label for="player${playerCount}_name">Player${tag} Name:</label>
-        <input type="text" name="player${playerCount}_name" id="player${playerCount}_name" required>
-      `;
-      c2.innerHTML = `
-        <label for="player${playerCount}_email">Player${tag} Email:</label>
-        <input type="email" name="player${playerCount}_email" id="player${playerCount}_email" ${isCaptain ? 'required' : ''}>
-      `;
-      c3.innerHTML = `
-        <label for="player${playerCount}_phone">Player${tag} Phone:</label>
-        <input type="tel" name="player${playerCount}_phone" id="player${playerCount}_phone" pattern="[0-9 +()\\-]*" inputmode="tel" ${isCaptain ? 'required' : ''}>
-      `;
-      c1.classList.add("question"); c2.classList.add("question"); c3.classList.add("question");
+      const isCaptain = playerCount === 1;
+      const div = document.createElement('div');
+      div.className = 'pcard';
+      div.innerHTML = `
+        <h3>${isCaptain ? 'Captain' : 'Player ' + playerCount}</h3>
+        <div class="row">
+          <div class="field"><label>Name <span class="req">*</span></label>
+            <input type="text" name="player${playerCount}_name" required></div>
+          <div class="field"><label>Email ${isCaptain ? '<span class="req">*</span>' : ''}</label>
+            <input type="email" name="player${playerCount}_email" ${isCaptain ? 'required' : ''}></div>
+        </div>
+        <div class="field"><label>Phone ${isCaptain ? '<span class="req">*</span>' : ''}</label>
+          <input type="tel" name="player${playerCount}_phone" ${isCaptain ? 'required' : ''}></div>`;
+      document.getElementById('playerRows').appendChild(div);
     }
     function removePlayer(){
       if(playerCount > 1){
-        const tbody = document.getElementById('playerRows');
-        tbody.deleteRow(-1); playerCount--;
+        document.getElementById('playerRows').lastElementChild.remove();
+        playerCount--;
       }
     }
-    document.addEventListener('DOMContentLoaded', function(){
-      addPlayer();
-      const form = document.getElementById('poolLeagueSignupForm');
-      form.addEventListener('submit', function(e){
-        const recaptchaOk = (typeof grecaptcha !== 'undefined') && grecaptcha.getResponse().length > 0;
-        if(!recaptchaOk){ alert("Please complete the CAPTCHA!"); e.preventDefault(); return; }
-        const hb1 = document.getElementById('homeBarFirst').value;
-        const hb2 = document.getElementById('homeBarSecond').value;
-        if(hb1 && hb2 && hb1 === hb2){ alert('Home Bar 1st Pick and 2nd Pick must be different.'); e.preventDefault(); return; }
-        for(let i=1;i<=playerCount;i++){
-          const phoneEl = document.getElementById(`player${i}_phone`);
-          if(phoneEl && phoneEl.value && !/^[0-9 +()\-]*$/.test(phoneEl.value)){
-            alert(`Player ${i} phone has invalid characters.`); e.preventDefault(); return;
-          }
-        }
-      });
+
+    document.getElementById('changeRegion').addEventListener('click', () => {
+      document.getElementById('step-form').classList.add('hidden');
+      document.getElementById('step-region').classList.remove('hidden');
     });
 
-    // Floating menu (no Font Awesome dependency)
-    document.addEventListener('DOMContentLoaded', function () {
-      const container = document.querySelector('.floating-menu-container');
-      const content = document.querySelector('.floating-menu-content');
-      const btn = document.querySelector('.floating-hamburger-menu');
-      if(!container){ return; }
-      function toggle(){ content.style.display = (content.style.display === 'block') ? 'none' : 'block'; }
-      container.addEventListener('mouseenter', ()=> content.style.display='block');
-      container.addEventListener('mouseleave', ()=> content.style.display='none');
-      btn.addEventListener('click', toggle);
+    document.getElementById('regForm').addEventListener('submit', (e) => {
+      const err = document.getElementById('formError'); err.textContent = '';
+      const hb1 = document.getElementById('homeBarFirst').value;
+      const hb2 = document.getElementById('homeBarSecond').value;
+      if(hb1 && hb2 && hb1 === hb2){ e.preventDefault(); err.textContent = 'Home Bar 1st and 2nd picks must be different.'; }
     });
+
+    loadRegions();
   </script>
-
-  <script>
-  // Remove any old hover-based handlers first if present
-  (function(){
-    const menu = document.querySelector('.floating-menu-content');
-    const btn  = document.querySelector('.floating-hamburger-menu');
-    if(!menu || !btn) return;
-
-    let open = false;
-    function openMenu(){ menu.style.display='block'; open=true; }
-    function closeMenu(){ menu.style.display='none'; open=false; }
-
-    btn.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      open ? closeMenu() : openMenu();
-    });
-
-    // Keep menu open when interacting inside
-    menu.addEventListener('click', (e)=> e.stopPropagation());
-
-    // Click anywhere else closes it
-    document.addEventListener('click', ()=> { if(open) closeMenu(); });
-
-    // Keyboard: Esc closes
-    document.addEventListener('keydown', (e)=> {
-      if(e.key === 'Escape' && open) closeMenu();
-    });
-  })();
-</script>
-
-
-  <!-- Floating menu -->
-  <div class="floating-menu-container">
-    <div class="floating-hamburger-menu" aria-label="Menu" title="Menu">☰</div>
-    <nav class="floating-menu-content">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="register.html">Register</a></li>
-        <li><a href="schedule.html">Schedule</a></li>
-        <li><a href="divisions.html">Divisions</a></li>
-        <li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">Stats</a></li>
-      </ul>
-    </nav>
-  </div>
 </body>
 </html>

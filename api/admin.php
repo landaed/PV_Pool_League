@@ -125,6 +125,32 @@ try {
         ns_json(['ok' => true]);
     }
 
+    case 'bulk_add_locations': {
+        // Add many locations at once. `text` is one location per line; each line
+        // may optionally be "Name | Address | Map embed" (pipe-separated).
+        require_post();
+        $b = ns_body();
+        $rid = (int) ($b['region_id'] ?? 0);
+        $text = (string) ($b['text'] ?? '');
+        if (!$rid) ns_json(['error' => 'Region required.'], 400);
+        $lines = preg_split('/\r\n|\r|\n/', $text);
+        $order = (int) ns_one($db, "SELECT COALESCE(MAX(sort_order),0)+1 n FROM ns_locations WHERE region_id = ?", 'i', [$rid])['n'];
+        $added = 0;
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if ($line === '') continue;
+            $parts = array_map('trim', explode('|', $line));
+            $name  = $parts[0] ?? '';
+            if ($name === '') continue;
+            $addr  = $parts[1] ?? '';
+            $embed = $parts[2] ?? '';
+            ns_exec($db, "INSERT INTO ns_locations (region_id, name, address, map_embed, sort_order, active) VALUES (?, ?, ?, ?, ?, 1)",
+                'isssi', [$rid, $name, $addr, $embed, $order++])->close();
+            $added++;
+        }
+        ns_json(['ok' => true, 'added' => $added]);
+    }
+
     case 'update_location': {
         require_post();
         $b = ns_body();
@@ -349,7 +375,7 @@ try {
         if (!move_uploaded_file($f['tmp_name'], $dest)) {
             ns_json(['error' => 'Could not save uploaded file.'], 500);
         }
-        // Stored as a path relative to the /new_site pages (which live one level up from /api).
+        // Stored as a path relative to the site pages (which sit one level up from /api).
         $rel = 'uploads/' . $fname;
         ns_exec($db, "INSERT INTO ns_settings (setting_key, setting_value) VALUES ('home_poster', ?)
                       ON DUPLICATE KEY UPDATE setting_value = ?", 'ss', [$rel, $rel])->close();
@@ -376,9 +402,9 @@ try {
         $recipients = array_values(array_unique(array_map(fn($r) => $r['email'], $rows)));
         if (!$recipients) ns_json(['error' => 'None of the selected teams have email addresses on file.'], 400);
 
-        require_once __DIR__ . '/../../vendor/Exception.php';
-        require_once __DIR__ . '/../../vendor/PHPMailer.php';
-        require_once __DIR__ . '/../../vendor/SMTP.php';
+        require_once __DIR__ . '/../vendor/Exception.php';
+        require_once __DIR__ . '/../vendor/PHPMailer.php';
+        require_once __DIR__ . '/../vendor/SMTP.php';
 
         $sent = 0; $failed = [];
         $mail = new PHPMailer\PHPMailer\PHPMailer(true);

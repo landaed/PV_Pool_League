@@ -1,128 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>PV Pool League - Registration Success</title>
-		<link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon" />
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="stylesheet" href="./assets/css/main.css"/>
-		<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
-		<script src="https://cdn.babylonjs.com/babylon.js"></script>
-		<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-		<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-		<script src="assets\js\header_icon_move.js"></script>
-				<!-- Google Tag Manager -->
-		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','GTM-NVFMCM3W');</script>
-			<!-- End Google Tag Manager -->
-	</head>
-
-	<body>
-		<!-- Google Tag Manager (noscript) -->
-	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NVFMCM3W"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<!-- End Google Tag Manager (noscript) -->
-    <div id="navBar" style=" position: fixed; top: 0; width: 100%; background: #333; /* Your styling here */">
-    <!-- Your logo and navigation items -->
-    	<a href="index.html"><img src="assets\images\PV-Pool-League.png" alt="Logo" id="navBar_img"></a>
-		</div>
-		<!--a href="index.html" id="scrolling-header-logo">
-				<img src="./assets/images/pool_logo.png" alt="PV Pool League Logo">
-		</a-->
-		<!-- Wrapper -->
-		<div class="outer-wrapper">
-
-			<!-- Main -->
-      <section id="main" class="wrapper">
-            <div class="inner about">
-                <div>
-                    <h1 class="major">Successfully Registered!</h1>
-                    <p>Thank you for registering with PV Pool League. Your information has been successfully submitted.</p>
-                    <!-- Button to Return to Home -->
-                    <a href="index.html" class="button">Return to Home</a>
-                </div>
-            </div>
-        </section>
-		</div>
-
-		<!-- Footer -->
-		<footer id="footer">
-			<div class="inner">
-				<p>&copy; A division of Landa Investments ltd.</p>
-				<p>&copy; Unbounded Research And Development Corp. All rights reserved.</p>
-			</div>
-		</footer>
-
-		<!-- Scripts -->
-		<script src="./assets/js/jquery.min.js"></script>
-		<script src="./assets/js/jquery.scrollex.min.js"></script>
-		<script src="./assets/js/jquery.scrolly.min.js"></script>
-		<script src="./assets/js/browser.min.js"></script>
-		<script src="./assets/js/breakpoints.min.js"></script>
-		<script src="./assets/js/util.js"></script>
-		<script src="./assets/js/main.js"></script>
-		<script src="./assets/js/hamburger.js"></script>
-		<script src="./assets/js/touch_screen_canvas.js"></script>
-		<div class="floating-menu-container">
-		<div class="floating-hamburger-menu">
-				<i class="fas fa-bars"></i>
-		</div>
-		<nav class="floating-menu-content">
-				<ul>
-						<li><a href="index.html">Home</a></li>
-						<li><a href="about.html">About</a></li>
-						<li><a href="locations.html">Locations</a></li>
-						<li><a href="register.html">Register</a></li>
-<li><a href="schedule.html">Schedule</a></li>
-<li><a href="divisions.html">Divisions</a></li>
-						<li><a href="https://compusport.ca/CS/GeneralSearch/Index/11023?callFromHomePage=True">Stats</a></li>
-						<!-- Add more list items as needed -->
-				</ul>
-		</nav>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-	var menuContainer = document.querySelector('.floating-menu-container');
-	var menuContent = document.querySelector('.floating-menu-content');
-	var menuButton = document.querySelector('.floating-hamburger-menu');
-	var menuItems = document.querySelectorAll('.floating-menu-content a'); // Get all menu item links
-
-	// Function to toggle the menu's visibility
-	function toggleMenu() {
-			if (menuContent.style.display === 'block') {
-					menuContent.style.display = 'none';
-			} else {
-					menuContent.style.display = 'block';
-			}
-	}
-
-	// Mouse events for desktop
-	menuContainer.addEventListener('mouseenter', function() {
-			menuContent.style.display = 'block';
-	});
-	menuContainer.addEventListener('mouseleave', function() {
-			menuContent.style.display = 'none';
-	});
-
-	// Touch event for the menu button
-	menuButton.addEventListener('touchstart', function(event) {
-			event.preventDefault(); // Prevent default touch action
-			toggleMenu();
-	}, false);
-
-	// Add touch event listeners to each menu item
-	menuItems.forEach(function(menuItem) {
-			menuItem.addEventListener('touchstart', function(event) {
-					event.stopPropagation(); // Prevent the event from bubbling up to the container
-			}, false);
-	});
-});
-
-
-</script>
-	</body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registration Complete — PV Pool League</title>
+  <link rel="icon" href="assets/favicon_io/favicon.ico" type="image/x-icon">
+  <style>
+    body{ margin:0; background:#0b0b0b; color:#fff; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      display:flex; min-height:100vh; align-items:center; justify-content:center; text-align:center; padding:20px; }
+    .card{ background:#161616; border:1px solid #2b2b2b; border-radius:16px; padding:40px; max-width:520px; }
+    h1{ margin:0 0 12px; }
+    p{ color:#cbd5e1; }
+    a{ display:inline-block; margin-top:18px; background:#0a7cff; color:#fff; text-decoration:none;
+      padding:12px 22px; border-radius:12px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🎱 You're registered!</h1>
+    <p>Thanks for signing up for the PV Pool League. A confirmation email is on its way to the
+       addresses you provided. We'll be in touch with schedules and bar assignments once registration closes.</p>
+    <a href="index.html">Back to Home</a>
+  </div>
+</body>
 </html>

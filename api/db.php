@@ -1,17 +1,16 @@
 <?php
 /**
- * Shared database + helper layer for the NEW SITE (/new_site).
+ * Shared database + helper layer for the site API (/api).
  *
  * Reuses the existing production DB credentials defined in /php/db_connect.php
- * so we never duplicate the secrets. All new-site tables are prefixed with
- * "ns_" so they live alongside (and never clash with) the existing
- * SportsTeam / Player tables used by the old site.
+ * so we never duplicate the secrets. Site config tables are prefixed with
+ * "ns_"; signups live in the shared SportsTeam / Player tables.
  */
 
 // ---- Connect using the existing credentials -------------------------------
 // db_connect.php defines DB_SERVER/DB_USERNAME/DB_PASSWORD/DB_DATABASE and
 // opens a mysqli connection into $db. We include it once.
-require_once __DIR__ . '/../../php/db_connect.php';
+require_once __DIR__ . '/../php/db_connect.php';
 
 if (!isset($db) || !($db instanceof mysqli)) {
     http_response_code(500);

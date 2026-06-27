@@ -97,9 +97,9 @@ try {
 
     // ----------------------------------------------------------- email -----
     try {
-        require_once __DIR__ . '/../../vendor/Exception.php';
-        require_once __DIR__ . '/../../vendor/PHPMailer.php';
-        require_once __DIR__ . '/../../vendor/SMTP.php';
+        require_once __DIR__ . '/../vendor/Exception.php';
+        require_once __DIR__ . '/../vendor/PHPMailer.php';
+        require_once __DIR__ . '/../vendor/SMTP.php';
 
         // Build roster HTML
         $captain = null; $teammates = [];

@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
     <title>PV Pool Leagues - Home</title>
-    <link rel="icon" href="./assets/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/favicon_io/favicon.ico" type="image/x-icon">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
     <!-- site styles -->
-    <link rel="stylesheet" href="./assets/css/main_2.css">
-    <!-- modal styles -->
+    <link rel="stylesheet" href="assets/css/main_2.css">
 
-    <noscript><link rel="stylesheet" href="./assets/css/noscript.css"></noscript>
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css"></noscript>
 
     <!-- libs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
@@ -105,33 +104,41 @@
     <div></div>
 </div>
 
-<!-- ─── Summer-Pool-Info Modal (starts hidden) ───────────────────────── -->
+<!-- ─── Pool-Info Modal (image + visibility controlled from the admin dashboard) ─ -->
 <div id="poolInfoModal" class="pv-modal" data-show="no" aria-hidden="true">
-    <div class="pv-modal__content" role="dialog" aria-label="Summer session info">
+    <div class="pv-modal__content" role="dialog" aria-label="League info">
         <button class="pv-modal__close" aria-label="Close modal">&times;</button>
-        <img src="./assets/images/Fall_2025_league.jpg"
-             alt="Summer Pool League 2025 information poster"
+        <img id="posterImg" src=""
+             alt="PV Pool League information poster"
              class="pv-modal__img">
     </div>
 </div>
 
-<!-- Modal wiring -->
+<!-- Modal wiring: pull the current poster + on/off from the dashboard settings -->
 <script>
 (() => {
     const modal    = document.getElementById('poolInfoModal');
     const closeBtn = modal.querySelector('.pv-modal__close');
+    const posterImg = document.getElementById('posterImg');
 
-    modal.dataset.show = 'yes';
-	modal.removeAttribute('aria-hidden');
-	sessionStorage.setItem('poolInfoShown','1');
     const hide = () => {
         modal.dataset.show = 'no';
         modal.setAttribute('aria-hidden','true');
     };
-
     closeBtn.addEventListener('click', hide);
     modal.addEventListener('click', e => { if (e.target === modal) hide(); });
     document.addEventListener('keyup', e => { if (e.key === 'Escape') hide(); });
+
+    fetch('api/public.php?action=poster')
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.enabled && data.url) {
+                posterImg.src = data.url;
+                modal.dataset.show = 'yes';
+                modal.removeAttribute('aria-hidden');
+            }
+        })
+        .catch(() => { /* no poster configured: leave modal hidden */ });
 })();
 </script>
 
@@ -146,7 +153,7 @@
             <canvas id="renderCanvas"></canvas>
 
             <button class="more" onclick="scrollToAboutUs()">more<i class="fas fa-caret-down"></i></button>
-            <a class="more" href="./schedule.html"
+            <a class="more" href="schedule.html"
                style="position:absolute;top:60%;left:50%;transform:translateX(-50%);">
                 <button>Fall Schedule</button>
             </a>
@@ -155,7 +162,7 @@
                 <p id="info">Where Everybody Is A Winner</p>
             </div>
 
-            <script src="./assets/js/scene.js"></script>
+            <script src="assets/js/scene.js"></script>
         </section>
 
         <!-- Spotlights wrapper -->
@@ -171,9 +178,9 @@
 
                         <!-- About Us -->
                         <section>
-                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                            <a class="image" style="background-image:url('assets/images/SimChopIcon.png');
                                     background-position:center center;">
-                                <img src="./assets/images/about_us.png" alt="About" data-position="center center" style="display:none;">
+                                <img src="assets/images/about_us.png" alt="About" data-position="center center" style="display:none;">
                             </a>
                             <div class="content">
                                 <h2 id="about">About Us</h2>
@@ -186,9 +193,9 @@
 
                         <!-- Locations -->
                         <section>
-                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                            <a class="image" style="background-image:url('assets/images/SimChopIcon.png');
                                     background-position:center center;">
-                                <img src="./assets/images/locations.png" alt="Locations" data-position="center center" style="display:none;">
+                                <img src="assets/images/locations.png" alt="Locations" data-position="center center" style="display:none;">
                             </a>
                             <div class="content">
                                 <h2>Locations</h2>
@@ -201,9 +208,9 @@
 
                         <!-- Register -->
                         <section>
-                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                            <a class="image" style="background-image:url('assets/images/SimChopIcon.png');
                                     background-position:center center;">
-                                <img src="./assets/images/register.png" alt="Register" data-position="center center" style="display:none;">
+                                <img src="assets/images/register.png" alt="Register" data-position="center center" style="display:none;">
                             </a>
                             <div class="content">
                                 <h2>Register</h2>
@@ -216,9 +223,9 @@
 
                         <!-- Stats -->
                         <section class="horizontal_backing">
-                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                            <a class="image" style="background-image:url('assets/images/SimChopIcon.png');
                                     background-position:center center;">
-                                <img src="./assets/images/stats.png" alt="Stats" data-position="center center" style="display:none;">
+                                <img src="assets/images/stats.png" alt="Stats" data-position="center center" style="display:none;">
                             </a>
                             <div class="content">
                                 <h2>Stats</h2>
@@ -232,9 +239,9 @@
 
                         <!-- Schedule -->
                         <section>
-                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                            <a class="image" style="background-image:url('assets/images/SimChopIcon.png');
                                     background-position:center center;">
-                                <img src="./assets/images/schedule_icon.png" alt="Schedule" data-position="center center" style="display:none;">
+                                <img src="assets/images/schedule_icon.png" alt="Schedule" data-position="center center" style="display:none;">
                             </a>
                             <div class="content">
                                 <h2>Schedule</h2>
@@ -247,9 +254,9 @@
 
                         <!-- Divisions -->
                         <section>
-                            <a class="image" style="background-image:url('./assets/images/SimChopIcon.png');
+                            <a class="image" style="background-image:url('assets/images/SimChopIcon.png');
                                     background-position:center center;">
-                                <img src="./assets/images/divisions.png" alt="Divisions" data-position="center center" style="display:none;">
+                                <img src="assets/images/divisions.png" alt="Divisions" data-position="center center" style="display:none;">
                             </a>
                             <div class="content">
                                 <h2>Rules and Regulations</h2>
@@ -280,8 +287,8 @@
     </footer>
 </div> <!-- /#mainContent -->
 
-<!-- ─── Scripts (same order you supplied) ─────────────────────────────── -->
-<script src="./assets/js/jquery.min.js"></script>
+<!-- ─── Scripts (same order as original) ─────────────────────────────── -->
+<script src="assets/js/jquery.min.js"></script>
 
 <!-- Back-to-top arrow -->
 <div class="back-to-top">
@@ -304,13 +311,13 @@ window.onscroll = function(){
 };
 </script>
 
-<script src="./assets/js/jquery.scrollex.min.js"></script>
-<script src="./assets/js/jquery.scrolly.min.js"></script>
-<script src="./assets/js/browser.min.js"></script>
-<script src="./assets/js/breakpoints.min.js"></script>
-<script src="./assets/js/util.js"></script>
-<script src="./assets/js/main.js"></script>
-<script src="./assets/js/touch_screen_canvas.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/touch_screen_canvas.js"></script>
 
 <!-- Floating menu -->
 <div class="floating-menu-container">
