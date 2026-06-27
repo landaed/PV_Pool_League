@@ -2,8 +2,8 @@
 /**
  * Public registration handler for the NEW SITE.
  *
- * Writes into ns_teams / ns_players (kept separate from the old SportsTeam /
- * Player tables) and emails every player who supplied an address.
+ * Writes into the shared SportsTeam / Player tables (tagging the team's Region)
+ * and emails every player who supplied an address.
  *
  * Expects a POST (form-encoded or JSON) with:
  *   regionSlug, session (id), dayDivision (id), teamName,
@@ -63,16 +63,14 @@ try {
 
     $registrationDate = date('Y-m-d');
 
-    // Insert team
+    // Insert team into the SHARED SportsTeam table (same data the old site uses),
+    // tagging it with the region so the new dashboard can filter on it.
     $stmt = ns_exec($db,
-        "INSERT INTO ns_teams
-            (region_id, region_name, session_id, session_name, division_id, division_name,
-             team_name, home_bar_first, home_bar_second, registration_date, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())",
-        'isisisssss',
-        [$regionId, $regionName, $sessionId, $sessionName,
-         ($divisionId ?: null), $divisionName, $teamName,
-         $homeBarFirst, $homeBarSecond, $registrationDate]
+        "INSERT INTO SportsTeam
+            (TeamName, DayDivision, HomeBarFirstPick, HomeBarSecondPick, RegistrationDate, Session, Region)
+         VALUES (?, ?, ?, ?, ?, ?, ?)",
+        'sssssss',
+        [$teamName, $divisionName, $homeBarFirst, $homeBarSecond, $registrationDate, $sessionName, $regionName]
     );
     $teamId = $db->insert_id;
     $stmt->close();
@@ -86,18 +84,15 @@ try {
     }
     ksort($playerData, SORT_NUMERIC);
 
-    $isFirst = true;
     foreach ($playerData as $p) {
         $name  = $p['name']  ?? '';
         $email = $p['email'] ?? '';
         $phone = $p['phone'] ?? '';
         if ($name === '' && $email === '' && $phone === '') continue;
-        $isCaptain = $isFirst ? 1 : 0;
         $stmt = ns_exec($db,
-            "INSERT INTO ns_players (team_id, name, email, phone, is_captain) VALUES (?, ?, ?, ?, ?)",
-            'isssi', [$teamId, $name, $email, $phone, $isCaptain]);
+            "INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)",
+            'isss', [$teamId, $name, $email, $phone]);
         $stmt->close();
-        $isFirst = false;
     }
 
     // ----------------------------------------------------------- email -----

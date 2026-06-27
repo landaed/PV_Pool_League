@@ -212,25 +212,48 @@ try {
     }
 
     // ====================================================  SIGNUPS  =========
+    // The new dashboard reads/writes the SHARED SportsTeam / Player tables so it
+    // shows every signup (old + new). Region/session/division filtering is done
+    // on the text values; region for legacy rows is derived when not stored.
     case 'list_signups': {
         $where = [];
         $types = '';
         $params = [];
-        if (!empty($_GET['region_id'])) { $where[] = 't.region_id = ?'; $types .= 'i'; $params[] = (int) $_GET['region_id']; }
-        if (!empty($_GET['session_id'])) { $where[] = 't.session_id = ?'; $types .= 'i'; $params[] = (int) $_GET['session_id']; }
-        if (!empty($_GET['division_id'])) { $where[] = 't.division_id = ?'; $types .= 'i'; $params[] = (int) $_GET['division_id']; }
+        if (!empty($_GET['session'])) { $where[] = 't.Session = ?'; $types .= 's'; $params[] = $_GET['session']; }
+        if (!empty($_GET['division'])) { $where[] = 't.DayDivision = ?'; $types .= 's'; $params[] = $_GET['division']; }
         if (!empty($_GET['q'])) {
-            $where[] = '(t.team_name LIKE ? OR EXISTS (SELECT 1 FROM ns_players p WHERE p.team_id = t.id AND (p.name LIKE ? OR p.email LIKE ?)))';
+            $where[] = '(t.TeamName LIKE ? OR EXISTS (SELECT 1 FROM Player p WHERE p.TeamID = t.TeamID AND (p.PlayerName LIKE ? OR p.Email LIKE ?)))';
             $like = '%' . $_GET['q'] . '%';
             $types .= 'sss'; $params[] = $like; $params[] = $like; $params[] = $like;
         }
         $clause = $where ? ' WHERE ' . implode(' AND ', $where) : '';
-        $teams = ns_all($db, "SELECT * FROM ns_teams t $clause ORDER BY t.created_at DESC, t.id DESC", $types, $params);
+        $teams = ns_all($db,
+            "SELECT t.TeamID AS id, t.TeamName AS team_name, t.Session AS session_name,
+                    t.DayDivision AS division_name, t.HomeBarFirstPick AS home_bar_first,
+                    t.HomeBarSecondPick AS home_bar_second, t.RegistrationDate AS registration_date,
+                    t.Region AS region_stored
+             FROM SportsTeam t $clause
+             ORDER BY t.RegistrationDate DESC, t.TeamID DESC", $types, $params);
+
+        // Derive a display region for rows that predate the Region column.
+        foreach ($teams as &$t) {
+            $t['region_name'] = ns_region_for($t['region_stored'], $t['team_name'], $t['home_bar_first']);
+        }
+        unset($t);
+
+        // Optional region filter (applied after derivation so legacy rows match).
+        if (!empty($_GET['region'])) {
+            $want = $_GET['region'];
+            $teams = array_values(array_filter($teams, fn($t) => strcasecmp($t['region_name'], $want) === 0));
+        }
+
         $ids = array_map(fn($t) => (int) $t['id'], $teams);
         $playersByTeam = [];
         if ($ids) {
             $in = implode(',', array_fill(0, count($ids), '?'));
-            $players = ns_all($db, "SELECT * FROM ns_players WHERE team_id IN ($in) ORDER BY is_captain DESC, id", str_repeat('i', count($ids)), $ids);
+            $players = ns_all($db,
+                "SELECT PlayerID AS id, TeamID AS team_id, PlayerName AS name, Email AS email, Phone AS phone
+                 FROM Player WHERE TeamID IN ($in) ORDER BY PlayerID", str_repeat('i', count($ids)), $ids);
             foreach ($players as $p) { $playersByTeam[(int) $p['team_id']][] = $p; }
         }
         foreach ($teams as &$t) { $t['players'] = $playersByTeam[(int) $t['id']] ?? []; }
@@ -244,7 +267,7 @@ try {
         $id = (int) ($b['id'] ?? 0);
         if (!$id) ns_json(['error' => 'Team id required.'], 400);
         ns_exec($db,
-            "UPDATE ns_teams SET team_name = ?, session_name = ?, division_name = ?, home_bar_first = ?, home_bar_second = ? WHERE id = ?",
+            "UPDATE SportsTeam SET TeamName = ?, Session = ?, DayDivision = ?, HomeBarFirstPick = ?, HomeBarSecondPick = ? WHERE TeamID = ?",
             'sssssi',
             [trim($b['team_name'] ?? ''), trim($b['session_name'] ?? ''), trim($b['division_name'] ?? ''),
              trim($b['home_bar_first'] ?? ''), trim($b['home_bar_second'] ?? ''), $id])->close();
@@ -254,8 +277,8 @@ try {
     case 'delete_team': {
         require_post();
         $id = (int) (ns_body()['id'] ?? 0);
-        ns_exec($db, "DELETE FROM ns_players WHERE team_id = ?", 'i', [$id])->close();
-        ns_exec($db, "DELETE FROM ns_teams WHERE id = ?", 'i', [$id])->close();
+        ns_exec($db, "DELETE FROM Player WHERE TeamID = ?", 'i', [$id])->close();
+        ns_exec($db, "DELETE FROM SportsTeam WHERE TeamID = ?", 'i', [$id])->close();
         ns_json(['ok' => true]);
     }
 
@@ -264,7 +287,7 @@ try {
         $b = ns_body();
         $tid = (int) ($b['team_id'] ?? 0);
         if (!$tid) ns_json(['error' => 'Team id required.'], 400);
-        ns_exec($db, "INSERT INTO ns_players (team_id, name, email, phone, is_captain) VALUES (?, ?, ?, ?, 0)",
+        ns_exec($db, "INSERT INTO Player (TeamID, PlayerName, Email, Phone) VALUES (?, ?, ?, ?)",
             'isss', [$tid, trim($b['name'] ?? ''), trim($b['email'] ?? ''), trim($b['phone'] ?? '')])->close();
         ns_json(['ok' => true]);
     }
@@ -274,14 +297,14 @@ try {
         $b = ns_body();
         $id = (int) ($b['id'] ?? 0);
         if (!$id) ns_json(['error' => 'Player id required.'], 400);
-        ns_exec($db, "UPDATE ns_players SET name = ?, email = ?, phone = ? WHERE id = ?",
+        ns_exec($db, "UPDATE Player SET PlayerName = ?, Email = ?, Phone = ? WHERE PlayerID = ?",
             'sssi', [trim($b['name'] ?? ''), trim($b['email'] ?? ''), trim($b['phone'] ?? ''), $id])->close();
         ns_json(['ok' => true]);
     }
 
     case 'delete_player': {
         require_post();
-        ns_exec($db, "DELETE FROM ns_players WHERE id = ?", 'i', [(int) (ns_body()['id'] ?? 0)])->close();
+        ns_exec($db, "DELETE FROM Player WHERE PlayerID = ?", 'i', [(int) (ns_body()['id'] ?? 0)])->close();
         ns_json(['ok' => true]);
     }
 
@@ -348,7 +371,7 @@ try {
             ns_json(['error' => 'Subject, message and at least one team are required.'], 400);
         }
         $in = implode(',', array_fill(0, count($teamIds), '?'));
-        $rows = ns_all($db, "SELECT DISTINCT email FROM ns_players WHERE team_id IN ($in) AND email <> ''",
+        $rows = ns_all($db, "SELECT DISTINCT Email AS email FROM Player WHERE TeamID IN ($in) AND Email IS NOT NULL AND Email <> ''",
             str_repeat('i', count($teamIds)), $teamIds);
         $recipients = array_values(array_unique(array_map(fn($r) => $r['email'], $rows)));
         if (!$recipients) ns_json(['error' => 'None of the selected teams have email addresses on file.'], 400);

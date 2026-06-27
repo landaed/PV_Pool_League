@@ -234,21 +234,24 @@
       const data = await api('admin.php','list_config');
       configCache = data;
       const fRegion = document.getElementById('fRegion');
+      // Signups are filtered by the text values stored on each team, so the
+      // option VALUES are names (not config IDs).
       fRegion.innerHTML = '<option value="">All regions</option>' +
-        data.regions.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join('');
+        data.regions.map(r=>`<option value="${esc(r.name)}">${esc(r.name)}</option>`).join('');
       updateFilterDependents();
     }catch(e){ /* ignore */ }
   }
   document.getElementById('fRegion').addEventListener('change', updateFilterDependents);
   function updateFilterDependents(){
-    const rid = document.getElementById('fRegion').value;
-    const region = configCache.regions.find(r=>String(r.id)===String(rid));
+    const rname = document.getElementById('fRegion').value;
+    const region = configCache.regions.find(r=>r.name===rname);
     const fSession = document.getElementById('fSession');
     const fDivision = document.getElementById('fDivision');
     const sessions = region ? region.sessions : configCache.regions.flatMap(r=>r.sessions);
     const divisions = region ? region.divisions : configCache.regions.flatMap(r=>r.divisions);
-    fSession.innerHTML = '<option value="">All sessions</option>' + sessions.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
-    fDivision.innerHTML = '<option value="">All divisions</option>' + divisions.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('');
+    const uniq = arr => [...new Set(arr)];
+    fSession.innerHTML = '<option value="">All sessions</option>' + uniq(sessions.map(s=>s.name)).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
+    fDivision.innerHTML = '<option value="">All divisions</option>' + uniq(divisions.map(d=>d.name)).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
   }
 
   // -------------------------------------------------- signups ----
@@ -263,10 +266,10 @@
   let signupsData = [];
   async function loadSignups(){
     const params = new URLSearchParams({ action:'list_signups' });
-    const rid=document.getElementById('fRegion').value, sid=document.getElementById('fSession').value,
-          did=document.getElementById('fDivision').value, q=document.getElementById('fSearch').value.trim();
-    if(rid) params.set('region_id',rid); if(sid) params.set('session_id',sid);
-    if(did) params.set('division_id',did); if(q) params.set('q',q);
+    const region=document.getElementById('fRegion').value, session=document.getElementById('fSession').value,
+          division=document.getElementById('fDivision').value, q=document.getElementById('fSearch').value.trim();
+    if(region) params.set('region',region); if(session) params.set('session',session);
+    if(division) params.set('division',division); if(q) params.set('q',q);
     const list = document.getElementById('signupsList');
     list.innerHTML = '<p class="muted">Loading…</p>';
     try{

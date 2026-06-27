@@ -47,7 +47,22 @@ The installer is idempotent — re-running it never overwrites existing data.
 - `api/admin.php` — all authenticated dashboard actions (config CRUD, signups CRUD, poster, email).
 - `uploads/` — uploaded poster images (script execution blocked via `.htaccess`).
 
+## Signups share the existing data
+
+The new dashboard and the new registration form read/write the **same**
+`SportsTeam` / `Player` tables the old site uses — so the dashboard shows every
+existing signup, and edits/deletes/new registrations are reflected everywhere.
+Setup adds one nullable `Region` column to `SportsTeam` to tag which region a
+team belongs to; older rows without it are shown under Calgary/Cochrane using
+the same name/bar heuristic the old site used.
+
+> Only the new-site *configuration* (regions, sessions, divisions, locations,
+> admins, poster) lives in separate `ns_*` tables. The signups themselves are
+> shared.
+
+If you set things up before this change, just re-run
+`/new_site/api/setup.php?run=1` once to add the `Region` column (idempotent).
+
 ## Notes / TODO
 
 - DB and SMTP credentials are inherited from the existing `/php/db_connect.php` and PHPMailer config. Moving these to environment variables is still recommended (carried over from the old site).
-- New-site signups are intentionally **separate** from the old `SportsTeam`/`Player` data so the old site is unaffected.

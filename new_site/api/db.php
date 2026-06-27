@@ -121,3 +121,16 @@ function ns_one(mysqli $db, $sql, $types = '', $params = []) {
     $rows = ns_all($db, $sql, $types, $params);
     return $rows[0] ?? null;
 }
+
+/**
+ * Determine a team's region. Uses the stored Region value when present
+ * (new registrations); otherwise falls back to the legacy Calgary/Cochrane
+ * heuristic the old site used, so pre-existing signups still group sensibly.
+ */
+function ns_region_for($stored, $teamName, $homeBar) {
+    if ($stored !== null && trim((string) $stored) !== '') {
+        return $stored;
+    }
+    $hay = strtolower(($teamName ?? '') . ' ' . ($homeBar ?? ''));
+    return (strpos($hay, 'cochrane') !== false) ? 'Cochrane' : 'Calgary';
+}

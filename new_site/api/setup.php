@@ -84,31 +84,40 @@ step($log, $db, "CREATE TABLE IF NOT EXISTS ns_divisions (
     INDEX (region_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
-step($log, $db, "CREATE TABLE IF NOT EXISTS ns_teams (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    region_id INT,
-    region_name VARCHAR(120) DEFAULT '',
-    session_id INT,
-    session_name VARCHAR(255) DEFAULT '',
-    division_id INT,
-    division_name VARCHAR(255) DEFAULT '',
-    team_name VARCHAR(255) NOT NULL,
-    home_bar_first VARCHAR(255) DEFAULT '',
-    home_bar_second VARCHAR(255) DEFAULT '',
-    registration_date DATE,
-    created_at DATETIME NOT NULL,
-    INDEX (region_id), INDEX (session_id), INDEX (division_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-
-step($log, $db, "CREATE TABLE IF NOT EXISTS ns_players (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    team_id INT NOT NULL,
-    name VARCHAR(255) DEFAULT '',
-    email VARCHAR(255) DEFAULT '',
-    phone VARCHAR(64) DEFAULT '',
-    is_captain TINYINT NOT NULL DEFAULT 0,
-    INDEX (team_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+// Signups live in the SHARED SportsTeam / Player tables (same as the old site)
+// so the new dashboard sees every existing registration. Create them only if
+// this is a fresh database that doesn't already have them.
+$hasSportsTeam = $db->query("SHOW TABLES LIKE 'SportsTeam'");
+if ($hasSportsTeam && $hasSportsTeam->num_rows === 0) {
+    step($log, $db, "CREATE TABLE SportsTeam (
+        TeamID INT AUTO_INCREMENT PRIMARY KEY,
+        TeamName VARCHAR(255) NOT NULL,
+        DayDivision VARCHAR(255) DEFAULT NULL,
+        HomeBarFirstPick VARCHAR(255) DEFAULT NULL,
+        HomeBarSecondPick VARCHAR(255) DEFAULT NULL,
+        RegistrationDate DATE DEFAULT NULL,
+        Session VARCHAR(255) DEFAULT NULL,
+        Region VARCHAR(120) DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    step($log, $db, "CREATE TABLE Player (
+        PlayerID INT AUTO_INCREMENT PRIMARY KEY,
+        TeamID INT NOT NULL,
+        PlayerName VARCHAR(255) DEFAULT NULL,
+        Email VARCHAR(255) DEFAULT NULL,
+        Phone VARCHAR(64) DEFAULT NULL,
+        INDEX (TeamID)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    $log[] = 'Created SportsTeam / Player tables (fresh database).';
+} else {
+    // Existing install: make sure the Region tagging column is present.
+    $hasRegion = $db->query("SHOW COLUMNS FROM SportsTeam LIKE 'Region'");
+    if ($hasRegion && $hasRegion->num_rows === 0) {
+        step($log, $db, "ALTER TABLE SportsTeam ADD COLUMN Region VARCHAR(120) DEFAULT NULL");
+        $log[] = 'Added Region column to existing SportsTeam table.';
+    } else {
+        $log[] = 'SportsTeam.Region column already present.';
+    }
+}
 
 $log[] = 'Tables ensured.';
 
