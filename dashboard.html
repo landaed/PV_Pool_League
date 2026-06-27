@@ -92,6 +92,7 @@
         <button class="tab active" data-panel="signups">Signups</button>
         <button class="tab" data-panel="config">Registration Setup</button>
         <button class="tab" data-panel="poster">Home Poster</button>
+        <button class="tab" data-panel="schedules">Schedules</button>
         <button class="tab" data-panel="admins">Admins</button>
       </div>
 
@@ -148,6 +149,37 @@
             </div>
           </div>
           <img id="posterPreview" class="poster-preview" alt="" style="display:none;">
+        </div>
+      </div>
+
+      <!-- SCHEDULES -->
+      <div class="panel" id="panel-schedules">
+        <div class="card">
+          <h3>Landing-page schedule button</h3>
+          <p class="muted">The button on the home screen. Choose what it says and which schedule it opens.</p>
+          <div class="checkbox-row" style="margin:14px 0;">
+            <input type="checkbox" id="schedEnabled"><label for="schedEnabled" style="margin:0;">Show the button on the home page</label>
+          </div>
+          <div class="inline-grid">
+            <div><label>Button label</label><input id="schedLabel" placeholder="e.g. Fall Schedule"></div>
+            <div><label>Opens this schedule</label><select id="schedTarget"></select></div>
+            <div><button class="btn-primary" id="saveHomeBtn">Save button</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Upload a schedule</h3>
+          <p class="muted">PDF or image. Give it a title so people know what it is.</p>
+          <div class="inline-grid">
+            <div><label>Title</label><input id="newSchedTitle" placeholder="e.g. Fall 2025 Monday Schedule"></div>
+            <div><label>File (PDF / JPG / PNG / GIF / WEBP)</label><input type="file" id="newSchedFile" accept=".pdf,image/*"></div>
+            <div><button class="btn-green" id="uploadSchedBtn">Upload</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Schedules</h3>
+          <div id="schedulesList"></div>
         </div>
       </div>
 
@@ -224,6 +256,7 @@
     document.getElementById('panel-'+tab.dataset.panel).classList.add('active');
     if(tab.dataset.panel==='config') loadConfig();
     if(tab.dataset.panel==='poster') loadPoster();
+    if(tab.dataset.panel==='schedules') loadSchedules();
     if(tab.dataset.panel==='admins') loadAdmins();
   }));
 
@@ -512,6 +545,75 @@
       toast('Poster uploaded'); loadPoster();
     }catch(e){ toast(e.message); }
   });
+
+  // -------------------------------------------------- schedules ----
+  let schedulesData = [];
+  async function loadSchedules(){
+    const wrap = document.getElementById('schedulesList');
+    wrap.innerHTML = '<p class="muted">Loading…</p>';
+    try{
+      const data = await api('admin.php','list_schedules');
+      schedulesData = data.schedules || [];
+      // Button config
+      document.getElementById('schedEnabled').checked = !!data.button.enabled;
+      document.getElementById('schedLabel').value = data.button.label || '';
+      const sel = document.getElementById('schedTarget');
+      sel.innerHTML = '<option value="">— none —</option>' +
+        schedulesData.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('');
+      sel.value = data.button.schedule_id || '';
+      // List
+      if(!schedulesData.length){ wrap.innerHTML='<p class="muted">No schedules uploaded yet.</p>'; return; }
+      wrap.innerHTML = schedulesData.map(s => `
+        <div class="list-row">
+          <input class="grow" id="sched-title-${s.id}" value="${esc(s.title)}">
+          <a class="btn-light" href="${esc(s.file_path)}" target="_blank" rel="noopener" style="text-decoration:none;">View</a>
+          <button class="btn-light" onclick="renameSchedule(${s.id})">Save title</button>
+          <label class="btn-light" style="margin:0;cursor:pointer;">Replace file
+            <input type="file" accept=".pdf,image/*" style="display:none;" onchange="replaceSchedule(${s.id}, this)">
+          </label>
+          <button class="btn-red" onclick="deleteSchedule(${s.id})">Delete</button>
+        </div>`).join('');
+    }catch(e){ wrap.innerHTML = '<p class="muted">'+esc(e.message)+'</p>'; }
+  }
+  document.getElementById('saveHomeBtn').addEventListener('click', async () => {
+    const label = document.getElementById('schedLabel').value.trim();
+    const schedule_id = document.getElementById('schedTarget').value;
+    const enabled = document.getElementById('schedEnabled').checked ? 1 : 0;
+    try{ await post('admin.php','set_home_button',{ label, schedule_id, enabled }); toast('Button saved'); }catch(e){ toast(e.message); }
+  });
+  document.getElementById('uploadSchedBtn').addEventListener('click', async () => {
+    const title = document.getElementById('newSchedTitle').value.trim();
+    const file = document.getElementById('newSchedFile').files[0];
+    if(!title){ toast('Enter a title'); return; }
+    if(!file){ toast('Choose a file'); return; }
+    const fd = new FormData(); fd.append('title', title); fd.append('schedule', file);
+    try{
+      const res = await fetch(API+'admin.php?action=upload_schedule',{ method:'POST', body:fd });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error||'Upload failed');
+      document.getElementById('newSchedTitle').value=''; document.getElementById('newSchedFile').value='';
+      toast('Schedule uploaded'); loadSchedules();
+    }catch(e){ toast(e.message); }
+  });
+  async function renameSchedule(id){
+    const title = document.getElementById('sched-title-'+id).value.trim();
+    if(!title){ toast('Title cannot be empty'); return; }
+    try{ await post('admin.php','rename_schedule',{id,title}); toast('Title saved'); loadSchedules(); }catch(e){ toast(e.message); }
+  }
+  async function replaceSchedule(id, input){
+    const file = input.files[0]; if(!file) return;
+    const fd = new FormData(); fd.append('id', id); fd.append('schedule', file);
+    try{
+      const res = await fetch(API+'admin.php?action=replace_schedule',{ method:'POST', body:fd });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error||'Replace failed');
+      toast('File replaced'); loadSchedules();
+    }catch(e){ toast(e.message); }
+  }
+  async function deleteSchedule(id){
+    if(!confirm('Delete this schedule? This removes the file too.')) return;
+    try{ await post('admin.php','delete_schedule',{id}); toast('Schedule deleted'); loadSchedules(); }catch(e){ toast(e.message); }
+  }
 
   // -------------------------------------------------- admins ----
   async function loadAdmins(){

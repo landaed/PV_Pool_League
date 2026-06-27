@@ -31,6 +31,42 @@ function slugify($s) {
     return trim($s, '-');
 }
 
+/**
+ * Validate + save an uploaded file from $_FILES[$key] into /uploads.
+ * $allowed maps mime => extension. Returns the path relative to the site
+ * pages (e.g. "uploads/abc.pdf"); calls ns_json() and exits on any error.
+ */
+function ns_store_upload($key, array $allowed, $prefix = 'file') {
+    if (empty($_FILES[$key]) || $_FILES[$key]['error'] !== UPLOAD_ERR_OK) {
+        ns_json(['error' => 'No file uploaded or upload error.'], 400);
+    }
+    $f = $_FILES[$key];
+    if ($f['size'] > 25 * 1024 * 1024) ns_json(['error' => 'File must be under 25MB.'], 400);
+    $mime = function_exists('finfo_open')
+        ? finfo_file(finfo_open(FILEINFO_MIME_TYPE), $f['tmp_name'])
+        : mime_content_type($f['tmp_name']);
+    if (!isset($allowed[$mime])) {
+        ns_json(['error' => 'Unsupported file type (' . $mime . '). Allowed: ' . implode(', ', array_values($allowed)) . '.'], 400);
+    }
+    $ext = $allowed[$mime];
+    $dir = __DIR__ . '/../uploads';
+    if (!is_dir($dir)) @mkdir($dir, 0775, true);
+    $fname = $prefix . '_' . date('Ymd_His') . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+    if (!move_uploaded_file($f['tmp_name'], $dir . '/' . $fname)) {
+        ns_json(['error' => 'Could not save uploaded file.'], 500);
+    }
+    return 'uploads/' . $fname;
+}
+
+// File types accepted for schedules: PDFs and common images.
+function ns_schedule_types() {
+    return [
+        'application/pdf' => 'pdf',
+        'image/jpeg' => 'jpg', 'image/png' => 'png',
+        'image/gif' => 'gif', 'image/webp' => 'webp',
+    ];
+}
+
 try {
     switch ($action) {
 
@@ -382,6 +418,93 @@ try {
         ns_exec($db, "INSERT INTO ns_settings (setting_key, setting_value) VALUES ('home_poster_enabled', '1')
                       ON DUPLICATE KEY UPDATE setting_value = '1'")->close();
         ns_json(['ok' => true, 'url' => $rel]);
+    }
+
+    // ===================================================  SCHEDULES  =========
+    case 'list_schedules': {
+        $schedules = ns_all($db, "SELECT id, title, file_path, created_at FROM ns_schedules ORDER BY sort_order, id DESC");
+        $label = ns_one($db, "SELECT setting_value v FROM ns_settings WHERE setting_key = 'home_schedule_label'");
+        $sid = ns_one($db, "SELECT setting_value v FROM ns_settings WHERE setting_key = 'home_schedule_id'");
+        $enabled = ns_one($db, "SELECT setting_value v FROM ns_settings WHERE setting_key = 'home_schedule_enabled'");
+        ns_json([
+            'schedules' => $schedules,
+            'button' => [
+                'label' => $label['v'] ?? 'Schedule',
+                'schedule_id' => $sid['v'] ?? '',
+                'enabled' => $enabled ? ($enabled['v'] === '1') : false,
+            ],
+        ]);
+    }
+
+    case 'upload_schedule': {
+        require_post();
+        $title = trim($_POST['title'] ?? '');
+        if ($title === '') ns_json(['error' => 'Please give the schedule a title.'], 400);
+        $rel = ns_store_upload('schedule', ns_schedule_types(), 'schedule');
+        $order = (int) ns_one($db, "SELECT COALESCE(MAX(sort_order),0)+1 n FROM ns_schedules")['n'];
+        ns_exec($db, "INSERT INTO ns_schedules (title, file_path, sort_order, created_at) VALUES (?, ?, ?, NOW())",
+            'ssi', [$title, $rel, $order])->close();
+        ns_json(['ok' => true, 'id' => $db->insert_id, 'url' => $rel]);
+    }
+
+    case 'replace_schedule': {
+        require_post();
+        $id = (int) ($_POST['id'] ?? 0);
+        if (!$id) ns_json(['error' => 'Schedule id required.'], 400);
+        $existing = ns_one($db, "SELECT file_path FROM ns_schedules WHERE id = ?", 'i', [$id]);
+        if (!$existing) ns_json(['error' => 'Schedule not found.'], 404);
+        $rel = ns_store_upload('schedule', ns_schedule_types(), 'schedule');
+        ns_exec($db, "UPDATE ns_schedules SET file_path = ? WHERE id = ?", 'si', [$rel, $id])->close();
+        // Remove the old file from disk.
+        $old = __DIR__ . '/../' . $existing['file_path'];
+        if (is_file($old) && strpos(realpath($old), realpath(__DIR__ . '/../uploads')) === 0) @unlink($old);
+        ns_json(['ok' => true, 'url' => $rel]);
+    }
+
+    case 'rename_schedule': {
+        require_post();
+        $b = ns_body();
+        $id = (int) ($b['id'] ?? 0);
+        $title = trim($b['title'] ?? '');
+        if (!$id || $title === '') ns_json(['error' => 'Schedule id and title required.'], 400);
+        ns_exec($db, "UPDATE ns_schedules SET title = ? WHERE id = ?", 'si', [$title, $id])->close();
+        ns_json(['ok' => true]);
+    }
+
+    case 'delete_schedule': {
+        require_post();
+        $id = (int) (ns_body()['id'] ?? 0);
+        if (!$id) ns_json(['error' => 'Schedule id required.'], 400);
+        $existing = ns_one($db, "SELECT file_path FROM ns_schedules WHERE id = ?", 'i', [$id]);
+        ns_exec($db, "DELETE FROM ns_schedules WHERE id = ?", 'i', [$id])->close();
+        if ($existing) {
+            $old = __DIR__ . '/../' . $existing['file_path'];
+            if (is_file($old) && strpos(realpath($old), realpath(__DIR__ . '/../uploads')) === 0) @unlink($old);
+        }
+        // If the landing button pointed at this schedule, clear the selection.
+        ns_exec($db, "UPDATE ns_settings SET setting_value = '' WHERE setting_key = 'home_schedule_id' AND setting_value = ?", 's', [(string) $id])->close();
+        ns_json(['ok' => true]);
+    }
+
+    case 'set_home_button': {
+        require_post();
+        $b = ns_body();
+        if (isset($b['label'])) {
+            $label = trim($b['label']);
+            ns_exec($db, "INSERT INTO ns_settings (setting_key, setting_value) VALUES ('home_schedule_label', ?)
+                          ON DUPLICATE KEY UPDATE setting_value = ?", 'ss', [$label, $label])->close();
+        }
+        if (array_key_exists('schedule_id', $b)) {
+            $sid = $b['schedule_id'] === '' || $b['schedule_id'] === null ? '' : (string) (int) $b['schedule_id'];
+            ns_exec($db, "INSERT INTO ns_settings (setting_key, setting_value) VALUES ('home_schedule_id', ?)
+                          ON DUPLICATE KEY UPDATE setting_value = ?", 'ss', [$sid, $sid])->close();
+        }
+        if (isset($b['enabled'])) {
+            $en = ((int) (bool) $b['enabled']) ? '1' : '0';
+            ns_exec($db, "INSERT INTO ns_settings (setting_key, setting_value) VALUES ('home_schedule_enabled', ?)
+                          ON DUPLICATE KEY UPDATE setting_value = ?", 'ss', [$en, $en])->close();
+        }
+        ns_json(['ok' => true]);
     }
 
     // ======================================================  EMAIL  =========

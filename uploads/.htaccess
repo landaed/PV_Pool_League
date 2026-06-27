@@ -1,5 +1,23 @@
-# Uploaded images only — never execute anything in this folder.
-php_flag engine off
+# Uploaded images / PDFs only — make sure nothing here is ever executed,
+# but do it in a way that is safe on PHP-FPM/CGI hosts (a bare "php_flag"
+# would 500 those and break serving the uploads).
+
+# Disable the PHP engine only where mod_php is actually loaded.
+<IfModule mod_php.c>
+    php_admin_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_admin_flag engine off
+</IfModule>
+<IfModule mod_php5.c>
+    php_admin_flag engine off
+</IfModule>
+
+# Strip any handler/type that would run these as code.
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .pl .py .cgi
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .pl .py .cgi
+
+# And deny direct access to anything script-like outright.
 <FilesMatch "\.(php|php5|php7|phtml|pl|py|cgi|sh)$">
     Require all denied
 </FilesMatch>

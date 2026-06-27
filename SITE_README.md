@@ -35,6 +35,7 @@ The installer is idempotent — re-running it never overwrites existing data.
 
 - **Login** — required for everything below. Add more admins under the **Admins** tab.
 - **Home Poster** — upload an image (or point to a URL) and toggle whether it pops up on the home page.
+- **Schedules** — upload / replace / delete schedule files (PDF or image), each with a title; configure the landing-page button's label, which schedule it opens, and whether it shows.
 - **Signups** — view every team with filtering by region / session / division / search; edit team & player details inline; add/remove players; delete teams; select teams and **email** all their players.
 - **Registration Setup** — per region, manage **sessions** (open/close registration), **day/division** options, and **locations** (including a bulk paste box). Active locations also appear on the public Locations page.
 

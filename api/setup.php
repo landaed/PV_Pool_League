@@ -46,6 +46,14 @@ step($log, $db, "CREATE TABLE IF NOT EXISTS ns_settings (
     setting_value TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+step($log, $db, "CREATE TABLE IF NOT EXISTS ns_schedules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    created_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
 step($log, $db, "CREATE TABLE IF NOT EXISTS ns_regions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(120) NOT NULL,
@@ -139,6 +147,14 @@ $db->query("INSERT IGNORE INTO ns_settings (setting_key, setting_value)
             VALUES ('home_poster', 'assets/images/Fall_2025_league.jpg')");
 $db->query("INSERT IGNORE INTO ns_settings (setting_key, setting_value)
             VALUES ('home_poster_enabled', '1')");
+
+// Landing-page schedule button (label + which uploaded schedule it opens).
+$db->query("INSERT IGNORE INTO ns_settings (setting_key, setting_value)
+            VALUES ('home_schedule_label', 'Fall Schedule')");
+$db->query("INSERT IGNORE INTO ns_settings (setting_key, setting_value)
+            VALUES ('home_schedule_id', '')");
+$db->query("INSERT IGNORE INTO ns_settings (setting_key, setting_value)
+            VALUES ('home_schedule_enabled', '1')");
 // The site now lives at the web root, so older "../assets/..." poster paths
 // (from when it was under /new_site) would resolve above the root. Strip the
 // leading "../" so they point at the real assets folder.

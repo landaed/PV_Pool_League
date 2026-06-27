@@ -142,6 +142,23 @@
 })();
 </script>
 
+<!-- Configurable schedule button (label / target / visibility from dashboard) -->
+<script>
+(() => {
+    const link  = document.getElementById('homeScheduleBtn');
+    const label = document.getElementById('homeScheduleBtnLabel');
+    fetch('api/public.php?action=home_button')
+        .then(r => r.json())
+        .then(data => {
+            if (!data || !data.enabled || !data.url) { link.style.display = 'none'; return; }
+            label.textContent = data.label || 'Schedule';
+            link.href = data.url;
+            link.style.display = '';
+        })
+        .catch(() => { link.style.display = 'none'; });
+})();
+</script>
+
 <!-- ─── Main Content ─────────────────────────────────────────────────── -->
 <div id="mainContent">
 
@@ -153,9 +170,10 @@
             <canvas id="renderCanvas"></canvas>
 
             <button class="more" onclick="scrollToAboutUs()">more<i class="fas fa-caret-down"></i></button>
-            <a class="more" href="schedule.html"
-               style="position:absolute;top:60%;left:50%;transform:translateX(-50%);">
-                <button>Fall Schedule</button>
+            <!-- Schedule button: label / target / visibility set from the dashboard -->
+            <a class="more" id="homeScheduleBtn" href="schedule.html" target="_blank" rel="noopener"
+               style="position:absolute;top:60%;left:50%;transform:translateX(-50%);display:none;">
+                <button id="homeScheduleBtnLabel">Schedule</button>
             </a>
 
             <div id="text-overlay">

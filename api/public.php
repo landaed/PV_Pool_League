@@ -57,6 +57,23 @@ try {
         ]);
     }
 
+    if ($action === 'home_button') {
+        // The configurable schedule button on the landing page.
+        $enabled = ns_one($db, "SELECT setting_value v FROM ns_settings WHERE setting_key = 'home_schedule_enabled'");
+        $label = ns_one($db, "SELECT setting_value v FROM ns_settings WHERE setting_key = 'home_schedule_label'");
+        $sid = ns_one($db, "SELECT setting_value v FROM ns_settings WHERE setting_key = 'home_schedule_id'");
+        $url = null;
+        if (!empty($sid['v'])) {
+            $sched = ns_one($db, "SELECT file_path FROM ns_schedules WHERE id = ?", 'i', [(int) $sid['v']]);
+            $url = $sched['file_path'] ?? null;
+        }
+        ns_json([
+            'enabled' => $enabled ? ($enabled['v'] === '1') : false,
+            'label' => $label['v'] ?? 'Schedule',
+            'url' => $url,
+        ]);
+    }
+
     ns_json(['error' => 'Unknown action.'], 400);
 } catch (Throwable $e) {
     ns_json(['error' => $e->getMessage()], 500);
