@@ -1,0 +1,37 @@
+# --------------------------------------------------------------------------
+# Caching policy
+#
+# HTML pages and PHP responses must NOT be cached by the browser, otherwise
+# returning visitors keep seeing an old copy after a deploy (the "looks the
+# same unless I use private browsing" problem). Static assets (CSS/JS/images/
+# fonts) keep their own filenames and rarely change, so we let those cache.
+# --------------------------------------------------------------------------
+
+<IfModule mod_headers.c>
+    # Always revalidate HTML so the latest page is fetched on every visit.
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+    </FilesMatch>
+
+    # Dynamic PHP (API + form handlers): never store.
+    <FilesMatch "\.php$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    </FilesMatch>
+
+    # Static assets can be cached for a week.
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|webp|svg|ico|woff|woff2|ttf|eot)$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType image/png "access plus 1 week"
+    ExpiresByType image/jpeg "access plus 1 week"
+    ExpiresByType image/webp "access plus 1 week"
+    ExpiresByType image/gif "access plus 1 week"
+    ExpiresByType image/x-icon "access plus 1 week"
+</IfModule>

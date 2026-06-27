@@ -29,6 +29,8 @@ if (session_status() === PHP_SESSION_NONE) {
 function ns_json($data, $status = 200) {
     http_response_code($status);
     header('Content-Type: application/json');
+    // API responses are dynamic — never let the browser serve a cached copy.
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
     echo json_encode($data);
     exit;
 }
