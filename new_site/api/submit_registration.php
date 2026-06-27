@@ -185,6 +185,6 @@ try {
     header('Location: ../registration_success.html');
     exit;
 
-} catch (Exception $e) {
+} catch (Throwable $e) {
     ns_json(['error' => $e->getMessage()], 500);
 }

@@ -71,11 +71,47 @@ function ns_exec(mysqli $db, $sql, $types = '', $params = []) {
     return $stmt;
 }
 
-/** Fetch all rows for a query as an associative array. */
+/**
+ * Fetch all rows for a query as an associative array.
+ *
+ * Deliberately avoids mysqli_stmt::get_result()/fetch_all(), which require the
+ * mysqlnd driver that some shared hosts don't compile in. Instead we bind the
+ * result columns dynamically via result_metadata()/bind_result(), which works
+ * on every mysqli build.
+ */
 function ns_all(mysqli $db, $sql, $types = '', $params = []) {
     $stmt = ns_exec($db, $sql, $types, $params);
-    $res = $stmt->get_result();
-    $rows = $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
+    $rows = [];
+
+    // Prefer get_result() when mysqlnd is available (faster, simpler).
+    if (function_exists('mysqli_stmt_get_result')) {
+        $res = @$stmt->get_result();
+        if ($res instanceof mysqli_result) {
+            while ($r = $res->fetch_assoc()) { $rows[] = $r; }
+            $stmt->close();
+            return $rows;
+        }
+    }
+
+    // mysqlnd-free fallback.
+    $meta = $stmt->result_metadata();
+    if ($meta) {
+        $fields = [];
+        while ($field = $meta->fetch_field()) { $fields[] = $field->name; }
+        $meta->free();
+
+        $rowBuf = [];
+        $bind = [];
+        foreach ($fields as $f) { $rowBuf[$f] = null; $bind[] = &$rowBuf[$f]; }
+        call_user_func_array([$stmt, 'bind_result'], $bind);
+
+        $stmt->store_result();
+        while ($stmt->fetch()) {
+            $copy = [];
+            foreach ($fields as $f) { $copy[$f] = $rowBuf[$f]; }
+            $rows[] = $copy;
+        }
+    }
     $stmt->close();
     return $rows;
 }

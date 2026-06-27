@@ -58,6 +58,6 @@ try {
     }
 
     ns_json(['error' => 'Unknown action.'], 400);
-} catch (Exception $e) {
+} catch (Throwable $e) {
     ns_json(['error' => $e->getMessage()], 500);
 }
